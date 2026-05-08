@@ -1,0 +1,42 @@
+{
+  "fork": "glamsterdam",
+  "lastUpdated": "2026-05-08",
+  "sources": [
+    "Replace with client release notes, devnet pages, or operator-maintained compatibility sources."
+  ],
+  "clients": [
+    {
+      "name": "example-execution-client",
+      "role": "execution",
+      "versions": [
+        {
+          "version": "0.0.0-example",
+          "status": "unknown",
+          "notes": "Placeholder only. Replace with a sourced compatibility statement before relying on this matrix."
+        }
+      ]
+    },
+    {
+      "name": "example-consensus-client",
+      "role": "consensus",
+      "versions": [
+        {
+          "version": "0.0.0-example",
+          "status": "unknown",
+          "notes": "Placeholder only. Replace with a sourced compatibility statement before relying on this matrix."
+        }
+      ]
+    },
+    {
+      "name": "example-validator-client",
+      "role": "validator",
+      "versions": [
+        {
+          "version": "0.0.0-example",
+          "status": "unknown",
+          "notes": "Placeholder only. Replace with a sourced compatibility statement before relying on this matrix."
+        }
+      ]
+    }
+  ]
+}

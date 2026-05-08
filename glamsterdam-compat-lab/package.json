@@ -1,0 +1,47 @@
+{
+  "name": "glamsterdam-compat-lab",
+  "version": "0.1.0",
+  "description": "Deterministic Glamsterdam compatibility scanners for Ethereum contracts, traces, indexers, and validator operators.",
+  "type": "module",
+  "license": "MIT",
+  "private": false,
+  "bin": {
+    "glamsterdam": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "data",
+    "fixtures",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "glamsterdam": "tsx src/cli.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "yaml": "^2.6.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "ethereum",
+    "glamsterdam",
+    "compatibility",
+    "evm",
+    "validator",
+    "indexer"
+  ]
+}

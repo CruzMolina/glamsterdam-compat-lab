@@ -1,0 +1,15 @@
+{
+  "name": "balance-diff-indexer",
+  "pipeline": {
+    "nativeEthTransfers": {
+      "source": "balanceDiff",
+      "description": "Synthetic fixture that models native ETH transfer handling through balance diff logic."
+    }
+  },
+  "compatibility": {
+    "glamsterdam": {
+      "reviewedEips": ["EIP-7708"],
+      "replayPlan": "Run replay against a Glamsterdam devnet when available."
+    }
+  }
+}

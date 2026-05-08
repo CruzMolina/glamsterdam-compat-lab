@@ -1,0 +1,15 @@
+executionClient:
+  name: geth
+  version: v1.99.0-example
+consensusClient:
+  name: lighthouse
+  version: v9.99.0-example
+validatorClient:
+  name: lighthouse
+builder:
+  enabled: true
+monitoring:
+  prometheus: ""
+networks:
+  testnetParticipation: []
+notes: "Synthetic fixture intentionally leaves readiness metadata incomplete."

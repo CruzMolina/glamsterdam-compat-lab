@@ -1,0 +1,85 @@
+{
+  "fork": "glamsterdam",
+  "lastUpdated": "2026-05-08",
+  "sources": [
+    "https://eips.ethereum.org/EIPS/eip-7773",
+    "https://ethereum.org/roadmap/glamsterdam/",
+    "https://esp.ethereum.foundation/applicants/wishlist",
+    "https://blog.ethereum.org/2026/05/02/soldogn-interop-recap",
+    "https://blog.ethereum.org/2026/02/18/protocol-priorities-update-2026"
+  ],
+  "eips": [
+    {
+      "id": "EIP-7928",
+      "name": "Block-Level Access Lists",
+      "status": "scheduled",
+      "domain": ["execution", "indexer", "monitoring"],
+      "detectors": ["balDetectors"],
+      "notes": "Used for BAL-related indexer and monitoring readiness checks. Do not hardcode final behavior in detector code."
+    },
+    {
+      "id": "EIP-7732",
+      "name": "Enshrined Proposer-Builder Separation",
+      "status": "scheduled",
+      "domain": ["consensus", "validator", "builder"],
+      "detectors": ["epbsDetectors"],
+      "notes": "Used for validator and operator readiness checks around builder/API metadata."
+    },
+    {
+      "id": "EIP-7708",
+      "name": "ETH transfers emit a log",
+      "status": "considered",
+      "domain": ["execution", "indexer", "monitoring"],
+      "detectors": ["nativeEthTransferLogDetectors"],
+      "notes": "Used for native ETH transfer visibility checks. Treat as considered until status changes."
+    },
+    {
+      "id": "EIP-7904",
+      "name": "General Repricing",
+      "status": "considered",
+      "domain": ["execution", "contracts"],
+      "detectors": ["gasRepricingDetectors"],
+      "notes": "Broad repricing candidate. Exact gas deltas must come from data, not hardcoded detector logic."
+    },
+    {
+      "id": "EIP-7954",
+      "name": "Increase Maximum Contract Size",
+      "status": "considered",
+      "domain": ["execution", "contracts"],
+      "detectors": ["contractSizeDetectors"],
+      "notes": "Used only to flag contract-size review areas. Final limits may change."
+    },
+    {
+      "id": "EIP-7976",
+      "name": "Increase Calldata Floor Cost",
+      "status": "considered",
+      "domain": ["execution", "contracts"],
+      "detectors": ["gasRepricingDetectors"],
+      "notes": "Used for calldata-heavy trace and bytecode review prompts when calldata evidence is visible."
+    },
+    {
+      "id": "EIP-8037",
+      "name": "State Creation Gas Cost Increase",
+      "status": "considered",
+      "domain": ["execution", "contracts"],
+      "detectors": ["stateCreationDetectors"],
+      "notes": "Used for CREATE and CREATE2 review prompts. Do not infer exact cost changes."
+    },
+    {
+      "id": "EIP-8038",
+      "name": "State-access gas cost increase",
+      "status": "considered",
+      "domain": ["execution", "contracts"],
+      "detectors": ["gasRepricingDetectors"],
+      "notes": "Used for storage/account access review prompts. Do not infer exact cost changes."
+    },
+    {
+      "id": "GAS-REPRICING",
+      "name": "Glamsterdam gas repricing candidates",
+      "status": "considered",
+      "domain": ["execution", "contracts"],
+      "detectors": ["gasRepricingDetectors", "stateCreationDetectors"],
+      "notes": "Umbrella entry for broad heuristics until exact final EIPs and parameters are confirmed."
+    }
+  ]
+}

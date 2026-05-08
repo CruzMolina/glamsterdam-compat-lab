@@ -1,0 +1,25 @@
+{
+  "format": "glamsterdam-normalized-trace-v0",
+  "metadata": {
+    "txHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "description": "Synthetic fixture with storage, create, calldata, call, and log activity."
+  },
+  "steps": [
+    { "pc": 0, "op": "SLOAD", "depth": 1, "gas": 100000 },
+    { "pc": 1, "op": "SSTORE", "depth": 1, "gas": 99000 },
+    { "pc": 2, "op": "SLOAD", "depth": 1, "gas": 98000 },
+    { "pc": 3, "op": "SSTORE", "depth": 1, "gas": 97000 },
+    { "pc": 4, "op": "SLOAD", "depth": 1, "gas": 96000 },
+    { "pc": 5, "op": "SSTORE", "depth": 1, "gas": 95000 },
+    { "pc": 6, "op": "SLOAD", "depth": 1, "gas": 94000 },
+    { "pc": 7, "op": "SSTORE", "depth": 1, "gas": 93000 },
+    { "pc": 8, "op": "SLOAD", "depth": 1, "gas": 92000 },
+    { "pc": 9, "op": "SSTORE", "depth": 1, "gas": 91000 },
+    { "pc": 10, "op": "SLOAD", "depth": 1, "gas": 90000 },
+    { "pc": 11, "op": "SSTORE", "depth": 1, "gas": 89000 },
+    { "pc": 12, "op": "CALLDATACOPY", "depth": 1, "calldataBytes": 8192 },
+    { "pc": 13, "op": "CREATE2", "depth": 1 },
+    { "pc": 14, "op": "CALL", "depth": 2, "calldataBytes": 512 },
+    { "pc": 15, "op": "LOG1", "depth": 1 }
+  ]
+}

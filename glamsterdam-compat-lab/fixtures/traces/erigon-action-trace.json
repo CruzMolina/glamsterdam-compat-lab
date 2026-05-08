@@ -1,0 +1,29 @@
+[
+  {
+    "type": "call",
+    "action": {
+      "callType": "call",
+      "from": "0x0000000000000000000000000000000000000001",
+      "to": "0x0000000000000000000000000000000000000002",
+      "input": "0x12345678"
+    },
+    "traceAddress": []
+  },
+  {
+    "type": "create",
+    "action": {
+      "from": "0x0000000000000000000000000000000000000002",
+      "init": "0x60006000"
+    },
+    "traceAddress": [0]
+  },
+  {
+    "type": "call",
+    "action": {
+      "callType": "delegatecall",
+      "to": "0x0000000000000000000000000000000000000003",
+      "input": "0xabcdef"
+    },
+    "traceAddress": [1]
+  }
+]

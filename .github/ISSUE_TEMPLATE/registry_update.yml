@@ -1,0 +1,35 @@
+name: Registry update
+description: Propose an update to Glamsterdam EIP/client compatibility data.
+title: "[registry]: "
+labels: ["registry", "data"]
+body:
+  - type: dropdown
+    id: registry
+    attributes:
+      label: Registry area
+      options:
+        - EIP registry
+        - Client compatibility matrix
+        - Detector thresholds
+        - Other data file
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: Proposed change
+      description: What should be added, removed, or updated?
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: Link to EIPs, client release notes, devnet notes, or other source material.
+    validations:
+      required: true
+  - type: textarea
+    id: detector_impact
+    attributes:
+      label: Detector impact
+      description: Which scanner outputs should change as a result?

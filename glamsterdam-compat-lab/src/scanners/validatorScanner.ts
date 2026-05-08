@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { z } from "zod";
 import { detectEpbsBuilderReadiness } from "../detectors/epbsDetectors.js";
 import { domains, makeFinding } from "../detectors/types.js";
+import { loadDetectorThresholds, type DetectorThresholds } from "../detectors/thresholds.js";
 import { loadEipRegistry } from "../registry/eipRegistry.js";
 import type { EipRegistry } from "../registry/schemas.js";
 import { makeReport, type CompatibilityFinding, type CompatibilityReport } from "../reports/reportTypes.js";
@@ -36,6 +37,8 @@ type ClientRole = "execution" | "consensus" | "validator";
 export interface ValidatorScanOptions {
   registry?: EipRegistry;
   registryPath?: string;
+  thresholds?: DetectorThresholds;
+  thresholdsPath?: string;
   clientMatrixPath?: string;
   targetName?: string;
 }
@@ -46,10 +49,12 @@ export function defaultClientMatrixPath(): string {
 
 export function scanValidatorConfig(configPath: string, options: ValidatorScanOptions = {}): CompatibilityReport {
   const registry = options.registry ?? loadEipRegistry(options.registryPath);
+  const thresholds = options.thresholds ?? loadDetectorThresholds(options.thresholdsPath);
   const config = loadStructuredFile(configPath);
   const matrix = loadClientMatrix(options.clientMatrixPath ?? defaultClientMatrixPath());
   const context = {
     registry,
+    thresholds,
     targetName: options.targetName ?? configPath
   };
 

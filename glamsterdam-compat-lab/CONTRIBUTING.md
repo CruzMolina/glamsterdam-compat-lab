@@ -12,6 +12,12 @@ pnpm test
 pnpm build
 ```
 
+When report wording or JSON structure changes intentionally, update golden snapshots:
+
+```sh
+pnpm test:update
+```
+
 ## Detector guidelines
 
 - Use conservative language. Prefer "review" or "replay representative transactions" over claims that something will break.
@@ -19,10 +25,13 @@ pnpm build
 - Add fixtures and tests for each new detector.
 - Do not guess client compatibility. Add explicit, sourced client metadata to a user-editable compatibility matrix instead.
 - Keep JSON and Markdown report outputs deterministic.
+- Keep detector thresholds in `data/detectors/thresholds.json` unless there is a strong reason to hardcode a parser invariant.
 
 ## Registry updates
 
 The Glamsterdam fork scope may change. Update `data/eips/glamsterdam.json` with source links, status, detector modules, and a `lastUpdated` date whenever assumptions change.
+
+Detector thresholds live in `data/detectors/thresholds.json`. Treat them as signal-quality heuristics, not protocol gas constants.
 
 ## Pull requests
 

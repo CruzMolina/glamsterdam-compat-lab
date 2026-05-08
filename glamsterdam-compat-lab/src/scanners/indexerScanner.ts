@@ -1,6 +1,7 @@
 import { detectMissingBalIndexerPlan } from "../detectors/balDetectors.js";
 import { detectNativeEthTransferLogReadiness, type IndexerHandlerSummary } from "../detectors/nativeEthTransferLogDetectors.js";
 import { domains, makeFinding } from "../detectors/types.js";
+import { loadDetectorThresholds, type DetectorThresholds } from "../detectors/thresholds.js";
 import { loadEipRegistry } from "../registry/eipRegistry.js";
 import type { EipRegistry } from "../registry/schemas.js";
 import { makeReport, type CompatibilityFinding, type CompatibilityReport } from "../reports/reportTypes.js";
@@ -9,16 +10,20 @@ import { loadStructuredFile, readTextFile } from "../utils/files.js";
 export interface IndexerScanOptions {
   registry?: EipRegistry;
   registryPath?: string;
+  thresholds?: DetectorThresholds;
+  thresholdsPath?: string;
   targetName?: string;
 }
 
 export function scanIndexer(indexerPath: string, options: IndexerScanOptions = {}): CompatibilityReport {
   const registry = options.registry ?? loadEipRegistry(options.registryPath);
+  const thresholds = options.thresholds ?? loadDetectorThresholds(options.thresholdsPath);
   const rawText = readTextFile(indexerPath);
   const parsed = loadStructuredFile(indexerPath);
   const handlerSummary = summarizeHandlers(parsed);
   const context = {
     registry,
+    thresholds,
     targetName: options.targetName ?? indexerPath
   };
 

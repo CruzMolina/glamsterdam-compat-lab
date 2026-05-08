@@ -19,6 +19,7 @@ export function detectBytecodeGasRepricingExposure(
 ): CompatibilityFinding[] {
   const sensitiveCount = opcodeCount(opcodeCounts, stateAndAccountOpcodes);
   const calldataCopyCount = opcodeCounts.CALLDATACOPY ?? 0;
+  const thresholds = context.thresholds.bytecode.stateAccountOpcodeExposure;
   const findings: CompatibilityFinding[] = [];
   const relatedEips = relatedEipsForDetector(context.registry, "gasRepricingDetectors", [
     "GAS-REPRICING",
@@ -26,7 +27,7 @@ export function detectBytecodeGasRepricingExposure(
     "EIP-8038"
   ]);
 
-  if (sensitiveCount >= 8) {
+  if (sensitiveCount >= thresholds.mediumSensitiveOpcodeCount) {
     findings.push(
       makeFinding({
         id: "bytecode.state-account-opcode-exposure",
@@ -42,7 +43,7 @@ export function detectBytecodeGasRepricingExposure(
           "Replay representative transactions and benchmark hot paths once a Glamsterdam client/devnet or local fork configuration is available."
       })
     );
-  } else if (sensitiveCount >= 3) {
+  } else if (sensitiveCount >= thresholds.lowSensitiveOpcodeCount) {
     findings.push(
       makeFinding({
         id: "bytecode.state-account-opcode-presence",
@@ -91,9 +92,14 @@ export function detectTraceGasRepricingExposure(
 ): CompatibilityFinding[] {
   const storageOps = opcodeCount(opcodeCounts, ["SLOAD", "SSTORE"]);
   const sensitiveCount = opcodeCount(opcodeCounts, stateAndAccountOpcodes);
+  const stateThresholds = context.thresholds.trace.stateHeavyExecution;
+  const calldataThresholds = context.thresholds.trace.calldataHeavy;
   const findings: CompatibilityFinding[] = [];
 
-  if (storageOps >= 40 || sensitiveCount >= 80) {
+  if (
+    storageOps >= stateThresholds.highStorageOps
+    || sensitiveCount >= stateThresholds.highSensitiveOpcodeCount
+  ) {
     findings.push(
       makeFinding({
         id: "trace.state-heavy-execution-high",
@@ -113,7 +119,10 @@ export function detectTraceGasRepricingExposure(
           "Replay this transaction class against a Glamsterdam devnet or fork configuration and compare gas, latency, and failure behavior with current mainnet rules."
       })
     );
-  } else if (storageOps >= 10 || sensitiveCount >= 20) {
+  } else if (
+    storageOps >= stateThresholds.mediumStorageOps
+    || sensitiveCount >= stateThresholds.mediumSensitiveOpcodeCount
+  ) {
     findings.push(
       makeFinding({
         id: "trace.state-heavy-execution-medium",
@@ -135,12 +144,12 @@ export function detectTraceGasRepricingExposure(
     );
   }
 
-  if ((opcodeCounts.CALLDATACOPY ?? 0) > 0 || calldataBytes >= 4096) {
+  if ((opcodeCounts.CALLDATACOPY ?? 0) > 0 || calldataBytes >= calldataThresholds.mediumCalldataBytes) {
     findings.push(
       makeFinding({
         id: "trace.calldata-heavy-execution",
         title: "Trace includes visible calldata-heavy execution",
-        severity: calldataBytes >= 4096 ? "medium" : "low",
+        severity: calldataBytes >= calldataThresholds.mediumCalldataBytes ? "medium" : "low",
         confidence: calldataBytes > 0 ? "high" : "medium",
         domain: domains("contracts", "execution"),
         relatedEips: relatedEipsForDetector(context.registry, "gasRepricingDetectors", [

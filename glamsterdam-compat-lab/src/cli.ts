@@ -4,6 +4,7 @@ import { Command } from "commander";
 import {
   combineReports,
   defaultClientMatrixPath,
+  defaultThresholdsPath,
   loadEipRegistry,
   renderJsonReport,
   renderMarkdownReport,
@@ -31,9 +32,10 @@ program
   .argument("<path-or-hex>", "EVM bytecode file path or inline hex string")
   .option("--format <format>", "Output format: markdown or json", "markdown")
   .option("--registry <path>", "Path to Glamsterdam EIP registry JSON")
+  .option("--thresholds <path>", "Path to detector thresholds JSON", defaultThresholdsPath())
   .description("Analyze EVM bytecode for conservative Glamsterdam compatibility prompts")
-  .action((pathOrHex: string, options: { format: string; registry?: string }) => {
-    const report = scanBytecode(pathOrHex, { registryPath: options.registry });
+  .action((pathOrHex: string, options: { format: string; registry?: string; thresholds: string }) => {
+    const report = scanBytecode(pathOrHex, { registryPath: options.registry, thresholdsPath: options.thresholds });
     writeReport(report, parseFormat(options.format));
   });
 
@@ -42,9 +44,10 @@ program
   .argument("<trace-json-file>", "Trace JSON file")
   .option("--format <format>", "Output format: markdown or json", "markdown")
   .option("--registry <path>", "Path to Glamsterdam EIP registry JSON")
+  .option("--thresholds <path>", "Path to detector thresholds JSON", defaultThresholdsPath())
   .description("Analyze transaction traces for state-heavy, creation-heavy, calldata, log, and call patterns")
-  .action((traceFile: string, options: { format: string; registry?: string }) => {
-    const report = scanTraceFile(traceFile, { registryPath: options.registry });
+  .action((traceFile: string, options: { format: string; registry?: string; thresholds: string }) => {
+    const report = scanTraceFile(traceFile, { registryPath: options.registry, thresholdsPath: options.thresholds });
     writeReport(report, parseFormat(options.format));
   });
 
@@ -53,9 +56,10 @@ program
   .argument("<path>", "Indexer, explorer, or subgraph config path")
   .option("--format <format>", "Output format: markdown or json", "markdown")
   .option("--registry <path>", "Path to Glamsterdam EIP registry JSON")
+  .option("--thresholds <path>", "Path to detector thresholds JSON", defaultThresholdsPath())
   .description("Analyze JSON/YAML indexer configuration with heuristic compatibility checks")
-  .action((path: string, options: { format: string; registry?: string }) => {
-    const report = scanIndexer(path, { registryPath: options.registry });
+  .action((path: string, options: { format: string; registry?: string; thresholds: string }) => {
+    const report = scanIndexer(path, { registryPath: options.registry, thresholdsPath: options.thresholds });
     writeReport(report, parseFormat(options.format));
   });
 
@@ -65,10 +69,12 @@ program
   .option("--client-matrix <path>", "Client compatibility matrix JSON", defaultClientMatrixPath())
   .option("--format <format>", "Output format: markdown or json", "markdown")
   .option("--registry <path>", "Path to Glamsterdam EIP registry JSON")
+  .option("--thresholds <path>", "Path to detector thresholds JSON", defaultThresholdsPath())
   .description("Analyze validator/operator readiness from local config and user-editable compatibility data")
-  .action((options: { config: string; clientMatrix: string; format: string; registry?: string }) => {
+  .action((options: { config: string; clientMatrix: string; format: string; registry?: string; thresholds: string }) => {
     const report = scanValidatorConfig(options.config, {
       registryPath: options.registry,
+      thresholdsPath: options.thresholds,
       clientMatrixPath: options.clientMatrix
     });
     writeReport(report, parseFormat(options.format));

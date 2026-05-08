@@ -1,10 +1,9 @@
 import { domains, makeFinding, relatedEipsForDetector, type DetectorContext } from "./types.js";
 import type { CompatibilityFinding } from "../reports/reportTypes.js";
 
-const currentRuntimeLimitBytes = 24_576;
-
 export function detectContractSize(byteLength: number, context: DetectorContext): CompatibilityFinding[] {
   const relatedEips = relatedEipsForDetector(context.registry, "contractSizeDetectors", ["EIP-7954"]);
+  const { currentRuntimeLimitBytes, nearCurrentLimitBytes } = context.thresholds.bytecode.contractSize;
 
   if (byteLength > currentRuntimeLimitBytes) {
     return [
@@ -24,7 +23,7 @@ export function detectContractSize(byteLength: number, context: DetectorContext)
     ];
   }
 
-  if (byteLength >= 20_000) {
+  if (byteLength >= nearCurrentLimitBytes) {
     return [
       makeFinding({
         id: "bytecode.contract-size-near-current-limit",

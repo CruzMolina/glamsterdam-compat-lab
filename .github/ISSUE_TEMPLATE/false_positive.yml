@@ -1,0 +1,44 @@
+name: False positive or false negative
+description: Report scanner output that is too noisy, missing, or misleading.
+title: "[signal]: "
+labels: ["signal-quality"]
+body:
+  - type: dropdown
+    id: scanner
+    attributes:
+      label: Scanner
+      options:
+        - scan-bytecode
+        - scan-traces
+        - scan-indexer
+        - scan-validator
+        - report
+        - eips
+    validations:
+      required: true
+  - type: textarea
+    id: input
+    attributes:
+      label: Input or fixture
+      description: Provide a minimal input, fixture path, or anonymized reproduction.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual output
+      description: Paste the relevant finding or report excerpt.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should the scanner have said instead?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Include client/tool versions, trace format, or indexer framework details if relevant.

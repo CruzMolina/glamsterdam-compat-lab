@@ -1,0 +1,35 @@
+name: Detector request
+description: Propose a new deterministic compatibility detector.
+title: "[detector]: "
+labels: ["detector", "enhancement"]
+body:
+  - type: textarea
+    id: risk
+    attributes:
+      label: Compatibility risk
+      description: What risk should the detector help users review?
+      placeholder: "Example: indexers that only ingest event handlers may miss native transfer assumptions."
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence available in inputs
+      description: What bytecode, trace, config, or registry evidence can the detector use deterministically?
+    validations:
+      required: true
+  - type: input
+    id: related_eips
+    attributes:
+      label: Related EIPs or registry entries
+      placeholder: "EIP-7928, EIP-7732, GAS-REPRICING"
+  - type: textarea
+    id: fixtures
+    attributes:
+      label: Suggested fixtures
+      description: Share synthetic or real-world-style fixtures that should trigger the detector.
+  - type: textarea
+    id: wording
+    attributes:
+      label: Report wording guidance
+      description: Any wording that keeps the finding useful without overclaiming.

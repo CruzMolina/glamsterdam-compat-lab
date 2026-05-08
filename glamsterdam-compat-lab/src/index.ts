@@ -5,6 +5,8 @@ export { scanBytecode } from "./scanners/bytecodeScanner.js";
 export { scanTrace, scanTraceFile, normalizeTrace } from "./scanners/traceScanner.js";
 export { scanIndexer, summarizeHandlers } from "./scanners/indexerScanner.js";
 export { scanValidatorConfig, defaultClientMatrixPath } from "./scanners/validatorScanner.js";
+export { loadDetectorThresholds, defaultThresholdsPath, detectorThresholdsSchema } from "./detectors/thresholds.js";
+export type { DetectorThresholds } from "./detectors/thresholds.js";
 
 export {
   compatibilityReportSchema,

@@ -1,6 +1,7 @@
 import { detectTraceGasRepricingExposure } from "../detectors/gasRepricingDetectors.js";
 import { detectTraceStateCreation } from "../detectors/stateCreationDetectors.js";
 import { domains, makeFinding } from "../detectors/types.js";
+import { loadDetectorThresholds, type DetectorThresholds } from "../detectors/thresholds.js";
 import { loadEipRegistry } from "../registry/eipRegistry.js";
 import type { EipRegistry } from "../registry/schemas.js";
 import { makeReport, type CompatibilityFinding, type CompatibilityReport } from "../reports/reportTypes.js";
@@ -18,6 +19,8 @@ export interface NormalizedTraceStep {
 export interface TraceScanOptions {
   registry?: EipRegistry;
   registryPath?: string;
+  thresholds?: DetectorThresholds;
+  thresholdsPath?: string;
   targetName?: string;
 }
 
@@ -31,6 +34,7 @@ export function scanTraceFile(traceFile: string, options: TraceScanOptions = {})
 
 export function scanTrace(input: unknown, options: TraceScanOptions = {}): CompatibilityReport {
   const registry = options.registry ?? loadEipRegistry(options.registryPath);
+  const thresholds = options.thresholds ?? loadDetectorThresholds(options.thresholdsPath);
   const normalized = normalizeTrace(input);
   const opcodeCounts = countOps(normalized.steps);
   const calldataBytes = normalized.steps.reduce((total, step) => total + (step.calldataBytes ?? 0), 0);
@@ -45,6 +49,7 @@ export function scanTrace(input: unknown, options: TraceScanOptions = {}): Compa
   );
   const context = {
     registry,
+    thresholds,
     targetName: options.targetName ?? "trace"
   };
 
@@ -63,8 +68,9 @@ export function scanTrace(input: unknown, options: TraceScanOptions = {}): Compa
     },
     findings,
     assumptions: [
-      "Trace input was normalized from an array of steps, a structLogs object, this project's normalized format, or a call-tracer-like calls tree.",
-      `The loaded registry is dated ${registry.lastUpdated}. Glamsterdam scope and gas parameters may change.`
+      "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
+      `The loaded registry is dated ${registry.lastUpdated}. Glamsterdam scope and gas parameters may change.`,
+      `Detector thresholds are dated ${thresholds.lastUpdated} and are MVP heuristics, not protocol gas parameters.`
     ],
     limitations: [
       "Trace coverage is only as good as the transaction samples provided.",
@@ -85,6 +91,14 @@ export function normalizeTrace(input: unknown): { steps: NormalizedTraceStep[]; 
     return {
       steps: [],
       warnings: ["Trace input is not an object or array."]
+    };
+  }
+
+  if (isRecord(input.result)) {
+    const normalized = normalizeTrace(input.result);
+    return {
+      steps: normalized.steps,
+      warnings: ["Unwrapped JSON-RPC result object.", ...normalized.warnings]
     };
   }
 
@@ -156,7 +170,7 @@ function detectTraceIncompleteness(normalized: { steps: NormalizedTraceStep[]; w
           "The scanner could not normalize execution steps from this trace input, so it cannot infer opcode-level compatibility risks.",
         evidence: normalized.warnings,
         recommendation:
-          "Provide a trace with a `steps`, `structLogs`, `trace`, or call-tracer-like `calls` shape."
+          "Provide a trace with a `steps`, `structLogs`, `trace`, JSON-RPC `result`, action trace array, or call-tracer-like `calls` shape."
       })
     );
   } else if (!hasCalldataEvidence || !hasGasCostEvidence) {
@@ -192,17 +206,19 @@ function stepFromUnknown(value: unknown): NormalizedTraceStep | undefined {
     return undefined;
   }
 
-  const opRaw = value.op ?? value.opcode ?? value.type ?? value.actionType;
+  const action = isRecord(value.action) ? value.action : undefined;
+  const opRaw = value.op ?? value.opcode ?? action?.callType ?? value.type ?? value.actionType;
   if (typeof opRaw !== "string") {
     return undefined;
   }
 
+  const input = value.input ?? action?.input ?? action?.init;
   return {
-    op: opRaw.toUpperCase(),
-    depth: numberValue(value.depth),
+    op: normalizeTraceOp(opRaw),
+    depth: numberValue(value.depth) ?? depthFromTraceAddress(value.traceAddress),
     gas: numberValue(value.gas),
     gasCost: numberValue(value.gasCost ?? value.cost),
-    calldataBytes: numberValue(value.calldataBytes ?? value.inputBytes ?? byteLengthFromHex(value.input)),
+    calldataBytes: numberValue(value.calldataBytes ?? value.inputBytes ?? byteLengthFromHex(input)),
     logs: Array.isArray(value.logs) ? value.logs.length : numberValue(value.logs)
   };
 }
@@ -240,6 +256,28 @@ function numberValue(value: unknown): number | undefined {
     return Number(value);
   }
   return undefined;
+}
+
+function normalizeTraceOp(opRaw: string): string {
+  const op = opRaw.toUpperCase();
+
+  if (op === "CALL" || op === "CALLCODE" || op === "DELEGATECALL" || op === "STATICCALL") {
+    return op;
+  }
+
+  if (op === "CREATE" || op === "CREATE2") {
+    return op;
+  }
+
+  if (op === "SUICIDE") {
+    return "SELFDESTRUCT";
+  }
+
+  return op;
+}
+
+function depthFromTraceAddress(value: unknown): number | undefined {
+  return Array.isArray(value) ? value.length + 1 : undefined;
 }
 
 function byteLengthFromHex(value: unknown): number | undefined {

@@ -43,6 +43,8 @@ pnpm glamsterdam scan-validator --config fixtures/validator/operator-config.yaml
 pnpm glamsterdam report report-a.json report-b.json --format markdown
 ```
 
+Each scanner accepts `--registry <path>` and `--thresholds <path>` so EIP metadata and detector thresholds can be updated without editing detector code.
+
 ## What the scanners can detect
 
 `scan-bytecode` normalizes EVM bytecode, disassembles opcodes while skipping PUSH data, counts relevant opcodes, and reports conservative risks around contract size, storage/account access, CREATE/CREATE2 usage, calldata copying, logs, and manual-review limits.
@@ -59,7 +61,7 @@ pnpm glamsterdam report report-a.json report-b.json --format markdown
 }
 ```
 
-It also accepts common `debug_traceTransaction`-style objects with `structLogs`, simple arrays of steps, and call-tracer-like trees with `calls`.
+It also accepts common `debug_traceTransaction`-style objects with `structLogs`, JSON-RPC result wrappers, simple arrays of steps, Erigon/parity-style action traces, and call-tracer-like trees with `calls`.
 
 `scan-indexer` parses JSON and YAML, including `subgraph.yaml`-style configs. It flags event-only indexing assumptions, missing fork/EIP compatibility metadata, missing replay or testnet plans, missing BAL review metadata, and native ETH transfer log readiness as heuristic findings.
 
@@ -110,6 +112,20 @@ Edit `data/eips/glamsterdam.json`.
 
 Each entry includes an ID, name, status, domain, detector modules, and notes. Keep uncertain protocol details in the registry notes and external data files. Detector code should not invent exact gas deltas or final fork behavior.
 
+## Updating detector thresholds
+
+Edit `data/detectors/thresholds.json`.
+
+Thresholds are conservative scanner heuristics, not protocol parameters. When changing thresholds, add or update fixtures and run:
+
+```sh
+pnpm test:update
+pnpm test
+pnpm build
+```
+
+The golden report snapshots in `test/__snapshots__` are intentional review artifacts. Update them when report wording or JSON structure changes on purpose.
+
 ## Adding detectors
 
 1. Add or update registry entries in `data/eips/glamsterdam.json`.
@@ -118,6 +134,10 @@ Each entry includes an ID, name, status, domain, detector modules, and notes. Ke
 4. Add a fixture that demonstrates the evidence.
 5. Add a Vitest test.
 6. Keep report language practical and humble.
+
+## CI and issue triage
+
+The GitHub Actions workflow runs install, tests, and build from the package directory. Issue templates are included for detector requests, registry updates, and false-positive/false-negative reports.
 
 ## Roadmap
 

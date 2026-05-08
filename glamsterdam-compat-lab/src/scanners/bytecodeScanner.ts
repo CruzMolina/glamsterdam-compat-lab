@@ -2,6 +2,7 @@ import { detectContractSize } from "../detectors/contractSizeDetectors.js";
 import { detectBytecodeGasRepricingExposure } from "../detectors/gasRepricingDetectors.js";
 import { detectBytecodeStateCreation } from "../detectors/stateCreationDetectors.js";
 import { domains, makeFinding } from "../detectors/types.js";
+import { loadDetectorThresholds, type DetectorThresholds } from "../detectors/thresholds.js";
 import { loadEipRegistry } from "../registry/eipRegistry.js";
 import type { EipRegistry } from "../registry/schemas.js";
 import { makeReport, type CompatibilityFinding, type CompatibilityReport } from "../reports/reportTypes.js";
@@ -11,11 +12,14 @@ import { readPathOrValue } from "../utils/files.js";
 export interface BytecodeScanOptions {
   registry?: EipRegistry;
   registryPath?: string;
+  thresholds?: DetectorThresholds;
+  thresholdsPath?: string;
   targetName?: string;
 }
 
 export function scanBytecode(pathOrHex: string, options: BytecodeScanOptions = {}): CompatibilityReport {
   const registry = options.registry ?? loadEipRegistry(options.registryPath);
+  const thresholds = options.thresholds ?? loadDetectorThresholds(options.thresholdsPath);
   const source = readPathOrValue(pathOrHex);
   const normalized = normalizeBytecode(source.text);
   const opcodes = disassembleBytecode(normalized);
@@ -23,6 +27,7 @@ export function scanBytecode(pathOrHex: string, options: BytecodeScanOptions = {
   const sizeBytes = byteLength(normalized);
   const context = {
     registry,
+    thresholds,
     targetName: options.targetName ?? source.name
   };
 
@@ -30,7 +35,7 @@ export function scanBytecode(pathOrHex: string, options: BytecodeScanOptions = {
     ...detectContractSize(sizeBytes, context),
     ...detectBytecodeGasRepricingExposure(opcodeCounts, context),
     ...detectBytecodeStateCreation(opcodeCounts, context),
-    ...detectStoragePattern(opcodeCounts),
+    ...detectStoragePattern(opcodeCounts, thresholds),
     ...detectLogPattern(opcodeCounts),
     makeManualReviewFinding(sizeBytes, opcodeCounts)
   ];
@@ -44,7 +49,8 @@ export function scanBytecode(pathOrHex: string, options: BytecodeScanOptions = {
     findings,
     assumptions: [
       "Input was interpreted as EVM bytecode after removing whitespace and an optional 0x prefix.",
-      `The loaded registry is dated ${registry.lastUpdated}. Glamsterdam scope and gas parameters may change.`
+      `The loaded registry is dated ${registry.lastUpdated}. Glamsterdam scope and gas parameters may change.`,
+      `Detector thresholds are dated ${thresholds.lastUpdated} and are MVP heuristics, not protocol gas parameters.`
     ],
     limitations: [
       "Static bytecode scanning cannot determine which branches are executed in production.",
@@ -54,10 +60,13 @@ export function scanBytecode(pathOrHex: string, options: BytecodeScanOptions = {
   });
 }
 
-function detectStoragePattern(opcodeCounts: Record<string, number>): CompatibilityFinding[] {
+function detectStoragePattern(
+  opcodeCounts: Record<string, number>,
+  thresholds: DetectorThresholds
+): CompatibilityFinding[] {
   const storageOps = opcodeCount(opcodeCounts, ["SLOAD", "SSTORE"]);
 
-  if (storageOps >= 8) {
+  if (storageOps >= thresholds.bytecode.storagePattern.mediumStorageOpcodeCount) {
     return [
       makeFinding({
         id: "bytecode.storage-heavy-pattern",

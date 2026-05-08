@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "lastUpdated": "2026-05-08",
+  "notes": [
+    "Thresholds are conservative MVP heuristics, not protocol gas parameters.",
+    "Tune these values with fixture evidence and keep detector code free of final-fork assumptions."
+  ],
+  "bytecode": {
+    "contractSize": {
+      "currentRuntimeLimitBytes": 24576,
+      "nearCurrentLimitBytes": 20000
+    },
+    "stateAccountOpcodeExposure": {
+      "mediumSensitiveOpcodeCount": 8,
+      "lowSensitiveOpcodeCount": 3
+    },
+    "storagePattern": {
+      "mediumStorageOpcodeCount": 8
+    }
+  },
+  "trace": {
+    "stateHeavyExecution": {
+      "highStorageOps": 40,
+      "highSensitiveOpcodeCount": 80,
+      "mediumStorageOps": 10,
+      "mediumSensitiveOpcodeCount": 20
+    },
+    "calldataHeavy": {
+      "mediumCalldataBytes": 4096
+    }
+  }
+}

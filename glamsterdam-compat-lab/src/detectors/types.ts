@@ -1,5 +1,6 @@
 import type { EipRegistry } from "../registry/schemas.js";
 import type { CompatibilityFinding, ReportDomain } from "../reports/reportTypes.js";
+import type { DetectorThresholds } from "./thresholds.js";
 
 export type FindingInput = Omit<CompatibilityFinding, "relatedEips" | "evidence"> & {
   relatedEips?: string[];
@@ -9,6 +10,7 @@ export type FindingInput = Omit<CompatibilityFinding, "relatedEips" | "evidence"
 export interface DetectorContext {
   registry: EipRegistry;
   targetName: string;
+  thresholds: DetectorThresholds;
 }
 
 export function relatedEipsForDetector(

@@ -1,0 +1,16 @@
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "gas": 210000,
+    "failed": false,
+    "returnValue": "0x",
+    "structLogs": [
+      { "pc": 0, "op": "PUSH1", "depth": 1, "gas": 200000, "gasCost": 3 },
+      { "pc": 2, "op": "SLOAD", "depth": 1, "gas": 199997, "gasCost": 100 },
+      { "pc": 3, "op": "SSTORE", "depth": 1, "gas": 199897, "gasCost": 2900 },
+      { "pc": 4, "op": "CALLDATACOPY", "depth": 1, "gas": 196997, "gasCost": 6, "calldataBytes": 512 },
+      { "pc": 5, "op": "LOG2", "depth": 1, "gas": 196991, "gasCost": 750 }
+    ]
+  }
+}

@@ -5,6 +5,14 @@
   "type": "module",
   "license": "MIT",
   "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CruzMolina/glamsterdam-compat-lab.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/issues"
+  },
+  "homepage": "https://github.com/CruzMolina/glamsterdam-compat-lab#readme",
   "bin": {
     "glamsterdam": "dist/cli.js"
   },

@@ -10,9 +10,6 @@ jobs:
   test:
     name: Test and build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: glamsterdam-compat-lab
 
     steps:
       - name: Check out repository
@@ -28,7 +25,7 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
-          cache-dependency-path: glamsterdam-compat-lab/pnpm-lock.yaml
+          cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

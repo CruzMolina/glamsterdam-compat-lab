@@ -26,6 +26,8 @@ Start with `dry_run=true`. For a real publish, prefer npm Trusted Publishing: co
 
 The workflow checks out the requested semver tag, verifies that `package.json` matches the tag, installs dependencies, runs tests, builds, and then runs `npm publish --provenance`.
 
+See `docs/release.md` for the full release checklist and npm troubleshooting notes.
+
 ## Detector guidelines
 
 - Use conservative language. Prefer "review" or "replay representative transactions" over claims that something will break.

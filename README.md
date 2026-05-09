@@ -166,6 +166,8 @@ Real-world and real-world-shaped fixtures are welcome when they are safe to publ
 
 The GitHub Actions workflow runs install, tests, build, and an npm publish dry run from the package directory. Issue templates are included for detector requests, fixture contributions, registry updates, and false-positive/false-negative reports.
 
+Release publishing notes live in [docs/release.md](docs/release.md).
+
 ## Roadmap
 
 See [ROADMAP.md](ROADMAP.md) for planned phases. Phase 0 is released as `v0.1.0`; `v0.2.0` starts Phase 1 with RPC transaction trace ingestion and broader trace fixture coverage.

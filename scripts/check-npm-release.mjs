@@ -77,8 +77,13 @@ function statusIcon(pass) {
   return pass ? "ok" : "missing";
 }
 
+function hasEnvToken(name) {
+  return Boolean(process.env[name]?.trim());
+}
+
 function printTokenSecretCommand() {
-  console.log('   test -n "${NPM_TOKEN:-}" || { echo "Set NPM_TOKEN first"; exit 1; }');
+  console.log('   NPM_TOKEN="${NPM_TOKEN:-${NODE_AUTH_TOKEN:-}}"');
+  console.log('   test -n "${NPM_TOKEN:-}" || { echo "Set NPM_TOKEN or NODE_AUTH_TOKEN first"; exit 1; }');
   console.log(`   gh secret set NPM_TOKEN --repo ${repo} --env ${environment} --body "$NPM_TOKEN"`);
 }
 
@@ -86,7 +91,9 @@ const published = npmViewVersion();
 const whoami = npmWhoami();
 const repoSecrets = ghSecrets([]);
 const envSecrets = ghSecrets(["--env", environment]);
-const localToken = Boolean(process.env.NPM_TOKEN?.trim());
+const localNpmToken = hasEnvToken("NPM_TOKEN");
+const localNodeAuthToken = hasEnvToken("NODE_AUTH_TOKEN");
+const localToken = localNpmToken || localNodeAuthToken;
 const isExpectedVersion = published.ok && published.version === expectedVersion;
 const isPackageVisible = published.ok && published.version !== null;
 const hasTokenSecret = repoSecrets.hasToken || envSecrets.hasToken;
@@ -101,7 +108,8 @@ console.log(`${statusIcon(whoami.ok)} local npm session: ${whoami.user ?? "not l
 if (whoami.detail) {
   console.log(`   ${whoami.detail}`);
 }
-console.log(`${statusIcon(localToken)} local NPM_TOKEN env: ${localToken ? "present" : "absent"}`);
+console.log(`${statusIcon(localNpmToken)} local NPM_TOKEN env: ${localNpmToken ? "present" : "absent"}`);
+console.log(`${statusIcon(localNodeAuthToken)} local NODE_AUTH_TOKEN env: ${localNodeAuthToken ? "present" : "absent"}`);
 console.log(`${statusIcon(repoSecrets.hasToken)} repo NPM_TOKEN secret: ${repoSecrets.hasToken ? "present" : "absent"}`);
 if (repoSecrets.detail) {
   console.log(`   ${repoSecrets.detail}`);

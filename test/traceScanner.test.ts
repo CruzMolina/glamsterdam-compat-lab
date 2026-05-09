@@ -44,6 +44,39 @@ describe("normalizeTrace", () => {
     expect(normalized.steps[0]?.depth).toBe(2);
     expect(normalized.steps[0]?.calldataBytes).toBe(3);
   });
+
+  it("normalizes Foundry-style nested trace arrays", () => {
+    const normalized = normalizeTrace({
+      traces: [
+        {
+          kind: "CALL",
+          calldata: "0x12345678",
+          children: [
+            { kind: "SLOAD", gasCost: 100 },
+            { kind: "CREATE2", calldata: "0x6000" }
+          ]
+        }
+      ]
+    });
+
+    expect(normalized.steps.map((step) => step.op)).toEqual(["CALL", "SLOAD", "CREATE2"]);
+    expect(normalized.steps[0]?.calldataBytes).toBe(4);
+  });
+
+  it("normalizes Hardhat-style opcode name fields", () => {
+    const normalized = normalizeTrace({
+      trace: {
+        steps: [
+          { opcode: { name: "SLOAD" }, gasCost: 100 },
+          { opName: "SSTORE", gasCost: 2900 },
+          { instruction: "LOG1", gasCost: 375 }
+        ]
+      }
+    });
+
+    expect(normalized.steps.map((step) => step.op)).toEqual(["SLOAD", "SSTORE", "LOG1"]);
+    expect(normalized.warnings).toContain("Unwrapped nested trace object.");
+  });
 });
 
 describe("scanTraceFile", () => {
@@ -77,6 +110,22 @@ describe("scanTraceFile", () => {
     const report = scanTraceFile(fixture);
 
     expect(report.findings.some((finding) => finding.id === "trace.contract-creation-executed")).toBe(true);
+    expect(report.findings.some((finding) => finding.id === "trace.logs-calls-visible")).toBe(true);
+  });
+
+  it("scans Foundry-style trace fixtures", () => {
+    const fixture = resolve(rootDir, "fixtures/traces/foundry-json-trace.json");
+    const report = scanTraceFile(fixture);
+
+    expect(report.findings.some((finding) => finding.id === "trace.contract-creation-executed")).toBe(true);
+    expect(report.findings.some((finding) => finding.id === "trace.logs-calls-visible")).toBe(true);
+  });
+
+  it("scans Hardhat-style trace fixtures", () => {
+    const fixture = resolve(rootDir, "fixtures/traces/hardhat-debug-trace.json");
+    const report = scanTraceFile(fixture);
+
+    expect(report.findings.some((finding) => finding.id === "trace.calldata-heavy-execution")).toBe(true);
     expect(report.findings.some((finding) => finding.id === "trace.logs-calls-visible")).toBe(true);
   });
 });

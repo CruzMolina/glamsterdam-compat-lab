@@ -259,6 +259,7 @@ exports[`golden report snapshots > keeps trace JSON report structure stable 1`] 
   ],
   "limitations": [
     "Trace coverage is only as good as the transaction samples provided.",
+    "Foundry and Hardhat can emit multiple trace shapes depending on command, plugin, and verbosity; this scanner supports representative JSON-like exports, not every console rendering.",
     "Some trace formats omit calldata sizes, storage keys, gas costs, logs, or call details.",
     "Findings are compatibility prompts and should be validated through replay or benchmarking."
   ]

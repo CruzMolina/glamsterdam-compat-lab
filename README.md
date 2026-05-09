@@ -61,7 +61,7 @@ Each scanner accepts `--registry <path>` and `--thresholds <path>` so EIP metada
 }
 ```
 
-It also accepts common `debug_traceTransaction`-style objects with `structLogs`, JSON-RPC result wrappers, simple arrays of steps, Erigon/parity-style action traces, and call-tracer-like trees with `calls`.
+It also accepts common `debug_traceTransaction`-style objects with `structLogs`, JSON-RPC result wrappers, simple arrays of steps, Foundry/Hardhat-style JSON trace exports, Erigon/parity-style action traces, and call-tracer-like trees with `calls` or `children`.
 
 `scan-indexer` parses JSON and YAML, including `subgraph.yaml`-style configs. It flags event-only indexing assumptions, missing fork/EIP compatibility metadata, missing replay or testnet plans, missing BAL review metadata, and native ETH transfer log readiness as heuristic findings.
 

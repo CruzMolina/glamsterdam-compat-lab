@@ -36,9 +36,9 @@ pnpm release:check-npm
 
 ## Preferred path: npm Trusted Publishing
 
-npm Trusted Publishing uses GitHub Actions OIDC instead of a long-lived npm token. The `Publish npm` workflow is configured for this path with a GitHub-hosted runner, Node 24, `id-token: write`, and `npm publish --provenance`.
+npm Trusted Publishing uses GitHub Actions OIDC instead of a long-lived npm token. The `Publish npm` workflow is configured for this path with a GitHub-hosted runner, Node 24, `id-token: write`, `actions/setup-node` registry setup for `https://registry.npmjs.org`, and `npm publish --provenance`.
 
-The default OIDC path does not create token-based npm auth config. If `NPM_TOKEN` is present, the workflow writes a temporary `.npmrc` only for that token fallback.
+The default OIDC path does not require an npm token secret. If `NPM_TOKEN` is present, the workflow writes a temporary `.npmrc` only for that token fallback.
 
 Configure npm with:
 

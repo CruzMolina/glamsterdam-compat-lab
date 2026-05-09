@@ -99,7 +99,7 @@ If the logs show `Signed provenance statement` followed by `npm error 404 Not Fo
 
 ## Fallback path: npm token
 
-Create an npm token with permission to publish `glamsterdam-compat-lab`, then add it as the `NPM_TOKEN` secret on the `npm-publish` environment or as a repository secret.
+Create a granular npm access token with read/write package permission for `glamsterdam-compat-lab` or all packages the npm owner can publish. If the npm account or package requires 2FA, enable the token's bypass-2FA option for non-interactive CI publishing. Then add the token as the `NPM_TOKEN` secret on the `npm-publish` environment or as a repository secret.
 
 If the token is available in your shell as `NPM_TOKEN` or `NODE_AUTH_TOKEN`, set the environment secret without printing the token value:
 

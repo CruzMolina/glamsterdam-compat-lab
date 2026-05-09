@@ -2,10 +2,12 @@
 
 import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
+import { parse as parseYaml } from "yaml";
 
 const registry = "https://registry.npmjs.org/";
 const repo = "CruzMolina/glamsterdam-compat-lab";
 const environment = "npm-publish";
+const workflowFile = ".github/workflows/npm-publish.yml";
 const packageJson = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
 const packageName = packageJson.name;
 const expectedVersion = packageJson.version;
@@ -81,6 +83,50 @@ function hasEnvToken(name) {
   return Boolean(process.env[name]?.trim());
 }
 
+function checkWorkflowShape() {
+  let workflow;
+  try {
+    workflow = parseYaml(readFileSync(new URL(`../${workflowFile}`, import.meta.url), "utf8"));
+  } catch (error) {
+    return {
+      ok: false,
+      detail: `failed to read ${workflowFile}: ${error instanceof Error ? error.message : String(error)}`
+    };
+  }
+
+  const publishJob = workflow?.jobs?.publish;
+  const setupNodeStep = publishJob?.steps?.find((step) => String(step?.uses ?? "").startsWith("actions/setup-node@"));
+  const publishStep = publishJob?.steps?.find((step) => step?.name === "Publish");
+  const dryRunStep = publishJob?.steps?.find((step) => step?.name === "Dry-run publish");
+  const publishRun = String(publishStep?.run ?? "");
+  const dryRun = String(dryRunStep?.run ?? "");
+  const problems = [];
+
+  if (workflow?.permissions?.["id-token"] !== "write") {
+    problems.push("missing top-level permissions.id-token: write");
+  }
+  if (publishJob?.environment !== environment) {
+    problems.push(`publish job environment is not ${environment}`);
+  }
+  if (setupNodeStep?.with?.["registry-url"] !== registry.replace(/\/$/, "")) {
+    problems.push(`setup-node registry-url is not ${registry.replace(/\/$/, "")}`);
+  }
+  if (!publishRun.includes("npm publish") || !publishRun.includes("--provenance")) {
+    problems.push("Publish step does not run npm publish --provenance");
+  }
+  if (!dryRun.includes("npm publish") || !dryRun.includes("--dry-run")) {
+    problems.push("Dry-run publish step does not run npm publish --dry-run");
+  }
+  if (publishRun.includes("unset NPM_CONFIG_USERCONFIG") || dryRun.includes("unset NPM_CONFIG_USERCONFIG")) {
+    problems.push("tokenless path unsets setup-node npm userconfig");
+  }
+
+  return {
+    ok: problems.length === 0,
+    detail: problems.join("; ")
+  };
+}
+
 function printTokenSecretCommand() {
   console.log('   NPM_TOKEN="${NPM_TOKEN:-${NODE_AUTH_TOKEN:-}}"');
   console.log('   test -n "${NPM_TOKEN:-}" || { echo "Set NPM_TOKEN or NODE_AUTH_TOKEN first"; exit 1; }');
@@ -94,6 +140,7 @@ const envSecrets = ghSecrets(["--env", environment]);
 const localNpmToken = hasEnvToken("NPM_TOKEN");
 const localNodeAuthToken = hasEnvToken("NODE_AUTH_TOKEN");
 const localToken = localNpmToken || localNodeAuthToken;
+const workflowShape = checkWorkflowShape();
 const isExpectedVersion = published.ok && published.version === expectedVersion;
 const isPackageVisible = published.ok && published.version !== null;
 const hasTokenSecret = repoSecrets.hasToken || envSecrets.hasToken;
@@ -118,6 +165,10 @@ console.log(`${statusIcon(envSecrets.hasToken)} ${environment} NPM_TOKEN secret:
 if (envSecrets.detail) {
   console.log(`   ${envSecrets.detail}`);
 }
+console.log(`${statusIcon(workflowShape.ok)} publish workflow OIDC shape: ${workflowShape.ok ? "ready" : "needs attention"}`);
+if (workflowShape.detail) {
+  console.log(`   ${workflowShape.detail}`);
+}
 console.log("");
 
 if (isExpectedVersion) {
@@ -128,6 +179,13 @@ if (isExpectedVersion) {
 console.log("Release is not complete yet.");
 console.log("");
 console.log("Next options:");
+if (!workflowShape.ok) {
+  console.log(`1. Fix ${workflowFile}:`);
+  console.log("   ensure id-token: write, setup-node registry-url, npm publish --provenance, and preserved setup-node userconfig");
+  console.log("2. Then rerun:");
+  console.log("   pnpm release:check-npm");
+  process.exit(1);
+}
 if (isPackageVisible) {
   console.log(`1. Configure npm Trusted Publishing for ${packageName}:`);
   console.log(`   npx --yes npm@11.14.0 trust github ${packageName} --repo ${repo} --file npm-publish.yml --env ${environment}`);

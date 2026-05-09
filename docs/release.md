@@ -25,6 +25,12 @@ Confirm the package is not already published at the target version:
 npm view glamsterdam-compat-lab version --json
 ```
 
+You can also run the release readiness helper, which checks the npm registry, local npm login state, and GitHub `NPM_TOKEN` secret presence:
+
+```sh
+pnpm release:check-npm
+```
+
 ## Preferred path: npm Trusted Publishing
 
 npm Trusted Publishing uses GitHub Actions OIDC instead of a long-lived npm token. The `Publish npm` workflow is configured for this path with a GitHub-hosted runner, Node 24, `id-token: write`, and `npm publish --provenance`.

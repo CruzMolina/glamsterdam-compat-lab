@@ -36,7 +36,7 @@ Configure npm with:
 - Repository: `glamsterdam-compat-lab`
 - Workflow file: `npm-publish.yml`
 
-The workflow uses the GitHub Environment `npm-publish`. If you require manual approval or environment-scoped secrets for publishing, configure them on that environment.
+The workflow uses the GitHub Environment `npm-publish`, which is restricted to protected branches. If you require manual approval or environment-scoped secrets for publishing, configure them on that environment.
 
 Then run the workflow from `main`:
 

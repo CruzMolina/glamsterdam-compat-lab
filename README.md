@@ -141,37 +141,7 @@ The GitHub Actions workflow runs install, tests, and build from the package dire
 
 ## Roadmap
 
-Phase 0: MVP CLI
-
-- bytecode, trace, indexer, and validator scanners
-- EIP registry
-- Markdown and JSON reports
-- fixtures and tests
-
-Phase 1: Trace replay support
-
-- support Foundry and Hardhat trace formats
-- optional RPC-based transaction trace fetching
-- compare baseline vs Glamsterdam config when available
-
-Phase 2: Public dataset
-
-- scan popular contracts
-- publish reproducible findings
-- generate aggregate risk stats
-- add notebook/export support
-
-Phase 3: Devnet integration
-
-- ingest public devnet and client compatibility metadata
-- track spec and client changes
-- show latest known compatibility matrix
-
-Phase 4: Dashboard
-
-- static generated site
-- searchable reports
-- machine-readable exports
+See [ROADMAP.md](ROADMAP.md) for planned phases. Phase 0 is released as `v0.1.0`; Phase 1 starts with broader trace support and replay-oriented fixtures.
 
 ## Disclaimer
 

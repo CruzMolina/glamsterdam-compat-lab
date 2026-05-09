@@ -46,6 +46,7 @@
     "glamsterdam": "tsx src/cli.ts",
     "pack:dry-run": "npm publish --dry-run",
     "prepublishOnly": "pnpm test && pnpm build",
+    "release:check-npm": "node scripts/check-npm-release.mjs",
     "test": "vitest run",
     "test:integration": "vitest run --config vitest.integration.config.ts",
     "test:update": "vitest run -u",

@@ -128,6 +128,8 @@ function checkWorkflowShape() {
 }
 
 function printTokenSecretCommand() {
+  console.log("   Create a granular npm access token with read/write package permission.");
+  console.log("   Enable bypass 2FA on the token if npm requires 2FA for non-interactive publishing.");
   console.log('   NPM_TOKEN="${NPM_TOKEN:-${NODE_AUTH_TOKEN:-}}"');
   console.log('   test -n "${NPM_TOKEN:-}" || { echo "Set NPM_TOKEN or NODE_AUTH_TOKEN first"; exit 1; }');
   console.log(`   gh secret set NPM_TOKEN --repo ${repo} --env ${environment} --body "$NPM_TOKEN"`);

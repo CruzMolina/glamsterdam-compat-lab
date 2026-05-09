@@ -10,10 +10,11 @@ import {
   renderMarkdownReport,
   scanBytecode,
   scanIndexer,
-  scanTransactionTrace,
   scanTraceFile,
   scanValidatorConfig,
   validateCompatibilityReport,
+  fetchAndScanTransactionTrace,
+  writeFetchedTrace,
   type CompatibilityReport
 } from "./index.js";
 import type { EipRegistry } from "./registry/schemas.js";
@@ -60,6 +61,7 @@ program
   .option("--tracer <mode>", "Trace mode: structLogs or callTracer", "structLogs")
   .option("--trace-timeout <duration>", "Execution client trace timeout hint", "30s")
   .option("--rpc-timeout-ms <ms>", "HTTP RPC timeout in milliseconds", "30000")
+  .option("--trace-out <path>", "Write the fetched JSON-RPC trace response to a file")
   .option("--format <format>", "Output format: markdown or json", "markdown")
   .option("--registry <path>", "Path to Glamsterdam EIP registry JSON")
   .option("--thresholds <path>", "Path to detector thresholds JSON", defaultThresholdsPath())
@@ -70,6 +72,7 @@ program
     tracer: string;
     traceTimeout: string;
     rpcTimeoutMs: string;
+    traceOut?: string;
     format: string;
     registry?: string;
     thresholds: string;
@@ -79,7 +82,7 @@ program
       throw new Error("Provide --rpc-url or set ETH_RPC_URL.");
     }
 
-    const report = await scanTransactionTrace({
+    const result = await fetchAndScanTransactionTrace({
       rpcUrl,
       txHash: options.tx,
       tracer: parseDebugTraceMode(options.tracer),
@@ -88,7 +91,10 @@ program
       registryPath: options.registry,
       thresholdsPath: options.thresholds
     });
-    writeReport(report, parseFormat(options.format));
+    if (options.traceOut) {
+      writeFetchedTrace(result.trace, options.traceOut);
+    }
+    writeReport(result.report, parseFormat(options.format));
   });
 
 program

@@ -25,7 +25,7 @@ Status: released as `v0.1.1`.
 
 ## Phase 1: Trace Replay Support
 
-Status: started in `v0.2.0`.
+Status: started in `v0.2.0`; trace capture support added in `v0.2.1`.
 
 Goal: make trace scanning useful for contract teams using common development tools.
 
@@ -34,8 +34,20 @@ Goal: make trace scanning useful for contract teams using common development too
 - Normalize common call, opcode, gas, input, explicit log, and log opcode fields
 - Keep golden report snapshots for representative trace formats
 - Add RPC-based `debug_traceTransaction` fetching with `scan-tx`
+- Add `scan-tx --trace-out` and gated real-RPC integration tests
 - Add default, research, and CI threshold profiles
 - Compare current baseline traces with Glamsterdam-aware client or fork configs when available
+
+## Phase 1.1: Baseline Comparison
+
+Target release: `v0.3.0`.
+
+Goal: compare compatibility reports across profiles and, later, across current-client and Glamsterdam-aware traces.
+
+- Compare one trace against multiple threshold profiles
+- Emit report deltas for findings added, removed, or changed in severity
+- Keep comparisons deterministic and JSON-friendly
+- Defer fork-specific gas deltas until they are present in explicit data files or client configs
 
 ## Phase 2: Public Dataset
 

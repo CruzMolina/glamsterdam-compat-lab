@@ -4,12 +4,21 @@ export type { EipEntry, EipRegistry, EipStatus, EipDomain } from "./registry/sch
 export { scanBytecode } from "./scanners/bytecodeScanner.js";
 export { scanTrace, scanTraceFile, normalizeTrace } from "./scanners/traceScanner.js";
 export {
+  fetchAndScanTransactionTrace,
   fetchDebugTraceTransaction,
   normalizeTxHash,
   parseDebugTraceMode,
+  scanFetchedTransactionTrace,
   scanTransactionTrace
 } from "./scanners/rpcTraceScanner.js";
-export type { DebugTraceMode, FetchDebugTraceOptions, RpcFetch, ScanTransactionTraceOptions } from "./scanners/rpcTraceScanner.js";
+export { writeFetchedTrace } from "./scanners/rpcTraceScanner.js";
+export type {
+  DebugTraceMode,
+  FetchDebugTraceOptions,
+  RpcFetch,
+  ScannedTransactionTrace,
+  ScanTransactionTraceOptions
+} from "./scanners/rpcTraceScanner.js";
 export { scanIndexer, summarizeHandlers } from "./scanners/indexerScanner.js";
 export { scanValidatorConfig, defaultClientMatrixPath } from "./scanners/validatorScanner.js";
 export { loadDetectorThresholds, defaultThresholdsPath, detectorThresholdsSchema } from "./detectors/thresholds.js";

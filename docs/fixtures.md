@@ -43,3 +43,16 @@ pnpm build
 ```
 
 Snapshots are part of the product. They protect report language from accidental drift.
+
+## Capturing RPC Traces
+
+Use `scan-tx --trace-out` when you have an execution RPC endpoint that supports `debug_traceTransaction`:
+
+```sh
+ETH_RPC_URL=https://your-execution-rpc.example \
+  pnpm glamsterdam scan-tx \
+  --tx 0x0000000000000000000000000000000000000000000000000000000000000000 \
+  --trace-out fixtures/traces/example-real-trace.json
+```
+
+Review the saved file before committing it. Remove credentials, internal hostnames, private transaction data, and anything that is not safe to publish.

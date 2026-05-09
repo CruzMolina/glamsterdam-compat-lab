@@ -36,6 +36,8 @@ Configure npm with:
 - Repository: `glamsterdam-compat-lab`
 - Workflow file: `npm-publish.yml`
 
+The workflow uses the GitHub Environment `npm-publish`. If you require manual approval or environment-scoped secrets for publishing, configure them on that environment.
+
 Then run the workflow from `main`:
 
 ```sh
@@ -60,7 +62,7 @@ If the real publish fails with `ENEEDAUTH`, verify the npm Trusted Publishing co
 
 ## Fallback path: npm token
 
-Create an npm token with permission to publish `glamsterdam-compat-lab`, then add it as the repository secret `NPM_TOKEN`.
+Create an npm token with permission to publish `glamsterdam-compat-lab`, then add it as the `NPM_TOKEN` secret on the `npm-publish` environment or as a repository secret.
 
 Rerun the same workflow:
 

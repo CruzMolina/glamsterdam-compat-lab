@@ -28,7 +28,7 @@ Confirm the package is not already published at the target version:
 npm view glamsterdam-compat-lab version --json
 ```
 
-You can also run the release readiness helper, which checks the npm registry, local npm login state, local `NPM_TOKEN` environment presence, and GitHub `NPM_TOKEN` secret presence:
+You can also run the release readiness helper, which checks the npm registry, local npm login state, local `NPM_TOKEN` or `NODE_AUTH_TOKEN` environment presence, and GitHub `NPM_TOKEN` secret presence:
 
 ```sh
 pnpm release:check-npm
@@ -101,10 +101,11 @@ If the logs show `Signed provenance statement` followed by `npm error 404 Not Fo
 
 Create an npm token with permission to publish `glamsterdam-compat-lab`, then add it as the `NPM_TOKEN` secret on the `npm-publish` environment or as a repository secret.
 
-If the token is available in your shell as `NPM_TOKEN`, set the environment secret without printing the token value:
+If the token is available in your shell as `NPM_TOKEN` or `NODE_AUTH_TOKEN`, set the environment secret without printing the token value:
 
 ```sh
-test -n "${NPM_TOKEN:-}" || { echo "Set NPM_TOKEN first"; exit 1; }
+NPM_TOKEN="${NPM_TOKEN:-${NODE_AUTH_TOKEN:-}}"
+test -n "${NPM_TOKEN:-}" || { echo "Set NPM_TOKEN or NODE_AUTH_TOKEN first"; exit 1; }
 gh secret set NPM_TOKEN --repo CruzMolina/glamsterdam-compat-lab --env npm-publish --body "$NPM_TOKEN"
 ```
 

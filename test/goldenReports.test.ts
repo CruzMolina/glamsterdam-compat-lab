@@ -24,4 +24,27 @@ describe("golden report snapshots", () => {
 
     expect(renderJsonReport(report)).toMatchSnapshot();
   });
+
+  it("keeps Foundry trace JSON report structure stable", () => {
+    expectTraceJsonSnapshot("foundry-json-trace.json");
+  });
+
+  it("keeps Hardhat trace JSON report structure stable", () => {
+    expectTraceJsonSnapshot("hardhat-debug-trace.json");
+  });
+
+  it("keeps geth structLogs JSON report structure stable", () => {
+    expectTraceJsonSnapshot("geth-json-rpc-structlogs.json");
+  });
+
+  it("keeps call-tracer tree JSON report structure stable", () => {
+    expectTraceJsonSnapshot("call-tracer-tree.json");
+  });
 });
+
+function expectTraceJsonSnapshot(fixtureName: string): void {
+  const targetName = `fixtures/traces/${fixtureName}`;
+  const report = scanTraceFile(resolve(rootDir, targetName), { targetName });
+
+  expect(renderJsonReport(report)).toMatchSnapshot();
+}

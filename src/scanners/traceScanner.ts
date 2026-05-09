@@ -38,6 +38,7 @@ export function scanTrace(input: unknown, options: TraceScanOptions = {}): Compa
   const normalized = normalizeTrace(input);
   const opcodeCounts = countOps(normalized.steps);
   const calldataBytes = normalized.steps.reduce((total, step) => total + (step.calldataBytes ?? 0), 0);
+  const explicitLogEntries = normalized.steps.reduce((total, step) => total + (step.logs ?? 0), 0);
   const maxDepth = normalized.steps.reduce((max, step) => Math.max(max, step.depth ?? 0), 0);
   const logOps = ["LOG0", "LOG1", "LOG2", "LOG3", "LOG4"].reduce(
     (total, op) => total + (opcodeCounts[op] ?? 0),
@@ -56,7 +57,7 @@ export function scanTrace(input: unknown, options: TraceScanOptions = {}): Compa
   const findings: CompatibilityFinding[] = [
     ...detectTraceGasRepricingExposure(opcodeCounts, calldataBytes, context),
     ...detectTraceStateCreation(opcodeCounts, context),
-    ...detectTraceLogAndCallPattern(logOps, callOps, maxDepth),
+    ...detectTraceLogAndCallPattern(logOps, explicitLogEntries, callOps, maxDepth),
     ...detectTraceIncompleteness(normalized)
   ];
 
@@ -146,10 +147,15 @@ export function normalizeTrace(input: unknown): { steps: NormalizedTraceStep[]; 
   };
 }
 
-function detectTraceLogAndCallPattern(logOps: number, callOps: number, maxDepth: number): CompatibilityFinding[] {
+function detectTraceLogAndCallPattern(
+  logOps: number,
+  explicitLogEntries: number,
+  callOps: number,
+  maxDepth: number
+): CompatibilityFinding[] {
   const findings: CompatibilityFinding[] = [];
 
-  if (logOps > 0 || callOps > 0) {
+  if (logOps > 0 || explicitLogEntries > 0 || callOps > 0) {
     findings.push(
       makeFinding({
         id: "trace.logs-calls-visible",
@@ -160,7 +166,7 @@ function detectTraceLogAndCallPattern(logOps: number, callOps: number, maxDepth:
         relatedEips: ["EIP-7708", "EIP-7928"],
         description:
           "The trace includes log or call activity that may be relevant to indexer, explorer, and monitoring assumptions under Glamsterdam-era changes.",
-        evidence: { logOps, callOps, maxDepth },
+        evidence: { logOps, explicitLogEntries, callOps, maxDepth },
         recommendation:
           "Use traces like this to test indexer replay, alerting, and explorer display paths alongside contract gas behavior."
       })

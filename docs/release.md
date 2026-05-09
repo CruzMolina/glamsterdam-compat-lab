@@ -56,6 +56,10 @@ npx --yes npm@11.14.0 trust github glamsterdam-compat-lab \
   --env npm-publish
 ```
 
+The npm `trust` CLI requires the package to already exist on the npm registry. For a first publish of this unscoped package, use a publish-capable npm account or the `NPM_TOKEN` fallback below if the trusted publisher cannot be created yet.
+
+Trusted Publishing also validates repository metadata during publish. Keep `package.json` `repository.url` aligned with `git+https://github.com/CruzMolina/glamsterdam-compat-lab.git`.
+
 You can verify the trusted-publisher shape without writing to npm:
 
 ```sh

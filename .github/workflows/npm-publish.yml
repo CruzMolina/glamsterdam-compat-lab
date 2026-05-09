@@ -81,6 +81,14 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Check packed install
+        run: |
+          if node -e "process.exit(require('./package.json').scripts?.['release:check-pack'] ? 0 : 1)"; then
+            pnpm release:check-pack
+          else
+            echo "release:check-pack is not available on this release tag; skipping packed install check."
+          fi
+
       - name: Dry-run publish
         if: ${{ inputs.dry_run == 'true' }}
         env:

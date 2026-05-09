@@ -73,7 +73,7 @@ Each scanner returns a `CompatibilityReport`:
 
 ```json
 {
-  "toolVersion": "0.1.0",
+  "toolVersion": "0.1.1",
   "fork": "glamsterdam",
   "target": {
     "kind": "bytecode",
@@ -135,13 +135,17 @@ The golden report snapshots in `test/__snapshots__` are intentional review artif
 5. Add a Vitest test.
 6. Keep report language practical and humble.
 
+## Contributing fixtures
+
+Real-world and real-world-shaped fixtures are welcome when they are safe to publish. See [docs/fixtures.md](docs/fixtures.md) for redaction, licensing, metadata, and snapshot expectations.
+
 ## CI and issue triage
 
-The GitHub Actions workflow runs install, tests, and build from the package directory. Issue templates are included for detector requests, registry updates, and false-positive/false-negative reports.
+The GitHub Actions workflow runs install, tests, and build from the package directory. Issue templates are included for detector requests, fixture contributions, registry updates, and false-positive/false-negative reports.
 
 ## Roadmap
 
-See [ROADMAP.md](ROADMAP.md) for planned phases. Phase 0 is released as `v0.1.0`; Phase 1 starts with broader trace support and replay-oriented fixtures.
+See [ROADMAP.md](ROADMAP.md) for planned phases. Phase 0 is released as `v0.1.0`; `v0.1.1` adds launch stabilization and the first Phase 1 trace coverage.
 
 ## Disclaimer
 

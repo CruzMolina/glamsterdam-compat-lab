@@ -1,0 +1,55 @@
+name: Fixture contribution
+description: Share bytecode, traces, indexer configs, or validator configs for scanner coverage.
+title: "[fixture]: "
+labels: ["data", "help wanted"]
+body:
+  - type: dropdown
+    id: fixture_kind
+    attributes:
+      label: Fixture kind
+      options:
+        - Bytecode
+        - Trace
+        - Indexer or explorer config
+        - Validator or operator config
+        - Client compatibility matrix
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source and permission
+      description: Explain where the fixture comes from and whether it can be committed under the repo license.
+      placeholder: "Synthetic fixture, public repo URL, verified contract address, anonymized internal trace, etc."
+    validations:
+      required: true
+  - type: textarea
+    id: redaction
+    attributes:
+      label: Redaction performed
+      description: Note removed addresses, RPC URLs, keys, validator identifiers, internal hostnames, or other sensitive fields.
+    validations:
+      required: true
+  - type: textarea
+    id: scanner_value
+    attributes:
+      label: Scanner value
+      description: What behavior should this fixture help test or improve?
+      placeholder: "Example: Hardhat debug trace with nested calls and LOG2 entries."
+    validations:
+      required: true
+  - type: textarea
+    id: minimum_metadata
+    attributes:
+      label: Helpful metadata
+      description: Include tool/client versions, command used to produce the file, network, block range, and any known limitations.
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety checklist
+      options:
+        - label: I removed private keys, secrets, credentials, non-public RPC endpoints, and validator-sensitive identifiers.
+          required: true
+        - label: I understand the project may simplify, anonymize, or decline fixtures that are not safe to publish.
+          required: true

@@ -15,19 +15,21 @@ Status: released as `v0.1.0`.
 
 ## Phase 0.1: Launch Stabilization
 
-Status: in progress.
+Status: released as `v0.1.1`.
 
 - Triage initial dependency automation
 - Collect real-world fixture submissions
 - Add contribution paths for detector requests, registry updates, and signal-quality reports
+- Add fixture contribution guidance and issue forms
 - Keep README focused on usage while roadmap and planning live here
 
 ## Phase 1: Trace Replay Support
 
 Goal: make trace scanning useful for contract teams using common development tools.
 
-- Add Foundry and Hardhat trace fixtures
-- Normalize common call, opcode, gas, input, and log fields
+- Add Foundry, Hardhat, geth `structLogs`, Erigon-style action trace, and call-tracer fixtures
+- Normalize common call, opcode, gas, input, explicit log, and log opcode fields
+- Keep golden report snapshots for representative trace formats
 - Add optional RPC-based transaction trace fetching
 - Compare current baseline traces with Glamsterdam-aware client or fork configs when available
 

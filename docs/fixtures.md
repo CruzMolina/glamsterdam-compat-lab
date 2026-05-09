@@ -56,3 +56,5 @@ ETH_RPC_URL=https://your-execution-rpc.example \
 ```
 
 Review the saved file before committing it. Remove credentials, internal hostnames, private transaction data, and anything that is not safe to publish.
+
+`fixtures/traces/drpc-call-tracer-real.json` is an example of this flow. It was captured from a public Ethereum transaction using a public dRPC endpoint with `--tracer callTracer`; the fixture is public-chain data and should be treated as a normalization sample, not as an endorsement of any RPC provider.

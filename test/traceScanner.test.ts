@@ -143,4 +143,13 @@ describe("scanTraceFile", () => {
     expect(report.findings.some((finding) => finding.id === "trace.calldata-heavy-execution")).toBe(true);
     expect(report.findings.some((finding) => finding.id === "trace.contract-creation-executed")).toBe(true);
   });
+
+  it("scans a real public dRPC callTracer fixture captured with scan-tx", () => {
+    const fixture = resolve(rootDir, "fixtures/traces/drpc-call-tracer-real.json");
+    const report = scanTraceFile(fixture);
+
+    expect(report.findings.some((finding) => finding.id === "trace.calldata-heavy-execution")).toBe(true);
+    expect(report.findings.some((finding) => finding.id === "trace.logs-calls-visible")).toBe(true);
+    expect(report.findings.some((finding) => finding.id === "trace.partial-evidence")).toBe(true);
+  });
 });

@@ -96,7 +96,7 @@ Each scanner returns a `CompatibilityReport`:
 
 ```json
 {
-  "toolVersion": "0.2.1",
+  "toolVersion": "0.2.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "bytecode",

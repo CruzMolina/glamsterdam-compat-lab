@@ -1,0 +1,101 @@
+name: Publish npm
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Git release tag to publish, such as v0.2.2.
+        required: true
+        type: string
+      dry_run:
+        description: Run npm publish with --dry-run instead of publishing.
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+      tag:
+        description: npm dist-tag to publish.
+        required: true
+        default: latest
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Publish package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check release tag input
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          if ! printf '%s' "$RELEASE_TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "Expected a semver tag like v0.2.2, got $RELEASE_TAG."
+            exit 1
+          fi
+
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.release_tag }}
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+          registry-url: https://registry.npmjs.org
+
+      - name: Verify package version matches tag
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          package_version="$(node -p "require('./package.json').version")"
+          tag_version="${RELEASE_TAG#v}"
+
+          if [ "$package_version" != "$tag_version" ]; then
+            echo "package.json version $package_version does not match tag $RELEASE_TAG."
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - name: Check npm token
+        if: ${{ inputs.dry_run != 'true' }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "${NODE_AUTH_TOKEN:-}" ]; then
+            echo "NPM_TOKEN secret is required for a real npm publish."
+            exit 1
+          fi
+
+      - name: Dry-run publish
+        if: ${{ inputs.dry_run == 'true' }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TAG: ${{ inputs.tag }}
+        run: npm publish --access public --tag "$NPM_TAG" --dry-run
+
+      - name: Publish
+        if: ${{ inputs.dry_run != 'true' }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TAG: ${{ inputs.tag }}
+        run: npm publish --access public --tag "$NPM_TAG"

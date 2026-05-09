@@ -28,7 +28,7 @@ Confirm the package is not already published at the target version:
 npm view glamsterdam-compat-lab version --json
 ```
 
-You can also run the release readiness helper, which checks the npm registry, local npm login state, and GitHub `NPM_TOKEN` secret presence:
+You can also run the release readiness helper, which checks the npm registry, local npm login state, local `NPM_TOKEN` environment presence, and GitHub `NPM_TOKEN` secret presence:
 
 ```sh
 pnpm release:check-npm

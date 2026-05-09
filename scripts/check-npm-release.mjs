@@ -86,9 +86,10 @@ const published = npmViewVersion();
 const whoami = npmWhoami();
 const repoSecrets = ghSecrets([]);
 const envSecrets = ghSecrets(["--env", environment]);
+const localToken = Boolean(process.env.NPM_TOKEN?.trim());
 const isExpectedVersion = published.ok && published.version === expectedVersion;
 const isPackageVisible = published.ok && published.version !== null;
-const hasToken = repoSecrets.hasToken || envSecrets.hasToken;
+const hasTokenSecret = repoSecrets.hasToken || envSecrets.hasToken;
 
 console.log(`npm release readiness for ${packageName}@${expectedVersion}`);
 console.log("");
@@ -100,6 +101,7 @@ console.log(`${statusIcon(whoami.ok)} local npm session: ${whoami.user ?? "not l
 if (whoami.detail) {
   console.log(`   ${whoami.detail}`);
 }
+console.log(`${statusIcon(localToken)} local NPM_TOKEN env: ${localToken ? "present" : "absent"}`);
 console.log(`${statusIcon(repoSecrets.hasToken)} repo NPM_TOKEN secret: ${repoSecrets.hasToken ? "present" : "absent"}`);
 if (repoSecrets.detail) {
   console.log(`   ${repoSecrets.detail}`);
@@ -134,7 +136,7 @@ if (isPackageVisible) {
   console.log(`   gh workflow run npm-publish.yml --ref main -f release_tag=v${expectedVersion} -f dry_run=false -f tag=latest`);
 }
 
-if (!whoami.ok && !hasToken) {
+if (!whoami.ok && !localToken && !hasTokenSecret) {
   process.exit(1);
 }
 

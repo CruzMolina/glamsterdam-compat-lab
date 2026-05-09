@@ -106,7 +106,6 @@ jobs:
             echo "Using NPM_TOKEN fallback for npm dry-run publish."
           else
             unset NODE_AUTH_TOKEN
-            unset NPM_CONFIG_USERCONFIG
             echo "No NPM_TOKEN configured; relying on npm Trusted Publishing/OIDC for dry-run publish."
           fi
 
@@ -128,7 +127,6 @@ jobs:
             echo "Using NPM_TOKEN fallback for npm publish."
           else
             unset NODE_AUTH_TOKEN
-            unset NPM_CONFIG_USERCONFIG
             echo "No NPM_TOKEN configured; relying on npm Trusted Publishing/OIDC for publish."
           fi
 

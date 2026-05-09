@@ -37,8 +37,28 @@ Configure npm with:
 - Owner or organization: `CruzMolina`
 - Repository: `glamsterdam-compat-lab`
 - Workflow file: `npm-publish.yml`
+- Environment: `npm-publish`
 
 The workflow uses the GitHub Environment `npm-publish`, which is restricted to protected branches. If you require manual approval or environment-scoped secrets for publishing, configure them on that environment.
+
+If the package already exists on npm and your local npm session has package write access, the equivalent CLI setup is:
+
+```sh
+npx --yes npm@11.14.0 trust github glamsterdam-compat-lab \
+  --repo CruzMolina/glamsterdam-compat-lab \
+  --file npm-publish.yml \
+  --env npm-publish
+```
+
+You can verify the trusted-publisher shape without writing to npm:
+
+```sh
+npx --yes npm@11.14.0 trust github glamsterdam-compat-lab \
+  --repo CruzMolina/glamsterdam-compat-lab \
+  --file npm-publish.yml \
+  --env npm-publish \
+  --dry-run --json
+```
 
 Then run the workflow from `main`:
 

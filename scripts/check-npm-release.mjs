@@ -136,10 +136,11 @@ if (isPackageVisible) {
   console.log("3. Then rerun:");
   console.log(`   gh workflow run npm-publish.yml --ref main -f release_tag=v${expectedVersion} -f dry_run=false -f tag=latest`);
 } else {
-  console.log("1. Add a publish-capable npm token for the first publish:");
+  console.log("1. Configure Trusted Publishing with an npm owner or publisher session:");
+  console.log(`   npx --yes npm@11.14.0 trust github ${packageName} --repo ${repo} --file npm-publish.yml --env ${environment}`);
+  console.log("   Or use npmjs.com if the CLI cannot configure a pre-publish package grant.");
+  console.log("2. Or add a publish-capable npm token for the first publish:");
   printTokenSecretCommand();
-  console.log("2. Or configure Trusted Publishing in the npm web UI if your account allows a pre-publish package grant.");
-  console.log("   The npm trust CLI requires the package to already exist on npm.");
   console.log("3. Then rerun:");
   console.log(`   gh workflow run npm-publish.yml --ref main -f release_tag=v${expectedVersion} -f dry_run=false -f tag=latest`);
 }

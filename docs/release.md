@@ -58,7 +58,9 @@ gh workflow run npm-publish.yml \
   -f tag=latest
 ```
 
-If the real publish fails with `ENEEDAUTH`, verify the npm Trusted Publishing configuration first. The workflow filename and repository fields are case-sensitive. If npm does not allow Trusted Publishing to be configured before the first publish of this unscoped package, use the token fallback below for the first publish, then switch the package to Trusted Publishing afterward.
+If the real publish fails with `ENEEDAUTH`, verify the npm Trusted Publishing configuration first. The workflow filename and repository fields are case-sensitive.
+
+If the logs show `Signed provenance statement` followed by `npm error 404 Not Found - PUT`, OIDC/provenance is working, but npm has not authorized this workflow or account to publish the package name. Verify the Trusted Publishing package grant. If npm does not allow Trusted Publishing to be configured before the first publish of this unscoped package, use the token fallback below for the first publish, then switch the package to Trusted Publishing afterward.
 
 ## Fallback path: npm token
 

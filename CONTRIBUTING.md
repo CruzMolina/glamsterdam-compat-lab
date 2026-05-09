@@ -18,6 +18,14 @@ When report wording or JSON structure changes intentionally, update golden snaps
 pnpm test:update
 ```
 
+## Release workflow
+
+Releases are published from semver tags. After CI is green on `main`, create the GitHub release tag, then run the manual `Publish npm` workflow from `main` with the release tag as `release_tag`.
+
+Start with `dry_run=true`. For a real publish, configure the repository `NPM_TOKEN` secret with an npm token that can publish `glamsterdam-compat-lab`, then rerun the workflow with `dry_run=false`.
+
+The workflow checks out the requested semver tag, verifies that `package.json` matches the tag, installs dependencies, runs tests, builds, and then runs `npm publish`.
+
 ## Detector guidelines
 
 - Use conservative language. Prefer "review" or "replay representative transactions" over claims that something will break.

@@ -22,6 +22,8 @@ Useful anchors:
 
 ## Install and run
 
+For local development from a clone:
+
 ```sh
 pnpm install
 pnpm test
@@ -30,6 +32,14 @@ pnpm build
 pnpm glamsterdam eips
 pnpm glamsterdam scan-bytecode fixtures/bytecode/storage-heavy.hex
 ```
+
+The npm package name is reserved in `package.json`, but registry publication is still pending npm package-owner authentication. Until npm shows `glamsterdam-compat-lab@0.2.2`, the current installable release artifact is the v0.2.2 GitHub release tarball:
+
+```sh
+npm install -g https://github.com/CruzMolina/glamsterdam-compat-lab/releases/download/v0.2.2/glamsterdam-compat-lab-0.2.2.tgz
+```
+
+See [docs/release.md](docs/release.md) for npm publication status and maintainer release checks.
 
 The default output format is Markdown. Use `--format json` for machine-readable reports.
 

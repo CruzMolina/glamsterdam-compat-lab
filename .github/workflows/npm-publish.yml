@@ -23,6 +23,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   publish:
@@ -50,10 +51,14 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 20
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
+          node-version: 24
           registry-url: https://registry.npmjs.org
+
+      - name: Show package tooling versions
+        run: |
+          node --version
+          npm --version
+          pnpm --version
 
       - name: Verify package version matches tag
         env:
@@ -76,26 +81,16 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Check npm token
-        if: ${{ inputs.dry_run != 'true' }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          if [ -z "${NODE_AUTH_TOKEN:-}" ]; then
-            echo "NPM_TOKEN secret is required for a real npm publish."
-            exit 1
-          fi
-
       - name: Dry-run publish
         if: ${{ inputs.dry_run == 'true' }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TAG: ${{ inputs.tag }}
-        run: npm publish --access public --tag "$NPM_TAG" --dry-run
+        run: npm publish --access public --tag "$NPM_TAG" --provenance --dry-run
 
       - name: Publish
         if: ${{ inputs.dry_run != 'true' }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TAG: ${{ inputs.tag }}
-        run: npm publish --access public --tag "$NPM_TAG"
+        run: npm publish --access public --tag "$NPM_TAG" --provenance

@@ -48,6 +48,10 @@ describe("golden report snapshots", () => {
   it("keeps Nethermind-style trace JSON report structure stable", () => {
     expectTraceJsonSnapshot("nethermind-debug-structlogs.json");
   });
+
+  it("keeps real dRPC call-tracer JSON report structure stable", () => {
+    expectTraceJsonSnapshot("drpc-call-tracer-real.json");
+  });
 });
 
 function expectTraceJsonSnapshot(fixtureName: string): void {

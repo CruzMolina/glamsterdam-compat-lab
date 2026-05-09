@@ -82,6 +82,7 @@ const whoami = npmWhoami();
 const repoSecrets = ghSecrets([]);
 const envSecrets = ghSecrets(["--env", environment]);
 const isExpectedVersion = published.ok && published.version === expectedVersion;
+const isPackageVisible = published.ok && published.version !== null;
 const hasToken = repoSecrets.hasToken || envSecrets.hasToken;
 
 console.log(`npm release readiness for ${packageName}@${expectedVersion}`);
@@ -112,12 +113,21 @@ if (isExpectedVersion) {
 console.log("Release is not complete yet.");
 console.log("");
 console.log("Next options:");
-console.log(`1. Configure npm Trusted Publishing for ${packageName}:`);
-console.log(`   npx --yes npm@11.14.0 trust github ${packageName} --repo ${repo} --file npm-publish.yml --env ${environment}`);
-console.log("2. Or add an npm publish token:");
-console.log(`   gh secret set NPM_TOKEN --repo ${repo} --env ${environment}`);
-console.log("3. Then rerun:");
-console.log(`   gh workflow run npm-publish.yml --ref main -f release_tag=v${expectedVersion} -f dry_run=false -f tag=latest`);
+if (isPackageVisible) {
+  console.log(`1. Configure npm Trusted Publishing for ${packageName}:`);
+  console.log(`   npx --yes npm@11.14.0 trust github ${packageName} --repo ${repo} --file npm-publish.yml --env ${environment}`);
+  console.log("2. Or add an npm publish token:");
+  console.log(`   gh secret set NPM_TOKEN --repo ${repo} --env ${environment}`);
+  console.log("3. Then rerun:");
+  console.log(`   gh workflow run npm-publish.yml --ref main -f release_tag=v${expectedVersion} -f dry_run=false -f tag=latest`);
+} else {
+  console.log("1. Add a publish-capable npm token for the first publish:");
+  console.log(`   gh secret set NPM_TOKEN --repo ${repo} --env ${environment}`);
+  console.log("2. Or configure Trusted Publishing in the npm web UI if your account allows a pre-publish package grant.");
+  console.log("   The npm trust CLI requires the package to already exist on npm.");
+  console.log("3. Then rerun:");
+  console.log(`   gh workflow run npm-publish.yml --ref main -f release_tag=v${expectedVersion} -f dry_run=false -f tag=latest`);
+}
 
 if (!whoami.ok && !hasToken) {
   process.exit(1);

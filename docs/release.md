@@ -29,6 +29,8 @@ npm view glamsterdam-compat-lab version --json
 
 npm Trusted Publishing uses GitHub Actions OIDC instead of a long-lived npm token. The `Publish npm` workflow is configured for this path with a GitHub-hosted runner, Node 24, `id-token: write`, and `npm publish --provenance`.
 
+The default OIDC path does not create token-based npm auth config. If `NPM_TOKEN` is present, the workflow writes a temporary `.npmrc` only for that token fallback.
+
 Configure npm with:
 
 - Provider: GitHub Actions
@@ -65,6 +67,8 @@ If the logs show `Signed provenance statement` followed by `npm error 404 Not Fo
 ## Fallback path: npm token
 
 Create an npm token with permission to publish `glamsterdam-compat-lab`, then add it as the `NPM_TOKEN` secret on the `npm-publish` environment or as a repository secret.
+
+When this secret is present, the workflow exports it as `NODE_AUTH_TOKEN` and writes a temporary npm user config for the publish step. When the secret is absent, the workflow leaves token auth unset and relies on Trusted Publishing/OIDC.
 
 Rerun the same workflow:
 

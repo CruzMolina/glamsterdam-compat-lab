@@ -50,7 +50,7 @@ Configure npm with:
 
 The workflow uses the GitHub Environment `npm-publish`, which is restricted to protected branches. If you require manual approval or environment-scoped secrets for publishing, configure them on that environment.
 
-If the package already exists on npm and your local npm session has package write access, the equivalent CLI setup is:
+If your local npm session has package write access, the equivalent CLI setup is:
 
 ```sh
 npx --yes npm@11.14.0 trust github glamsterdam-compat-lab \
@@ -59,7 +59,7 @@ npx --yes npm@11.14.0 trust github glamsterdam-compat-lab \
   --env npm-publish
 ```
 
-The npm `trust` CLI requires the package to already exist on the npm registry. For a first publish of this unscoped package, use a publish-capable npm account or the `NPM_TOKEN` fallback below if the trusted publisher cannot be created yet.
+npm documents `npm trust` as the command-line equivalent of managing trusted publisher configurations on npmjs.com. It requires npm 11.10.0 or newer and write permission on the package. For a first publish of this unscoped package, use an npm owner or publisher session to try the CLI or npmjs.com setup. If npm does not allow the trusted publisher to be configured before the first publish, use the `NPM_TOKEN` fallback below for the first publish and switch back to Trusted Publishing afterward.
 
 Trusted Publishing also validates repository metadata during publish. Keep `package.json` `repository.url` aligned with `git+https://github.com/CruzMolina/glamsterdam-compat-lab.git`.
 

@@ -33,7 +33,7 @@ pnpm glamsterdam eips
 pnpm glamsterdam scan-bytecode fixtures/bytecode/storage-heavy.hex
 ```
 
-The npm package name is reserved in `package.json`, but registry publication is still pending npm package-owner authentication. Until npm shows `glamsterdam-compat-lab@0.2.2`, the current installable release artifact is the v0.2.2 GitHub release tarball:
+The package is configured as `glamsterdam-compat-lab` in `package.json`, but npm registry publication is still pending package-owner authentication. Until npm shows `glamsterdam-compat-lab@0.2.2`, the current installable release artifact is the v0.2.2 GitHub release tarball:
 
 ```sh
 npm install -g https://github.com/CruzMolina/glamsterdam-compat-lab/releases/download/v0.2.2/glamsterdam-compat-lab-0.2.2.tgz

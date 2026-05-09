@@ -1,0 +1,19 @@
+{
+  "format": "foundry-json-trace-fixture-v0",
+  "source": "Synthetic fixture shaped like a nested Foundry trace export.",
+  "traces": [
+    {
+      "kind": "CALL",
+      "depth": 1,
+      "calldata": "0x12345678",
+      "children": [
+        { "kind": "SLOAD", "depth": 1, "gasCost": 100 },
+        { "kind": "SSTORE", "depth": 1, "gasCost": 2900 },
+        { "kind": "SLOAD", "depth": 1, "gasCost": 100 },
+        { "kind": "SSTORE", "depth": 1, "gasCost": 2900 },
+        { "kind": "CREATE2", "depth": 1, "calldata": "0x60006000", "gasCost": 32000 },
+        { "kind": "LOG1", "depth": 1, "gasCost": 375 }
+      ]
+    }
+  ]
+}

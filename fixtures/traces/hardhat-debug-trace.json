@@ -1,0 +1,13 @@
+{
+  "format": "hardhat-debug-trace-fixture-v0",
+  "source": "Synthetic fixture shaped like a Hardhat/debug plugin JSON trace.",
+  "trace": {
+    "steps": [
+      { "opcode": { "name": "CALLDATACOPY" }, "depth": 1, "gas": 120000, "gasCost": 6, "calldataBytes": 6144 },
+      { "opName": "SLOAD", "depth": 1, "gas": 119994, "gasCost": 100 },
+      { "instruction": "SSTORE", "depth": 1, "gas": 119894, "gasCost": 2900 },
+      { "type": "CALL", "depth": 2, "input": "0xabcdef", "gas": 116994 },
+      { "op": "LOG2", "depth": 1, "gas": 116000, "gasCost": 750 }
+    ]
+  }
+}

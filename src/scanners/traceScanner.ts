@@ -74,6 +74,7 @@ export function scanTrace(input: unknown, options: TraceScanOptions = {}): Compa
     ],
     limitations: [
       "Trace coverage is only as good as the transaction samples provided.",
+      "Foundry and Hardhat can emit multiple trace shapes depending on command, plugin, and verbosity; this scanner supports representative JSON-like exports, not every console rendering.",
       "Some trace formats omit calldata sizes, storage keys, gas costs, logs, or call details.",
       "Findings are compatibility prompts and should be validated through replay or benchmarking."
     ]
@@ -84,7 +85,7 @@ export function normalizeTrace(input: unknown): { steps: NormalizedTraceStep[]; 
   const warnings: string[] = [];
 
   if (Array.isArray(input)) {
-    return { steps: input.map(stepFromUnknown).filter(isStep), warnings };
+    return { steps: normalizeTraceSequence(input), warnings };
   }
 
   if (!isRecord(input)) {
@@ -111,10 +112,27 @@ export function normalizeTrace(input: unknown): { steps: NormalizedTraceStep[]; 
   }
 
   if (Array.isArray(input.trace)) {
-    return { steps: input.trace.map(stepFromUnknown).filter(isStep), warnings };
+    return { steps: normalizeTraceSequence(input.trace), warnings };
   }
 
-  if (Array.isArray(input.calls) || typeof input.type === "string") {
+  if (isRecord(input.trace)) {
+    const normalized = normalizeTrace(input.trace);
+    return {
+      steps: normalized.steps,
+      warnings: ["Unwrapped nested trace object.", ...normalized.warnings]
+    };
+  }
+
+  if (Array.isArray(input.traces)) {
+    return { steps: normalizeTraceSequence(input.traces), warnings };
+  }
+
+  if (
+    Array.isArray(input.calls)
+    || Array.isArray(input.children)
+    || typeof input.type === "string"
+    || typeof input.kind === "string"
+  ) {
     const steps = flattenCallTree(input);
     if (steps.length === 0) {
       warnings.push("Call tree did not contain recognizable call frames.");
@@ -201,18 +219,39 @@ function countOps(steps: NormalizedTraceStep[]): Record<string, number> {
   }, {});
 }
 
+function normalizeTraceSequence(items: unknown[]): NormalizedTraceStep[] {
+  return items.flatMap((item) => {
+    if (isRecord(item) && (Array.isArray(item.calls) || Array.isArray(item.children))) {
+      return flattenCallTree(item);
+    }
+
+    const step = stepFromUnknown(item);
+    return step ? [step] : [];
+  });
+}
+
 function stepFromUnknown(value: unknown): NormalizedTraceStep | undefined {
   if (!isRecord(value)) {
     return undefined;
   }
 
   const action = isRecord(value.action) ? value.action : undefined;
-  const opRaw = value.op ?? value.opcode ?? action?.callType ?? value.type ?? value.actionType;
+  const opcode = isRecord(value.opcode) ? value.opcode.name : value.opcode;
+  const opRaw = value.op
+    ?? opcode
+    ?? value.opName
+    ?? value.instruction
+    ?? action?.callType
+    ?? value.callType
+    ?? value.call_type
+    ?? value.type
+    ?? value.kind
+    ?? value.actionType;
   if (typeof opRaw !== "string") {
     return undefined;
   }
 
-  const input = value.input ?? action?.input ?? action?.init;
+  const input = value.input ?? value.calldata ?? value.data ?? action?.input ?? action?.init;
   return {
     op: normalizeTraceOp(opRaw),
     depth: numberValue(value.depth) ?? depthFromTraceAddress(value.traceAddress),
@@ -228,14 +267,20 @@ function flattenCallTree(frame: unknown, depth = 0): NormalizedTraceStep[] {
     return [];
   }
 
-  const type = typeof frame.type === "string" ? frame.type.toUpperCase() : "CALL";
+  const type = typeof frame.type === "string"
+    ? frame.type
+    : typeof frame.kind === "string"
+      ? frame.kind
+      : "CALL";
   const current = stepFromUnknown({
     ...frame,
     op: type,
     depth,
-    calldataBytes: byteLengthFromHex(frame.input)
+    calldataBytes: byteLengthFromHex(frame.input ?? frame.calldata ?? frame.data)
   });
-  const childFrames = Array.isArray(frame.calls) ? frame.calls : [];
+  const callChildren = Array.isArray(frame.calls) ? frame.calls : [];
+  const genericChildren = Array.isArray(frame.children) ? frame.children : [];
+  const childFrames = [...callChildren, ...genericChildren];
   const children = childFrames.flatMap((child) => flattenCallTree(child, depth + 1));
   return current ? [current, ...children] : children;
 }
@@ -259,7 +304,7 @@ function numberValue(value: unknown): number | undefined {
 }
 
 function normalizeTraceOp(opRaw: string): string {
-  const op = opRaw.toUpperCase();
+  const op = opRaw.toUpperCase().replace(/[^A-Z0-9]/g, "");
 
   if (op === "CALL" || op === "CALLCODE" || op === "DELEGATECALL" || op === "STATICCALL") {
     return op;
@@ -267,6 +312,18 @@ function normalizeTraceOp(opRaw: string): string {
 
   if (op === "CREATE" || op === "CREATE2") {
     return op;
+  }
+
+  if (op === "CALLTRACE" || op === "CALLFRAME" || op === "EXTERNALCALL") {
+    return "CALL";
+  }
+
+  if (op === "STATICCALLTRACE") {
+    return "STATICCALL";
+  }
+
+  if (op === "DELEGATECALLTRACE") {
+    return "DELEGATECALL";
   }
 
   if (op === "SUICIDE") {

@@ -101,6 +101,13 @@ If the logs show `Signed provenance statement` followed by `npm error 404 Not Fo
 
 Create an npm token with permission to publish `glamsterdam-compat-lab`, then add it as the `NPM_TOKEN` secret on the `npm-publish` environment or as a repository secret.
 
+If the token is available in your shell as `NPM_TOKEN`, set the environment secret without printing the token value:
+
+```sh
+test -n "${NPM_TOKEN:-}" || { echo "Set NPM_TOKEN first"; exit 1; }
+gh secret set NPM_TOKEN --repo CruzMolina/glamsterdam-compat-lab --env npm-publish --body "$NPM_TOKEN"
+```
+
 When this secret is present, the workflow exports it as `NODE_AUTH_TOKEN` and writes a temporary npm user config for the publish step. When the secret is absent, the workflow leaves token auth unset and relies on Trusted Publishing/OIDC.
 
 Rerun the same workflow:

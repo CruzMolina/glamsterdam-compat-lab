@@ -77,6 +77,11 @@ function statusIcon(pass) {
   return pass ? "ok" : "missing";
 }
 
+function printTokenSecretCommand() {
+  console.log('   test -n "${NPM_TOKEN:-}" || { echo "Set NPM_TOKEN first"; exit 1; }');
+  console.log(`   gh secret set NPM_TOKEN --repo ${repo} --env ${environment} --body "$NPM_TOKEN"`);
+}
+
 const published = npmViewVersion();
 const whoami = npmWhoami();
 const repoSecrets = ghSecrets([]);
@@ -117,12 +122,12 @@ if (isPackageVisible) {
   console.log(`1. Configure npm Trusted Publishing for ${packageName}:`);
   console.log(`   npx --yes npm@11.14.0 trust github ${packageName} --repo ${repo} --file npm-publish.yml --env ${environment}`);
   console.log("2. Or add an npm publish token:");
-  console.log(`   gh secret set NPM_TOKEN --repo ${repo} --env ${environment}`);
+  printTokenSecretCommand();
   console.log("3. Then rerun:");
   console.log(`   gh workflow run npm-publish.yml --ref main -f release_tag=v${expectedVersion} -f dry_run=false -f tag=latest`);
 } else {
   console.log("1. Add a publish-capable npm token for the first publish:");
-  console.log(`   gh secret set NPM_TOKEN --repo ${repo} --env ${environment}`);
+  printTokenSecretCommand();
   console.log("2. Or configure Trusted Publishing in the npm web UI if your account allows a pre-publish package grant.");
   console.log("   The npm trust CLI requires the package to already exist on npm.");
   console.log("3. Then rerun:");

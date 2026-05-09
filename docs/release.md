@@ -59,7 +59,7 @@ npx --yes npm@11.14.0 trust github glamsterdam-compat-lab \
   --env npm-publish
 ```
 
-npm documents `npm trust` as the command-line equivalent of managing trusted publisher configurations on npmjs.com. It requires npm 11.10.0 or newer and write permission on the package. For a first publish of this unscoped package, use an npm owner or publisher session to try the CLI or npmjs.com setup. If npm does not allow the trusted publisher to be configured before the first publish, use the `NPM_TOKEN` fallback below for the first publish and switch back to Trusted Publishing afterward.
+npm documents `npm trust` as the command-line equivalent of managing trusted publisher configurations on npmjs.com. It requires npm 11.10.0 or newer, an npm owner or publisher login, write permission on the package, and 2FA when the account requires it. If the command fails with `E401` and says you must be logged in to publish packages, authenticate with the npm owner or publisher account before retrying. For a first publish of this unscoped package, use an npm owner or publisher session to try the CLI or npmjs.com setup. If npm does not allow the trusted publisher to be configured before the first publish, use the `NPM_TOKEN` fallback below for the first publish and switch back to Trusted Publishing afterward.
 
 Trusted Publishing also validates repository metadata during publish. Keep `package.json` `repository.url` aligned with `git+https://github.com/CruzMolina/glamsterdam-compat-lab.git`.
 

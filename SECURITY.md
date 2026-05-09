@@ -10,6 +10,8 @@ Please use GitHub private vulnerability reporting if it is enabled on the reposi
 
 Do not include private keys, RPC credentials, validator secrets, production endpoint credentials, or non-public trace data in issues, pull requests, fixtures, or screenshots.
 
+The `scan-tx` command accepts RPC URLs through `--rpc-url` or `ETH_RPC_URL`. Reports intentionally omit the RPC URL, but shell history, CI logs, and issue text may not. Prefer environment variables or local secret management for private endpoints.
+
 ## Scanner output
 
 Compatibility reports are advisory and deterministic. They are not security audits and should not be treated as proof that a contract, indexer, or validator setup is safe.

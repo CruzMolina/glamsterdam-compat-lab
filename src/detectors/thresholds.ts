@@ -7,6 +7,7 @@ const moduleDir = dirname(fileURLToPath(import.meta.url));
 
 export const detectorThresholdsSchema = z.object({
   schemaVersion: z.number().int().positive(),
+  profile: z.string().min(1).optional(),
   lastUpdated: z.string().min(1),
   notes: z.array(z.string()).default([]),
   bytecode: z.object({

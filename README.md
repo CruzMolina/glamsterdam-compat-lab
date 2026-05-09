@@ -38,6 +38,7 @@ The default output format is Markdown. Use `--format json` for machine-readable 
 pnpm glamsterdam eips
 pnpm glamsterdam scan-bytecode fixtures/bytecode/storage-heavy.hex --format markdown
 pnpm glamsterdam scan-traces fixtures/traces/storage-heavy-trace.json --format json
+ETH_RPC_URL=https://your-execution-rpc.example pnpm glamsterdam scan-tx --tx 0x0000000000000000000000000000000000000000000000000000000000000000 --format markdown
 pnpm glamsterdam scan-indexer fixtures/indexers/subgraph.yaml --format markdown
 pnpm glamsterdam scan-validator --config fixtures/validator/operator-config.yaml --format markdown
 pnpm glamsterdam report report-a.json report-b.json --format markdown
@@ -61,7 +62,25 @@ Each scanner accepts `--registry <path>` and `--thresholds <path>` so EIP metada
 }
 ```
 
-It also accepts common `debug_traceTransaction`-style objects with `structLogs`, JSON-RPC result wrappers, simple arrays of steps, Foundry/Hardhat-style JSON trace exports, Erigon/parity-style action traces, and call-tracer-like trees with `calls` or `children`.
+It also accepts common `debug_traceTransaction`-style objects with `structLogs`, JSON-RPC result wrappers, simple arrays of steps, Foundry/Hardhat-style JSON trace exports, Besu/Nethermind/geth-style struct logs, Erigon/parity-style action traces, and call-tracer-like trees with `calls` or `children`.
+
+`scan-tx` fetches a transaction trace from an execution RPC endpoint that supports `debug_traceTransaction`, then runs the same deterministic trace scanner:
+
+```sh
+ETH_RPC_URL=https://your-execution-rpc.example \
+  pnpm glamsterdam scan-tx \
+  --tx 0x0000000000000000000000000000000000000000000000000000000000000000 \
+  --tracer structLogs \
+  --format markdown
+
+pnpm glamsterdam scan-tx \
+  --rpc-url https://your-execution-rpc.example \
+  --tx 0x0000000000000000000000000000000000000000000000000000000000000000 \
+  --tracer callTracer \
+  --format json
+```
+
+RPC URLs are not included in report targets or evidence. Do not paste private RPC URLs or credentials into issues, fixtures, or reports.
 
 `scan-indexer` parses JSON and YAML, including `subgraph.yaml`-style configs. It flags event-only indexing assumptions, missing fork/EIP compatibility metadata, missing replay or testnet plans, missing BAL review metadata, and native ETH transfer log readiness as heuristic findings.
 
@@ -73,7 +92,7 @@ Each scanner returns a `CompatibilityReport`:
 
 ```json
 {
-  "toolVersion": "0.1.1",
+  "toolVersion": "0.2.0",
   "fork": "glamsterdam",
   "target": {
     "kind": "bytecode",
@@ -116,7 +135,7 @@ Each entry includes an ID, name, status, domain, detector modules, and notes. Ke
 
 Edit `data/detectors/thresholds.json`.
 
-Thresholds are conservative scanner heuristics, not protocol parameters. When changing thresholds, add or update fixtures and run:
+Thresholds are conservative scanner heuristics, not protocol parameters. The default profile is `data/detectors/thresholds.json`; `data/detectors/thresholds.research.json` is more sensitive for broad data collection, and `data/detectors/thresholds.ci.json` is less sensitive for low-noise automation. When changing thresholds, add or update fixtures and run:
 
 ```sh
 pnpm test:update
@@ -141,11 +160,11 @@ Real-world and real-world-shaped fixtures are welcome when they are safe to publ
 
 ## CI and issue triage
 
-The GitHub Actions workflow runs install, tests, and build from the package directory. Issue templates are included for detector requests, fixture contributions, registry updates, and false-positive/false-negative reports.
+The GitHub Actions workflow runs install, tests, build, and an npm publish dry run from the package directory. Issue templates are included for detector requests, fixture contributions, registry updates, and false-positive/false-negative reports.
 
 ## Roadmap
 
-See [ROADMAP.md](ROADMAP.md) for planned phases. Phase 0 is released as `v0.1.0`; `v0.1.1` adds launch stabilization and the first Phase 1 trace coverage.
+See [ROADMAP.md](ROADMAP.md) for planned phases. Phase 0 is released as `v0.1.0`; `v0.2.0` starts Phase 1 with RPC transaction trace ingestion and broader trace fixture coverage.
 
 ## Disclaimer
 

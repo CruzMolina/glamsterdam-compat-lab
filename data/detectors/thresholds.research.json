@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "profile": "research",
+  "lastUpdated": "2026-05-09",
+  "notes": [
+    "Research profile: intentionally more sensitive than the default profile.",
+    "Use this for broad signal collection and aggregate studies, not low-noise CI gating."
+  ],
+  "bytecode": {
+    "contractSize": {
+      "currentRuntimeLimitBytes": 24576,
+      "nearCurrentLimitBytes": 18000
+    },
+    "stateAccountOpcodeExposure": {
+      "mediumSensitiveOpcodeCount": 4,
+      "lowSensitiveOpcodeCount": 1
+    },
+    "storagePattern": {
+      "mediumStorageOpcodeCount": 4
+    }
+  },
+  "trace": {
+    "stateHeavyExecution": {
+      "highStorageOps": 20,
+      "highSensitiveOpcodeCount": 40,
+      "mediumStorageOps": 4,
+      "mediumSensitiveOpcodeCount": 8
+    },
+    "calldataHeavy": {
+      "mediumCalldataBytes": 1024
+    }
+  }
+}

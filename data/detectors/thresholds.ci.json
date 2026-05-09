@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "profile": "ci",
+  "lastUpdated": "2026-05-09",
+  "notes": [
+    "CI profile: intentionally less sensitive than the default profile.",
+    "Use this when teams want fewer compatibility prompts in automated gates."
+  ],
+  "bytecode": {
+    "contractSize": {
+      "currentRuntimeLimitBytes": 24576,
+      "nearCurrentLimitBytes": 23000
+    },
+    "stateAccountOpcodeExposure": {
+      "mediumSensitiveOpcodeCount": 16,
+      "lowSensitiveOpcodeCount": 6
+    },
+    "storagePattern": {
+      "mediumStorageOpcodeCount": 16
+    }
+  },
+  "trace": {
+    "stateHeavyExecution": {
+      "highStorageOps": 80,
+      "highSensitiveOpcodeCount": 160,
+      "mediumStorageOps": 24,
+      "mediumSensitiveOpcodeCount": 48
+    },
+    "calldataHeavy": {
+      "mediumCalldataBytes": 8192
+    }
+  }
+}

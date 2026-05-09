@@ -33,6 +33,8 @@ The Glamsterdam fork scope may change. Update `data/eips/glamsterdam.json` with 
 
 Detector thresholds live in `data/detectors/thresholds.json`. Treat them as signal-quality heuristics, not protocol gas constants.
 
+Additional threshold profiles live next to the default thresholds. Use `thresholds.research.json` for broad signal collection and `thresholds.ci.json` for lower-noise automation.
+
 ## Fixture contributions
 
 See `docs/fixtures.md` before submitting real-world bytecode, traces, indexer configs, validator configs, or compatibility metadata. Fixtures must be safe to publish, clearly licensed, and stripped of secrets or validator-sensitive details.

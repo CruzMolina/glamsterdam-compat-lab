@@ -1,8 +1,66 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`golden report snapshots > keeps Besu-style trace JSON report structure stable 1`] = `
+"{
+  "toolVersion": "0.2.0",
+  "fork": "glamsterdam",
+  "target": {
+    "kind": "trace",
+    "name": "fixtures/traces/besu-debug-structlogs.json"
+  },
+  "summary": {
+    "risk": "low",
+    "findingCount": 1,
+    "highCount": 0,
+    "mediumCount": 0,
+    "lowCount": 1,
+    "unknownCount": 0
+  },
+  "findings": [
+    {
+      "id": "trace.logs-calls-visible",
+      "title": "Trace includes logs or external calls",
+      "severity": "low",
+      "confidence": "high",
+      "domain": [
+        "contracts",
+        "indexer",
+        "monitoring"
+      ],
+      "relatedEips": [
+        "EIP-7708",
+        "EIP-7928"
+      ],
+      "description": "The trace includes log or call activity that may be relevant to indexer, explorer, and monitoring assumptions under Glamsterdam-era changes.",
+      "evidence": [
+        {
+          "logOps": 1,
+          "explicitLogEntries": 0,
+          "callOps": 1,
+          "maxDepth": 2
+        }
+      ],
+      "recommendation": "Use traces like this to test indexer replay, alerting, and explorer display paths alongside contract gas behavior."
+    }
+  ],
+  "assumptions": [
+    "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
+    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
+  ],
+  "limitations": [
+    "Trace coverage is only as good as the transaction samples provided.",
+    "Foundry and Hardhat can emit multiple trace shapes depending on command, plugin, and verbosity; this scanner supports representative JSON-like exports, not every console rendering.",
+    "Some trace formats omit calldata sizes, storage keys, gas costs, logs, or call details.",
+    "Findings are compatibility prompts and should be validated through replay or benchmarking."
+  ]
+}
+"
+`;
+
 exports[`golden report snapshots > keeps Foundry trace JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.1.1",
+  "toolVersion": "0.2.0",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -68,7 +126,7 @@ exports[`golden report snapshots > keeps Foundry trace JSON report structure sta
   "assumptions": [
     "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
     "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
-    "Detector thresholds are dated 2026-05-08 and are MVP heuristics, not protocol gas parameters."
+    "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
     "Trace coverage is only as good as the transaction samples provided.",
@@ -82,7 +140,7 @@ exports[`golden report snapshots > keeps Foundry trace JSON report structure sta
 
 exports[`golden report snapshots > keeps Hardhat trace JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.1.1",
+  "toolVersion": "0.2.0",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -150,7 +208,111 @@ exports[`golden report snapshots > keeps Hardhat trace JSON report structure sta
   "assumptions": [
     "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
     "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
-    "Detector thresholds are dated 2026-05-08 and are MVP heuristics, not protocol gas parameters."
+    "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
+  ],
+  "limitations": [
+    "Trace coverage is only as good as the transaction samples provided.",
+    "Foundry and Hardhat can emit multiple trace shapes depending on command, plugin, and verbosity; this scanner supports representative JSON-like exports, not every console rendering.",
+    "Some trace formats omit calldata sizes, storage keys, gas costs, logs, or call details.",
+    "Findings are compatibility prompts and should be validated through replay or benchmarking."
+  ]
+}
+"
+`;
+
+exports[`golden report snapshots > keeps Nethermind-style trace JSON report structure stable 1`] = `
+"{
+  "toolVersion": "0.2.0",
+  "fork": "glamsterdam",
+  "target": {
+    "kind": "trace",
+    "name": "fixtures/traces/nethermind-debug-structlogs.json"
+  },
+  "summary": {
+    "risk": "medium",
+    "findingCount": 3,
+    "highCount": 0,
+    "mediumCount": 1,
+    "lowCount": 2,
+    "unknownCount": 0
+  },
+  "findings": [
+    {
+      "id": "trace.calldata-heavy-execution",
+      "title": "Trace includes visible calldata-heavy execution",
+      "severity": "low",
+      "confidence": "high",
+      "domain": [
+        "contracts",
+        "execution"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7976",
+        "EIP-7904",
+        "EIP-8038"
+      ],
+      "description": "The trace includes CALLDATACOPY or explicit calldata byte counts. Calldata repricing candidates are considered registry items, so large input paths should be tested.",
+      "evidence": [
+        {
+          "CALLDATACOPY": 1,
+          "calldataBytes": 1664
+        }
+      ],
+      "recommendation": "Replay large-input transactions and compare gas envelopes once a Glamsterdam configuration is available."
+    },
+    {
+      "id": "trace.contract-creation-executed",
+      "title": "Trace executed contract creation",
+      "severity": "medium",
+      "confidence": "high",
+      "domain": [
+        "contracts",
+        "execution"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-8037"
+      ],
+      "description": "The trace executed CREATE or CREATE2. This is direct evidence that this transaction class exercises state creation.",
+      "evidence": [
+        {
+          "CREATE": 1,
+          "CREATE2": 0
+        }
+      ],
+      "recommendation": "Replay creation-heavy flows against Glamsterdam test environments and verify gas budgeting, relayer assumptions, and deployment automation."
+    },
+    {
+      "id": "trace.logs-calls-visible",
+      "title": "Trace includes logs or external calls",
+      "severity": "low",
+      "confidence": "high",
+      "domain": [
+        "contracts",
+        "indexer",
+        "monitoring"
+      ],
+      "relatedEips": [
+        "EIP-7708",
+        "EIP-7928"
+      ],
+      "description": "The trace includes log or call activity that may be relevant to indexer, explorer, and monitoring assumptions under Glamsterdam-era changes.",
+      "evidence": [
+        {
+          "logOps": 0,
+          "explicitLogEntries": 0,
+          "callOps": 1,
+          "maxDepth": 2
+        }
+      ],
+      "recommendation": "Use traces like this to test indexer replay, alerting, and explorer display paths alongside contract gas behavior."
+    }
+  ],
+  "assumptions": [
+    "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
+    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
     "Trace coverage is only as good as the transaction samples provided.",
@@ -166,7 +328,7 @@ exports[`golden report snapshots > keeps bytecode Markdown report wording stable
 "# Glamsterdam Compatibility Report
 
 Target: bytecode fixtures/bytecode/storage-heavy.hex
-Tool version: 0.1.1
+Tool version: 0.2.0
 Fork registry: glamsterdam
 
 ## Summary
@@ -264,7 +426,7 @@ Recommendation: Use this report to choose transactions for trace replay and benc
 
 - Input was interpreted as EVM bytecode after removing whitespace and an optional 0x prefix.
 - The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.
-- Detector thresholds are dated 2026-05-08 and are MVP heuristics, not protocol gas parameters.
+- Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters.
 
 ## Limitations
 
@@ -277,7 +439,7 @@ Recommendation: Use this report to choose transactions for trace replay and benc
 
 exports[`golden report snapshots > keeps call-tracer tree JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.1.1",
+  "toolVersion": "0.2.0",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -366,7 +528,7 @@ exports[`golden report snapshots > keeps call-tracer tree JSON report structure 
   "assumptions": [
     "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
     "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
-    "Detector thresholds are dated 2026-05-08 and are MVP heuristics, not protocol gas parameters."
+    "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
     "Trace coverage is only as good as the transaction samples provided.",
@@ -380,7 +542,7 @@ exports[`golden report snapshots > keeps call-tracer tree JSON report structure 
 
 exports[`golden report snapshots > keeps geth structLogs JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.1.1",
+  "toolVersion": "0.2.0",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -448,7 +610,7 @@ exports[`golden report snapshots > keeps geth structLogs JSON report structure s
   "assumptions": [
     "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
     "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
-    "Detector thresholds are dated 2026-05-08 and are MVP heuristics, not protocol gas parameters."
+    "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
     "Trace coverage is only as good as the transaction samples provided.",
@@ -462,7 +624,7 @@ exports[`golden report snapshots > keeps geth structLogs JSON report structure s
 
 exports[`golden report snapshots > keeps trace JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.1.1",
+  "toolVersion": "0.2.0",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -603,7 +765,7 @@ exports[`golden report snapshots > keeps trace JSON report structure stable 1`] 
   "assumptions": [
     "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
     "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
-    "Detector thresholds are dated 2026-05-08 and are MVP heuristics, not protocol gas parameters."
+    "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
     "Trace coverage is only as good as the transaction samples provided.",

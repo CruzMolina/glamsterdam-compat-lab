@@ -40,6 +40,14 @@ describe("golden report snapshots", () => {
   it("keeps call-tracer tree JSON report structure stable", () => {
     expectTraceJsonSnapshot("call-tracer-tree.json");
   });
+
+  it("keeps Besu-style trace JSON report structure stable", () => {
+    expectTraceJsonSnapshot("besu-debug-structlogs.json");
+  });
+
+  it("keeps Nethermind-style trace JSON report structure stable", () => {
+    expectTraceJsonSnapshot("nethermind-debug-structlogs.json");
+  });
 });
 
 function expectTraceJsonSnapshot(fixtureName: string): void {

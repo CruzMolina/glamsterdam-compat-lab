@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
-  "lastUpdated": "2026-05-08",
+  "profile": "default",
+  "lastUpdated": "2026-05-09",
   "notes": [
     "Thresholds are conservative MVP heuristics, not protocol gas parameters.",
     "Tune these values with fixture evidence and keep detector code free of final-fork assumptions."

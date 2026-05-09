@@ -5,7 +5,7 @@ Fixtures are how Glamsterdam Compatibility Lab learns which scanner signals are 
 ## What to Share
 
 - EVM runtime bytecode or init code with enough context to know which one it is.
-- Transaction traces from tools such as geth `debug_traceTransaction`, Foundry, Hardhat, Erigon, or call tracers.
+- Transaction traces from tools such as geth `debug_traceTransaction`, Besu, Nethermind, Foundry, Hardhat, Erigon, or call tracers.
 - Indexer and explorer configs, including subgraphs, event/call/block handlers, and replay settings.
 - Validator or operator configs with client, builder/API, monitoring, and testnet/devnet metadata.
 - Compatibility matrices that are explicitly sourced from client release notes, devnet docs, or maintainer statements.
@@ -23,6 +23,7 @@ When possible, include:
 - Source type: synthetic, public-chain, public repo, anonymized internal, or generated example.
 - Tool or client name and version.
 - Command or API used to produce the fixture.
+- Trace mode or tracer name, such as `structLogs` or `callTracer`.
 - Network, chain ID, or devnet name.
 - Whether the fixture is complete or intentionally partial.
 - Expected scanner behavior, including findings that should or should not appear.

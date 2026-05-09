@@ -10,6 +10,7 @@ import {
   renderMarkdownReport,
   scanBytecode,
   scanIndexer,
+  scanTransactionTrace,
   scanTraceFile,
   scanValidatorConfig,
   validateCompatibilityReport,
@@ -17,6 +18,7 @@ import {
 } from "./index.js";
 import type { EipRegistry } from "./registry/schemas.js";
 import { TOOL_VERSION } from "./reports/reportTypes.js";
+import { parseDebugTraceMode } from "./scanners/rpcTraceScanner.js";
 
 type OutputFormat = "markdown" | "json";
 
@@ -48,6 +50,44 @@ program
   .description("Analyze transaction traces for state-heavy, creation-heavy, calldata, log, and call patterns")
   .action((traceFile: string, options: { format: string; registry?: string; thresholds: string }) => {
     const report = scanTraceFile(traceFile, { registryPath: options.registry, thresholdsPath: options.thresholds });
+    writeReport(report, parseFormat(options.format));
+  });
+
+program
+  .command("scan-tx")
+  .requiredOption("--tx <hash>", "Transaction hash to fetch with debug_traceTransaction")
+  .option("--rpc-url <url>", "Execution RPC URL. Defaults to ETH_RPC_URL when omitted")
+  .option("--tracer <mode>", "Trace mode: structLogs or callTracer", "structLogs")
+  .option("--trace-timeout <duration>", "Execution client trace timeout hint", "30s")
+  .option("--rpc-timeout-ms <ms>", "HTTP RPC timeout in milliseconds", "30000")
+  .option("--format <format>", "Output format: markdown or json", "markdown")
+  .option("--registry <path>", "Path to Glamsterdam EIP registry JSON")
+  .option("--thresholds <path>", "Path to detector thresholds JSON", defaultThresholdsPath())
+  .description("Fetch debug_traceTransaction from an RPC endpoint and scan the returned trace")
+  .action(async (options: {
+    tx: string;
+    rpcUrl?: string;
+    tracer: string;
+    traceTimeout: string;
+    rpcTimeoutMs: string;
+    format: string;
+    registry?: string;
+    thresholds: string;
+  }) => {
+    const rpcUrl = options.rpcUrl ?? process.env.ETH_RPC_URL;
+    if (!rpcUrl) {
+      throw new Error("Provide --rpc-url or set ETH_RPC_URL.");
+    }
+
+    const report = await scanTransactionTrace({
+      rpcUrl,
+      txHash: options.tx,
+      tracer: parseDebugTraceMode(options.tracer),
+      traceTimeout: options.traceTimeout,
+      rpcTimeoutMs: parsePositiveInteger(options.rpcTimeoutMs, "--rpc-timeout-ms"),
+      registryPath: options.registry,
+      thresholdsPath: options.thresholds
+    });
     writeReport(report, parseFormat(options.format));
   });
 
@@ -121,6 +161,14 @@ function parseFormat(format: string): OutputFormat {
   }
 
   throw new Error(`Unsupported format "${format}". Use "markdown" or "json".`);
+}
+
+function parsePositiveInteger(value: string, name: string): number {
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed <= 0) {
+    throw new Error(`${name} must be a positive integer.`);
+  }
+  return parsed;
 }
 
 function renderEipRegistry(registry: EipRegistry): string {

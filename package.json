@@ -1,10 +1,23 @@
 {
   "name": "glamsterdam-compat-lab",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Deterministic Glamsterdam compatibility scanners for Ethereum contracts, traces, indexers, and validator operators.",
   "type": "module",
   "license": "MIT",
   "private": false,
+  "packageManager": "pnpm@10.28.2",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CruzMolina/glamsterdam-compat-lab.git"
@@ -20,12 +33,19 @@
     "dist",
     "data",
     "fixtures",
+    "docs",
+    "examples",
     "README.md",
+    "ROADMAP.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
     "LICENSE"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "glamsterdam": "tsx src/cli.ts",
+    "pack:dry-run": "npm publish --dry-run",
+    "prepublishOnly": "pnpm test && pnpm build",
     "test": "vitest run",
     "test:update": "vitest run -u",
     "test:watch": "vitest",

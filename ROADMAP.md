@@ -25,12 +25,16 @@ Status: released as `v0.1.1`.
 
 ## Phase 1: Trace Replay Support
 
+Status: started in `v0.2.0`.
+
 Goal: make trace scanning useful for contract teams using common development tools.
 
 - Add Foundry, Hardhat, geth `structLogs`, Erigon-style action trace, and call-tracer fixtures
+- Add Besu and Nethermind-shaped trace fixtures
 - Normalize common call, opcode, gas, input, explicit log, and log opcode fields
 - Keep golden report snapshots for representative trace formats
-- Add optional RPC-based transaction trace fetching
+- Add RPC-based `debug_traceTransaction` fetching with `scan-tx`
+- Add default, research, and CI threshold profiles
 - Compare current baseline traces with Glamsterdam-aware client or fork configs when available
 
 ## Phase 2: Public Dataset

@@ -1,0 +1,18 @@
+{
+  "format": "besu-debug-structlogs-fixture-v0",
+  "source": "Synthetic fixture shaped like a Besu debug_traceTransaction structLogs response.",
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "gas": "0x33450",
+    "failed": false,
+    "returnValue": "0x",
+    "structLogs": [
+      { "pc": 0, "op": "PUSH1", "depth": 1, "gas": 210000, "gasCost": 3 },
+      { "pc": 2, "op": "SLOAD", "depth": 1, "gas": 209997, "gasCost": 100 },
+      { "pc": 3, "op": "SSTORE", "depth": 1, "gas": 209897, "gasCost": 2900 },
+      { "pc": 4, "op": "CALL", "depth": 2, "gas": 206997, "gasCost": 700, "calldataBytes": 256 },
+      { "pc": 5, "op": "LOG1", "depth": 1, "gas": 206297, "gasCost": 375 }
+    ]
+  }
+}

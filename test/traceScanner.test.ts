@@ -128,4 +128,19 @@ describe("scanTraceFile", () => {
     expect(report.findings.some((finding) => finding.id === "trace.calldata-heavy-execution")).toBe(true);
     expect(report.findings.some((finding) => finding.id === "trace.logs-calls-visible")).toBe(true);
   });
+
+  it("scans Besu-style debug structLogs fixtures", () => {
+    const fixture = resolve(rootDir, "fixtures/traces/besu-debug-structlogs.json");
+    const report = scanTraceFile(fixture);
+
+    expect(report.findings.some((finding) => finding.id === "trace.logs-calls-visible")).toBe(true);
+  });
+
+  it("scans Nethermind-style debug structLogs fixtures", () => {
+    const fixture = resolve(rootDir, "fixtures/traces/nethermind-debug-structlogs.json");
+    const report = scanTraceFile(fixture);
+
+    expect(report.findings.some((finding) => finding.id === "trace.calldata-heavy-execution")).toBe(true);
+    expect(report.findings.some((finding) => finding.id === "trace.contract-creation-executed")).toBe(true);
+  });
 });

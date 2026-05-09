@@ -1,9 +1,14 @@
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  fetchAndScanTransactionTrace,
   fetchDebugTraceTransaction,
   normalizeTxHash,
   parseDebugTraceMode,
   scanTransactionTrace,
+  writeFetchedTrace,
   type RpcFetch
 } from "../src/scanners/rpcTraceScanner.js";
 
@@ -89,6 +94,30 @@ describe("scanTransactionTrace", () => {
     expect(report.findings.some((finding) => finding.id === "trace.contract-creation-executed")).toBe(true);
     expect(report.findings.some((finding) => finding.id === "trace.logs-calls-visible")).toBe(true);
   });
+
+  it("returns the fetched trace when callers need to persist it", async () => {
+    const fetchImpl: RpcFetch = async () => jsonResponse({
+      jsonrpc: "2.0",
+      id: 1,
+      result: {
+        structLogs: [{ op: "SLOAD", depth: 1, gasCost: 100 }]
+      }
+    });
+
+    const result = await fetchAndScanTransactionTrace({
+      rpcUrl: "https://rpc.example.invalid",
+      txHash,
+      fetch: fetchImpl
+    });
+
+    expect(result.trace).toMatchObject({
+      jsonrpc: "2.0",
+      result: {
+        structLogs: [{ op: "SLOAD", depth: 1, gasCost: 100 }]
+      }
+    });
+    expect(result.report.target.name).toBe(`tx ${txHash}`);
+  });
 });
 
 describe("fetchDebugTraceTransaction", () => {
@@ -115,6 +144,22 @@ describe("fetchDebugTraceTransaction", () => {
     expect(parseDebugTraceMode("structLogs")).toBe("structLogs");
     expect(parseDebugTraceMode("callTracer")).toBe("callTracer");
     expect(() => parseDebugTraceMode("prestateTracer")).toThrow("Unsupported trace mode");
+  });
+});
+
+describe("writeFetchedTrace", () => {
+  it("writes formatted JSON and creates parent directories", () => {
+    const dir = mkdtempSync(join(tmpdir(), "glamsterdam-trace-"));
+    const tracePath = join(dir, "nested", "trace.json");
+
+    try {
+      const writtenPath = writeFetchedTrace({ result: { structLogs: [] } }, tracePath);
+
+      expect(writtenPath).toBe(tracePath);
+      expect(JSON.parse(readFileSync(tracePath, "utf8"))).toEqual({ result: { structLogs: [] } });
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 });
 

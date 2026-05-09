@@ -25,6 +25,7 @@ Useful anchors:
 ```sh
 pnpm install
 pnpm test
+pnpm test:integration # requires ETH_RPC_URL and ETH_RPC_TX_HASH or ETH_RPC_TX
 pnpm build
 pnpm glamsterdam eips
 pnpm glamsterdam scan-bytecode fixtures/bytecode/storage-heavy.hex
@@ -71,6 +72,7 @@ ETH_RPC_URL=https://your-execution-rpc.example \
   pnpm glamsterdam scan-tx \
   --tx 0x0000000000000000000000000000000000000000000000000000000000000000 \
   --tracer structLogs \
+  --trace-out traces/tx.json \
   --format markdown
 
 pnpm glamsterdam scan-tx \
@@ -82,6 +84,8 @@ pnpm glamsterdam scan-tx \
 
 RPC URLs are not included in report targets or evidence. Do not paste private RPC URLs or credentials into issues, fixtures, or reports.
 
+Use `--trace-out <path>` to save the fetched JSON-RPC trace response while also printing a compatibility report. This is the preferred way to turn a live RPC call into a reusable local fixture. Real-RPC integration tests are gated and skipped unless `ETH_RPC_URL` and `ETH_RPC_TX_HASH` or `ETH_RPC_TX` are set.
+
 `scan-indexer` parses JSON and YAML, including `subgraph.yaml`-style configs. It flags event-only indexing assumptions, missing fork/EIP compatibility metadata, missing replay or testnet plans, missing BAL review metadata, and native ETH transfer log readiness as heuristic findings.
 
 `scan-validator` parses JSON and YAML operator configs. It checks for execution, consensus, validator, builder/API, monitoring, and testnet/devnet metadata. It compares client names and versions against `data/client-compat/clients.example.json` or a user-provided matrix, but it does not guess compatibility.
@@ -92,7 +96,7 @@ Each scanner returns a `CompatibilityReport`:
 
 ```json
 {
-  "toolVersion": "0.2.0",
+  "toolVersion": "0.2.1",
   "fork": "glamsterdam",
   "target": {
     "kind": "bytecode",

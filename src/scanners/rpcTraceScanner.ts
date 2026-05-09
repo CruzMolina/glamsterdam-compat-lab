@@ -1,3 +1,5 @@
+import { mkdirSync, writeFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
 import { scanTrace, type TraceScanOptions } from "./traceScanner.js";
 import type { CompatibilityReport } from "../reports/reportTypes.js";
 
@@ -32,7 +34,29 @@ const defaultTraceTimeout = "30s";
 const defaultRpcTimeoutMs = 30_000;
 
 export async function scanTransactionTrace(options: ScanTransactionTraceOptions): Promise<CompatibilityReport> {
+  const { report } = await fetchAndScanTransactionTrace(options);
+  return report;
+}
+
+export interface ScannedTransactionTrace {
+  trace: JsonRpcEnvelope;
+  report: CompatibilityReport;
+}
+
+export async function fetchAndScanTransactionTrace(
+  options: ScanTransactionTraceOptions
+): Promise<ScannedTransactionTrace> {
   const traceEnvelope = await fetchDebugTraceTransaction(options);
+  return {
+    trace: traceEnvelope,
+    report: scanFetchedTransactionTrace(traceEnvelope, options)
+  };
+}
+
+export function scanFetchedTransactionTrace(
+  traceEnvelope: unknown,
+  options: TraceScanOptions & { txHash: string; tracer?: DebugTraceMode }
+): CompatibilityReport {
   const tracer = options.tracer ?? "structLogs";
   const report = scanTrace(traceEnvelope, {
     ...options,
@@ -51,6 +75,13 @@ export async function scanTransactionTrace(options: ScanTransactionTraceOptions)
       "The RPC URL is intentionally not included in the report target or evidence."
     ]
   };
+}
+
+export function writeFetchedTrace(traceEnvelope: unknown, traceOutPath: string): string {
+  const resolvedPath = resolve(process.cwd(), traceOutPath);
+  mkdirSync(dirname(resolvedPath), { recursive: true });
+  writeFileSync(resolvedPath, `${JSON.stringify(traceEnvelope, null, 2)}\n`, "utf8");
+  return resolvedPath;
 }
 
 export async function fetchDebugTraceTransaction(options: FetchDebugTraceOptions): Promise<JsonRpcEnvelope> {

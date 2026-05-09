@@ -17,7 +17,10 @@ Run these checks before publishing:
 pnpm test
 pnpm build
 pnpm pack:dry-run
+pnpm release:check-pack
 ```
+
+`pnpm release:check-pack` packs the current build, installs the tarball into a temporary global prefix, verifies the `glamsterdam` bin, and confirms the real public trace fixture is included.
 
 Confirm the package is not already published at the target version:
 

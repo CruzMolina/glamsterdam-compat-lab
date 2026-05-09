@@ -53,7 +53,6 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          registry-url: https://registry.npmjs.org
 
       - name: Show package tooling versions
         run: |
@@ -90,13 +89,19 @@ jobs:
         run: |
           if [ -n "${NPM_TOKEN:-}" ]; then
             export NODE_AUTH_TOKEN="$NPM_TOKEN"
+            export NPM_CONFIG_USERCONFIG="$RUNNER_TEMP/npm-publish.npmrc"
+            printf '%s\n' \
+              'registry=https://registry.npmjs.org/' \
+              '//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}' \
+              > "$NPM_CONFIG_USERCONFIG"
             echo "Using NPM_TOKEN fallback for npm dry-run publish."
           else
             unset NODE_AUTH_TOKEN
+            unset NPM_CONFIG_USERCONFIG
             echo "No NPM_TOKEN configured; relying on npm Trusted Publishing/OIDC for dry-run publish."
           fi
 
-          npm publish --access public --tag "$NPM_TAG" --provenance --dry-run
+          npm publish --registry=https://registry.npmjs.org/ --access public --tag "$NPM_TAG" --provenance --dry-run
 
       - name: Publish
         if: ${{ inputs.dry_run != 'true' }}
@@ -106,10 +111,16 @@ jobs:
         run: |
           if [ -n "${NPM_TOKEN:-}" ]; then
             export NODE_AUTH_TOKEN="$NPM_TOKEN"
+            export NPM_CONFIG_USERCONFIG="$RUNNER_TEMP/npm-publish.npmrc"
+            printf '%s\n' \
+              'registry=https://registry.npmjs.org/' \
+              '//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}' \
+              > "$NPM_CONFIG_USERCONFIG"
             echo "Using NPM_TOKEN fallback for npm publish."
           else
             unset NODE_AUTH_TOKEN
+            unset NPM_CONFIG_USERCONFIG
             echo "No NPM_TOKEN configured; relying on npm Trusted Publishing/OIDC for publish."
           fi
 
-          npm publish --access public --tag "$NPM_TAG" --provenance
+          npm publish --registry=https://registry.npmjs.org/ --access public --tag "$NPM_TAG" --provenance

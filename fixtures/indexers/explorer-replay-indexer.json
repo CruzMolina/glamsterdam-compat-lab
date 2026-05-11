@@ -1,0 +1,64 @@
+{
+  "name": "example-explorer-replay-indexer",
+  "description": "Safe real-world-shaped explorer/indexer fixture with event, call, block, replay, and fork-readiness metadata.",
+  "network": {
+    "name": "example-mainnet-shadow",
+    "chainId": 1,
+    "startBlock": 19000000
+  },
+  "dataSources": [
+    {
+      "kind": "ethereum/contract",
+      "name": "ExampleVault",
+      "source": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "abi": "ExampleVault",
+        "startBlock": 19000000
+      },
+      "mapping": {
+        "eventHandlers": [
+          {
+            "event": "Deposit(indexed address,uint256)",
+            "handler": "handleDeposit"
+          },
+          {
+            "event": "Withdraw(indexed address,uint256)",
+            "handler": "handleWithdraw"
+          }
+        ],
+        "callHandlers": [
+          {
+            "function": "syncAccount(address)",
+            "handler": "handleSyncAccountCall"
+          }
+        ],
+        "blockHandlers": [
+          {
+            "handler": "handleBlockCheckpoint",
+            "filter": {
+              "kind": "polling",
+              "every": 25
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "pipeline": {
+    "nativeEthTransfers": {
+      "source": "logs-and-balance-diff",
+      "description": "Native ETH transfer handling combines EIP-7708 logs when present with a balance-diff fallback for historical replay."
+    },
+    "blockLevelAccessLists": {
+      "source": "block-body-sidecar",
+      "description": "BAL / EIP-7928 metadata is stored with block summaries and replayed through the explorer ingestion pipeline."
+    }
+  },
+  "compatibility": {
+    "glamsterdam": {
+      "reviewedEips": ["EIP-7708", "EIP-7928"],
+      "replayPlan": "Replay the last 100000 mainnet blocks plus a Glamsterdam devnet sample before changing production handlers.",
+      "ownerNotes": "All endpoints and project names are placeholders; this fixture models public-safe config shape only."
+    }
+  }
+}

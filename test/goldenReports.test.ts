@@ -4,7 +4,9 @@ import { describe, expect, it } from "vitest";
 import { renderJsonReport } from "../src/reports/jsonReporter.js";
 import { renderMarkdownReport } from "../src/reports/markdownReporter.js";
 import { scanBytecode } from "../src/scanners/bytecodeScanner.js";
+import { scanIndexer } from "../src/scanners/indexerScanner.js";
 import { scanTraceFile } from "../src/scanners/traceScanner.js";
+import { scanValidatorConfig } from "../src/scanners/validatorScanner.js";
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -59,6 +61,27 @@ describe("golden report snapshots", () => {
 
   it("keeps real dRPC call-tracer JSON report structure stable", () => {
     expectTraceJsonSnapshot("drpc-call-tracer-real.json");
+  });
+
+  it("keeps mixed explorer indexer JSON report structure stable", () => {
+    const targetName = "fixtures/indexers/explorer-replay-indexer.json";
+    const report = scanIndexer(resolve(rootDir, targetName), { targetName });
+
+    expect(renderJsonReport(report)).toMatchSnapshot();
+  });
+
+  it("keeps complete validator config JSON report structure stable", () => {
+    const targetName = "fixtures/validator/operator-config-complete.yaml";
+    const report = scanValidatorConfig(resolve(rootDir, targetName), { targetName });
+
+    expect(renderJsonReport(report)).toMatchSnapshot();
+  });
+
+  it("keeps validator builder-gap JSON report structure stable", () => {
+    const targetName = "fixtures/validator/operator-config-builder-gap.yaml";
+    const report = scanValidatorConfig(resolve(rootDir, targetName), { targetName });
+
+    expect(renderJsonReport(report)).toMatchSnapshot();
   });
 });
 

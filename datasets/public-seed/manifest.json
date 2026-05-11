@@ -61,6 +61,17 @@
       ]
     },
     {
+      "sourceFixture": "fixtures/indexers/explorer-replay-indexer.json",
+      "fixtureKind": "indexer",
+      "thresholdProfile": "default",
+      "report": "reports/indexers-explorer-replay-indexer--default.json",
+      "risk": "medium",
+      "findingCount": 1,
+      "findingIds": [
+        "indexer.balance-diff-native-transfer-assumption"
+      ]
+    },
+    {
       "sourceFixture": "fixtures/indexers/subgraph.yaml",
       "fixtureKind": "indexer",
       "thresholdProfile": "default",
@@ -359,6 +370,28 @@
         "trace.logs-calls-visible",
         "trace.partial-evidence"
       ]
+    },
+    {
+      "sourceFixture": "fixtures/validator/operator-config-builder-gap.yaml",
+      "fixtureKind": "validator",
+      "thresholdProfile": "default",
+      "report": "reports/validator-operator-config-builder-gap--default.json",
+      "risk": "medium",
+      "findingCount": 3,
+      "findingIds": [
+        "validator.builder-enabled-without-endpoint",
+        "validator.missing-monitoring-endpoints",
+        "validator.missing-testnet-participation"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/validator/operator-config-complete.yaml",
+      "fixtureKind": "validator",
+      "thresholdProfile": "default",
+      "report": "reports/validator-operator-config-complete--default.json",
+      "risk": "low",
+      "findingCount": 0,
+      "findingIds": []
     },
     {
       "sourceFixture": "fixtures/validator/operator-config.yaml",

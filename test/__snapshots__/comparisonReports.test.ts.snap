@@ -1,0 +1,266 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`comparison reports > renders stable JSON comparison output 1`] = `
+"{
+  "toolVersion": "0.2.2",
+  "fork": "glamsterdam",
+  "comparison": {
+    "baseline": {
+      "toolVersion": "0.2.2",
+      "fork": "glamsterdam",
+      "target": {
+        "kind": "trace",
+        "name": "fixtures/traces/profile-default.json"
+      },
+      "summary": {
+        "risk": "medium",
+        "findingCount": 4,
+        "highCount": 0,
+        "mediumCount": 2,
+        "lowCount": 1,
+        "unknownCount": 1
+      }
+    },
+    "candidate": {
+      "toolVersion": "0.2.2",
+      "fork": "glamsterdam",
+      "target": {
+        "kind": "trace",
+        "name": "fixtures/traces/profile-research.json"
+      },
+      "summary": {
+        "risk": "high",
+        "findingCount": 4,
+        "highCount": 1,
+        "mediumCount": 1,
+        "lowCount": 1,
+        "unknownCount": 1
+      }
+    }
+  },
+  "summary": {
+    "riskChange": {
+      "from": "medium",
+      "to": "high",
+      "direction": "increased"
+    },
+    "findingCount": {
+      "baseline": 4,
+      "candidate": 4,
+      "delta": 0
+    },
+    "addedCount": 1,
+    "removedCount": 1,
+    "changedCount": 2,
+    "unchangedCount": 1,
+    "severityIncreasedCount": 1,
+    "severityDecreasedCount": 0,
+    "severityChangedCount": 0,
+    "confidenceIncreasedCount": 1,
+    "confidenceDecreasedCount": 0,
+    "confidenceChangedCount": 0
+  },
+  "changes": {
+    "added": [
+      {
+        "key": "trace.logs-calls-visible",
+        "id": "trace.logs-calls-visible",
+        "title": "Trace includes logs or external calls",
+        "severity": "low",
+        "confidence": "high",
+        "domain": [
+          "contracts",
+          "indexer",
+          "monitoring"
+        ],
+        "relatedEips": [
+          "EIP-7708",
+          "EIP-7928"
+        ]
+      }
+    ],
+    "removed": [
+      {
+        "key": "trace.calldata-heavy-execution",
+        "id": "trace.calldata-heavy-execution",
+        "title": "Trace includes calldata-heavy execution",
+        "severity": "low",
+        "confidence": "medium",
+        "domain": [
+          "contracts",
+          "execution"
+        ],
+        "relatedEips": [
+          "EIP-7976"
+        ]
+      }
+    ],
+    "changed": [
+      {
+        "key": "trace.partial-evidence",
+        "id": "trace.partial-evidence",
+        "changedFields": [
+          "confidence"
+        ],
+        "baseline": {
+          "key": "trace.partial-evidence",
+          "id": "trace.partial-evidence",
+          "title": "Trace omits some useful compatibility evidence",
+          "severity": "unknown",
+          "confidence": "low",
+          "domain": [
+            "contracts",
+            "execution"
+          ],
+          "relatedEips": [
+            "GAS-REPRICING",
+            "EIP-7976"
+          ]
+        },
+        "candidate": {
+          "key": "trace.partial-evidence",
+          "id": "trace.partial-evidence",
+          "title": "Trace omits some useful compatibility evidence",
+          "severity": "unknown",
+          "confidence": "medium",
+          "domain": [
+            "contracts",
+            "execution"
+          ],
+          "relatedEips": [
+            "GAS-REPRICING",
+            "EIP-7976"
+          ]
+        },
+        "confidenceChange": {
+          "from": "low",
+          "to": "medium",
+          "direction": "increased"
+        }
+      },
+      {
+        "key": "trace.state-heavy-execution",
+        "id": "trace.state-heavy-execution",
+        "changedFields": [
+          "severity",
+          "description",
+          "recommendation"
+        ],
+        "baseline": {
+          "key": "trace.state-heavy-execution",
+          "id": "trace.state-heavy-execution",
+          "title": "Trace is near the state-heavy review threshold",
+          "severity": "medium",
+          "confidence": "high",
+          "domain": [
+            "contracts",
+            "execution"
+          ],
+          "relatedEips": [
+            "GAS-REPRICING",
+            "EIP-8038"
+          ]
+        },
+        "candidate": {
+          "key": "trace.state-heavy-execution",
+          "id": "trace.state-heavy-execution",
+          "title": "Trace is near the state-heavy review threshold",
+          "severity": "high",
+          "confidence": "high",
+          "domain": [
+            "contracts",
+            "execution"
+          ],
+          "relatedEips": [
+            "GAS-REPRICING",
+            "EIP-8038"
+          ]
+        },
+        "severityChange": {
+          "from": "medium",
+          "to": "high",
+          "direction": "increased"
+        }
+      }
+    ],
+    "unchanged": [
+      {
+        "key": "trace.contract-creation-executed",
+        "id": "trace.contract-creation-executed",
+        "title": "Trace executes contract creation",
+        "severity": "medium",
+        "confidence": "high",
+        "domain": [
+          "contracts",
+          "execution"
+        ],
+        "relatedEips": [
+          "EIP-8037"
+        ]
+      }
+    ]
+  },
+  "assumptions": [
+    "Reports were compared by finding id. Repeated finding ids are disambiguated with deterministic occurrence suffixes.",
+    "Severity and confidence changes are structural report changes, not protocol gas estimates."
+  ],
+  "limitations": [
+    "The comparison does not infer exact gas deltas, final Glamsterdam parameters, or current-vs-Glamsterdam client behavior unless those values are already present in the input reports.",
+    "Added and removed findings can reflect threshold profile differences, fixture coverage changes, registry updates, or detector changes; review the source reports before treating a diff as a protocol risk change."
+  ]
+}
+"
+`;
+
+exports[`comparison reports > renders stable Markdown comparison output 1`] = `
+"# Glamsterdam Compatibility Comparison
+
+Baseline: trace fixtures/traces/profile-default.json (medium risk, 4 findings)
+Candidate: trace fixtures/traces/profile-research.json (high risk, 4 findings)
+Tool version: 0.2.2
+Fork registry: glamsterdam
+
+## Summary
+
+Overall risk: MEDIUM -> HIGH (increased)
+Findings: 4 baseline, 4 candidate, delta 0
+Changes: 1 added, 1 removed, 2 changed, 1 unchanged
+Severity changes: 1 increased, 0 decreased, 0 changed
+Confidence changes: 1 increased, 0 decreased, 0 changed
+
+## Added Findings
+
+- trace.logs-calls-visible: Trace includes logs or external calls (LOW, confidence high)
+
+## Removed Findings
+
+- trace.calldata-heavy-execution: Trace includes calldata-heavy execution (LOW, confidence medium)
+
+## Changed Findings
+
+### 1. trace.partial-evidence: Trace omits some useful compatibility evidence
+
+Changed fields: confidence
+Confidence: low -> medium (increased)
+
+### 2. trace.state-heavy-execution: Trace is near the state-heavy review threshold
+
+Changed fields: severity, description, recommendation
+Severity: MEDIUM -> HIGH (increased)
+
+## Unchanged Findings
+
+- trace.contract-creation-executed: Trace executes contract creation (MEDIUM, confidence high)
+
+## Assumptions
+
+- Reports were compared by finding id. Repeated finding ids are disambiguated with deterministic occurrence suffixes.
+- Severity and confidence changes are structural report changes, not protocol gas estimates.
+
+## Limitations
+
+- The comparison does not infer exact gas deltas, final Glamsterdam parameters, or current-vs-Glamsterdam client behavior unless those values are already present in the input reports.
+- Added and removed findings can reflect threshold profile differences, fixture coverage changes, registry updates, or detector changes; review the source reports before treating a diff as a protocol risk change.
+
+"
+`;

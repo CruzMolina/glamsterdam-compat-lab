@@ -5,8 +5,11 @@ import {
   combineReports,
   defaultClientMatrixPath,
   defaultThresholdsPath,
+  compareCompatibilityReports,
   loadEipRegistry,
+  renderJsonComparisonReport,
   renderJsonReport,
+  renderMarkdownComparisonReport,
   renderMarkdownReport,
   scanBytecode,
   scanIndexer,
@@ -15,6 +18,7 @@ import {
   validateCompatibilityReport,
   fetchAndScanTransactionTrace,
   writeFetchedTrace,
+  type ComparisonReport,
   type CompatibilityReport
 } from "./index.js";
 import type { EipRegistry } from "./registry/schemas.js";
@@ -151,6 +155,20 @@ program
     writeReport(combineReports(parsedReports), parseFormat(options.format));
   });
 
+program
+  .command("compare-reports")
+  .alias("compare")
+  .argument("<baseline-report>", "Baseline JSON report generated with --format json")
+  .argument("<candidate-report>", "Candidate JSON report generated with --format json")
+  .option("--format <format>", "Output format: markdown or json", "markdown")
+  .description("Compare two saved JSON compatibility reports")
+  .action((baselineReport: string, candidateReport: string, options: { format: string }) => {
+    const baseline = validateCompatibilityReport(JSON.parse(readFileSync(baselineReport, "utf8")));
+    const candidate = validateCompatibilityReport(JSON.parse(readFileSync(candidateReport, "utf8")));
+    const comparison = compareCompatibilityReports(baseline, candidate);
+    writeComparisonReport(comparison, parseFormat(options.format));
+  });
+
 program.parseAsync(process.argv).catch((error: unknown) => {
   const message = error instanceof Error ? error.message : String(error);
   process.stderr.write(`Error: ${message}\n`);
@@ -159,6 +177,10 @@ program.parseAsync(process.argv).catch((error: unknown) => {
 
 function writeReport(report: CompatibilityReport, format: OutputFormat): void {
   process.stdout.write(format === "json" ? renderJsonReport(report) : renderMarkdownReport(report));
+}
+
+function writeComparisonReport(report: ComparisonReport, format: OutputFormat): void {
+  process.stdout.write(format === "json" ? renderJsonComparisonReport(report) : renderMarkdownComparisonReport(report));
 }
 
 function parseFormat(format: string): OutputFormat {

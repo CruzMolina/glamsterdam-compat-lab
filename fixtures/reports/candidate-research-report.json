@@ -1,0 +1,68 @@
+{
+  "toolVersion": "0.2.2",
+  "fork": "glamsterdam",
+  "target": {
+    "kind": "trace",
+    "name": "fixtures/traces/profile-research.json"
+  },
+  "summary": {
+    "risk": "high",
+    "findingCount": 4,
+    "highCount": 1,
+    "mediumCount": 1,
+    "lowCount": 1,
+    "unknownCount": 1
+  },
+  "findings": [
+    {
+      "id": "trace.state-heavy-execution",
+      "title": "Trace is near the state-heavy review threshold",
+      "severity": "high",
+      "confidence": "high",
+      "domain": ["contracts", "execution"],
+      "relatedEips": ["GAS-REPRICING", "EIP-8038"],
+      "description": "The research profile flags storage and account access as a high review prompt.",
+      "evidence": [{ "storageOps": 12, "sensitiveOpcodeCount": 22 }],
+      "recommendation": "Replay representative transactions under a more sensitive research threshold profile."
+    },
+    {
+      "id": "trace.partial-evidence",
+      "title": "Trace omits some useful compatibility evidence",
+      "severity": "unknown",
+      "confidence": "medium",
+      "domain": ["contracts", "execution"],
+      "relatedEips": ["GAS-REPRICING", "EIP-7976"],
+      "description": "The trace was usable, but some formats omit calldata byte counts or per-op gas costs.",
+      "evidence": [{ "hasCalldataEvidence": true, "hasGasCostEvidence": false }],
+      "recommendation": "Prefer traces with calldata sizes and gas costs when available."
+    },
+    {
+      "id": "trace.logs-calls-visible",
+      "title": "Trace includes logs or external calls",
+      "severity": "low",
+      "confidence": "high",
+      "domain": ["contracts", "indexer", "monitoring"],
+      "relatedEips": ["EIP-7708", "EIP-7928"],
+      "description": "The trace includes log or call activity relevant to indexer and monitoring assumptions.",
+      "evidence": [{ "logOps": 1, "callOps": 2 }],
+      "recommendation": "Keep log and call activity in replay fixtures."
+    },
+    {
+      "id": "trace.contract-creation-executed",
+      "title": "Trace executes contract creation",
+      "severity": "medium",
+      "confidence": "high",
+      "domain": ["contracts", "execution"],
+      "relatedEips": ["EIP-8037"],
+      "description": "The trace includes CREATE or CREATE2 execution.",
+      "evidence": [{ "CREATE": 1, "CREATE2": 0 }],
+      "recommendation": "Replay deployment paths against fork configurations when available."
+    }
+  ],
+  "assumptions": [
+    "Candidate report uses the research threshold profile."
+  ],
+  "limitations": [
+    "The report contains compatibility prompts, not gas estimates."
+  ]
+}

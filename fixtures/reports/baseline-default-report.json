@@ -1,0 +1,68 @@
+{
+  "toolVersion": "0.2.2",
+  "fork": "glamsterdam",
+  "target": {
+    "kind": "trace",
+    "name": "fixtures/traces/profile-default.json"
+  },
+  "summary": {
+    "risk": "medium",
+    "findingCount": 4,
+    "highCount": 0,
+    "mediumCount": 2,
+    "lowCount": 1,
+    "unknownCount": 1
+  },
+  "findings": [
+    {
+      "id": "trace.state-heavy-execution",
+      "title": "Trace is near the state-heavy review threshold",
+      "severity": "medium",
+      "confidence": "high",
+      "domain": ["contracts", "execution"],
+      "relatedEips": ["GAS-REPRICING", "EIP-8038"],
+      "description": "The baseline profile flags storage and account access as a medium review prompt.",
+      "evidence": [{ "storageOps": 12, "sensitiveOpcodeCount": 22 }],
+      "recommendation": "Replay representative transactions under the default threshold profile."
+    },
+    {
+      "id": "trace.partial-evidence",
+      "title": "Trace omits some useful compatibility evidence",
+      "severity": "unknown",
+      "confidence": "low",
+      "domain": ["contracts", "execution"],
+      "relatedEips": ["GAS-REPRICING", "EIP-7976"],
+      "description": "The trace was usable, but some formats omit calldata byte counts or per-op gas costs.",
+      "evidence": [{ "hasCalldataEvidence": true, "hasGasCostEvidence": false }],
+      "recommendation": "Prefer traces with calldata sizes and gas costs when available."
+    },
+    {
+      "id": "trace.calldata-heavy-execution",
+      "title": "Trace includes calldata-heavy execution",
+      "severity": "low",
+      "confidence": "medium",
+      "domain": ["contracts", "execution"],
+      "relatedEips": ["EIP-7976"],
+      "description": "The default profile records calldata exposure as an informational prompt.",
+      "evidence": [{ "calldataBytes": 2048 }],
+      "recommendation": "Keep calldata-heavy calls in replay fixtures."
+    },
+    {
+      "id": "trace.contract-creation-executed",
+      "title": "Trace executes contract creation",
+      "severity": "medium",
+      "confidence": "high",
+      "domain": ["contracts", "execution"],
+      "relatedEips": ["EIP-8037"],
+      "description": "The trace includes CREATE or CREATE2 execution.",
+      "evidence": [{ "CREATE": 1, "CREATE2": 0 }],
+      "recommendation": "Replay deployment paths against fork configurations when available."
+    }
+  ],
+  "assumptions": [
+    "Baseline report uses the default threshold profile."
+  ],
+  "limitations": [
+    "The report contains compatibility prompts, not gas estimates."
+  ]
+}

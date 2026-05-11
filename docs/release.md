@@ -23,6 +23,8 @@ pnpm release:check-pack
 
 `pnpm release:check-pack` packs the current build, installs the tarball into a temporary global prefix, verifies the `glamsterdam` bin, and confirms the real public trace fixture is included.
 
+`pnpm pack:dry-run` runs `npm publish --dry-run`. If the current package version is already published on npm, the helper treats npm's previously-published version response as a version-state signal after local publish checks have run.
+
 Confirm the package state for the target version. A new release version should not already be published:
 
 ```sh

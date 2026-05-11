@@ -60,6 +60,7 @@ ETH_RPC_URL=https://your-execution-rpc.example pnpm glamsterdam scan-tx --tx 0x0
 pnpm glamsterdam scan-indexer fixtures/indexers/subgraph.yaml --format markdown
 pnpm glamsterdam scan-validator --config fixtures/validator/operator-config.yaml --format markdown
 pnpm glamsterdam report report-a.json report-b.json --format markdown
+pnpm glamsterdam compare-reports baseline-report.json candidate-report.json --format markdown
 ```
 
 Each scanner accepts `--registry <path>` and `--thresholds <path>` so EIP metadata and detector thresholds can be updated without editing detector code.
@@ -107,6 +108,8 @@ Use `--trace-out <path>` to save the fetched JSON-RPC trace response while also 
 
 `scan-validator` parses JSON and YAML operator configs. It checks for execution, consensus, validator, builder/API, monitoring, and testnet/devnet metadata. It compares client names and versions against `data/client-compat/clients.example.json` or a user-provided matrix, but it does not guess compatibility.
 
+`compare-reports` accepts two saved JSON compatibility reports and emits deterministic JSON or Markdown deltas. It compares findings by stable finding ID, reports findings added, removed, changed, and unchanged, and highlights severity and confidence changes. It does not invent exact gas deltas; those must come from explicit input data or future client outputs.
+
 ## Report model
 
 Each scanner returns a `CompatibilityReport`:
@@ -145,6 +148,20 @@ Confidence means:
 - `high`: direct evidence from the input
 - `medium`: strong heuristic
 - `low`: weak heuristic or incomplete input
+
+Comparison reports include baseline and candidate report references, risk and finding-count deltas, added/removed/changed/unchanged finding lists, and comparison assumptions and limitations. This supports workflows such as comparing default, research, and CI threshold-profile outputs:
+
+```sh
+pnpm glamsterdam scan-traces fixtures/traces/storage-heavy-trace.json \
+  --thresholds data/detectors/thresholds.json \
+  --format json > default-report.json
+
+pnpm glamsterdam scan-traces fixtures/traces/storage-heavy-trace.json \
+  --thresholds data/detectors/thresholds.research.json \
+  --format json > research-report.json
+
+pnpm glamsterdam compare-reports default-report.json research-report.json --format markdown
+```
 
 ## Updating the EIP registry
 

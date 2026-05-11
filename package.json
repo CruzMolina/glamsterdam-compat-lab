@@ -44,7 +44,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "glamsterdam": "tsx src/cli.ts",
-    "pack:dry-run": "npm publish --dry-run",
+    "pack:dry-run": "node scripts/pack-dry-run.mjs",
     "prepublishOnly": "pnpm test && pnpm build",
     "release:check-pack": "node scripts/check-packed-install.mjs",
     "release:check-npm": "node scripts/check-npm-release.mjs",

@@ -44,9 +44,10 @@ Target release: `v0.3.0`.
 
 Goal: compare compatibility reports across profiles and, later, across current-client and Glamsterdam-aware traces.
 
+- Add `compare-reports` for deterministic JSON and Markdown report comparisons
 - Compare one trace against multiple threshold profiles
-- Emit report deltas for findings added, removed, or changed in severity
-- Keep comparisons deterministic and JSON-friendly
+- Emit report deltas for findings added, removed, or changed in severity or confidence
+- Keep comparisons deterministic and JSON-friendly with golden fixtures and snapshots
 - Defer fork-specific gas deltas until they are present in explicit data files or client configs
 
 ## Phase 2: Public Dataset

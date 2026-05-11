@@ -58,12 +58,106 @@ export const compatibilityReportSchema = z.object({
   limitations: z.array(z.string()).default([])
 });
 
+export const comparisonDirectionSchema = z.enum(["unchanged", "increased", "decreased", "changed"]);
+export const comparisonFieldSchema = z.enum([
+  "title",
+  "severity",
+  "confidence",
+  "domain",
+  "relatedEips",
+  "description",
+  "evidence",
+  "recommendation"
+]);
+
+export const comparisonReportReferenceSchema = z.object({
+  toolVersion: z.string().min(1),
+  fork: z.string().min(1),
+  target: z.object({
+    kind: targetKindSchema,
+    name: z.string().min(1)
+  }),
+  summary: reportSummarySchema
+});
+
+export const comparisonFindingReferenceSchema = z.object({
+  key: z.string().min(1),
+  id: z.string().min(1),
+  title: z.string().min(1),
+  severity: severitySchema,
+  confidence: confidenceSchema,
+  domain: z.array(reportDomainSchema).min(1),
+  relatedEips: z.array(z.string()).default([])
+});
+
+export const severityChangeSchema = z.object({
+  from: severitySchema,
+  to: severitySchema,
+  direction: comparisonDirectionSchema
+});
+
+export const confidenceChangeSchema = z.object({
+  from: confidenceSchema,
+  to: confidenceSchema,
+  direction: comparisonDirectionSchema
+});
+
+export const changedFindingSchema = z.object({
+  key: z.string().min(1),
+  id: z.string().min(1),
+  changedFields: z.array(comparisonFieldSchema).min(1),
+  baseline: comparisonFindingReferenceSchema,
+  candidate: comparisonFindingReferenceSchema,
+  severityChange: severityChangeSchema.optional(),
+  confidenceChange: confidenceChangeSchema.optional()
+});
+
+export const comparisonReportSchema = z.object({
+  toolVersion: z.string().min(1),
+  fork: z.string().min(1),
+  comparison: z.object({
+    baseline: comparisonReportReferenceSchema,
+    candidate: comparisonReportReferenceSchema
+  }),
+  summary: z.object({
+    riskChange: severityChangeSchema,
+    findingCount: z.object({
+      baseline: z.number().int().nonnegative(),
+      candidate: z.number().int().nonnegative(),
+      delta: z.number().int()
+    }),
+    addedCount: z.number().int().nonnegative(),
+    removedCount: z.number().int().nonnegative(),
+    changedCount: z.number().int().nonnegative(),
+    unchangedCount: z.number().int().nonnegative(),
+    severityIncreasedCount: z.number().int().nonnegative(),
+    severityDecreasedCount: z.number().int().nonnegative(),
+    severityChangedCount: z.number().int().nonnegative(),
+    confidenceIncreasedCount: z.number().int().nonnegative(),
+    confidenceDecreasedCount: z.number().int().nonnegative(),
+    confidenceChangedCount: z.number().int().nonnegative()
+  }),
+  changes: z.object({
+    added: z.array(comparisonFindingReferenceSchema),
+    removed: z.array(comparisonFindingReferenceSchema),
+    changed: z.array(changedFindingSchema),
+    unchanged: z.array(comparisonFindingReferenceSchema)
+  }),
+  assumptions: z.array(z.string()).default([]),
+  limitations: z.array(z.string()).default([])
+});
+
 export type Severity = z.infer<typeof severitySchema>;
 export type Confidence = z.infer<typeof confidenceSchema>;
 export type ReportDomain = z.infer<typeof reportDomainSchema>;
 export type TargetKind = z.infer<typeof targetKindSchema>;
 export type CompatibilityFinding = z.infer<typeof findingSchema>;
 export type CompatibilityReport = z.infer<typeof compatibilityReportSchema>;
+export type ComparisonDirection = z.infer<typeof comparisonDirectionSchema>;
+export type ComparisonField = z.infer<typeof comparisonFieldSchema>;
+export type ComparisonFindingReference = z.infer<typeof comparisonFindingReferenceSchema>;
+export type ChangedFinding = z.infer<typeof changedFindingSchema>;
+export type ComparisonReport = z.infer<typeof comparisonReportSchema>;
 
 export interface MakeReportInput {
   fork?: string;
@@ -112,6 +206,10 @@ export function makeReport(input: MakeReportInput): CompatibilityReport {
 
 export function validateCompatibilityReport(value: unknown): CompatibilityReport {
   return compatibilityReportSchema.parse(value);
+}
+
+export function validateComparisonReport(value: unknown): ComparisonReport {
+  return comparisonReportSchema.parse(value);
 }
 
 export function combineReports(reports: CompatibilityReport[]): CompatibilityReport {

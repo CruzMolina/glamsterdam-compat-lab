@@ -136,12 +136,30 @@ describe("scanTraceFile", () => {
     expect(report.findings.some((finding) => finding.id === "trace.logs-calls-visible")).toBe(true);
   });
 
+  it("scans a real public Besu structLogs fixture from Tracoor", () => {
+    const fixture = resolve(rootDir, "fixtures/traces/besu-mainnet-tracoor-debug-structlogs.json");
+    const report = scanTraceFile(fixture);
+
+    expect(report.findings.some((finding) => finding.id === "trace.state-heavy-execution-medium")).toBe(true);
+    expect(report.findings.some((finding) => finding.id === "trace.calldata-heavy-execution")).toBe(true);
+    expect(report.findings.some((finding) => finding.id === "trace.logs-calls-visible")).toBe(true);
+  });
+
   it("scans Nethermind-style debug structLogs fixtures", () => {
     const fixture = resolve(rootDir, "fixtures/traces/nethermind-debug-structlogs.json");
     const report = scanTraceFile(fixture);
 
     expect(report.findings.some((finding) => finding.id === "trace.calldata-heavy-execution")).toBe(true);
     expect(report.findings.some((finding) => finding.id === "trace.contract-creation-executed")).toBe(true);
+  });
+
+  it("scans a real public Nethermind structLogs fixture from Tracoor", () => {
+    const fixture = resolve(rootDir, "fixtures/traces/nethermind-mainnet-tracoor-debug-structlogs.json");
+    const report = scanTraceFile(fixture);
+
+    expect(report.findings.some((finding) => finding.id === "trace.state-heavy-execution-medium")).toBe(true);
+    expect(report.findings.some((finding) => finding.id === "trace.calldata-heavy-execution")).toBe(true);
+    expect(report.findings.some((finding) => finding.id === "trace.logs-calls-visible")).toBe(true);
   });
 
   it("scans a real public dRPC callTracer fixture captured with scan-tx", () => {

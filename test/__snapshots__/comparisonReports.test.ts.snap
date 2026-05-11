@@ -2,11 +2,11 @@
 
 exports[`comparison reports > renders stable JSON comparison output 1`] = `
 "{
-  "toolVersion": "0.2.2",
+  "toolVersion": "0.3.0",
   "fork": "glamsterdam",
   "comparison": {
     "baseline": {
-      "toolVersion": "0.2.2",
+      "toolVersion": "0.3.0",
       "fork": "glamsterdam",
       "target": {
         "kind": "trace",
@@ -22,7 +22,7 @@ exports[`comparison reports > renders stable JSON comparison output 1`] = `
       }
     },
     "candidate": {
-      "toolVersion": "0.2.2",
+      "toolVersion": "0.3.0",
       "fork": "glamsterdam",
       "target": {
         "kind": "trace",
@@ -217,7 +217,7 @@ exports[`comparison reports > renders stable Markdown comparison output 1`] = `
 
 Baseline: trace fixtures/traces/profile-default.json (medium risk, 4 findings)
 Candidate: trace fixtures/traces/profile-research.json (high risk, 4 findings)
-Tool version: 0.2.2
+Tool version: 0.3.0
 Fork registry: glamsterdam
 
 ## Summary

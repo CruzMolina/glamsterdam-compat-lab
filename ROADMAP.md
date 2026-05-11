@@ -52,7 +52,7 @@ Goal: compare compatibility reports across profiles and, later, across current-c
 
 ## Phase 2: Public Dataset
 
-Status: seeded after `v0.3.0`.
+Status: seeded after `v0.3.0`; expanded with public-safe trace, indexer, and validator fixture coverage in `v0.3.1`.
 
 Goal: publish reproducible compatibility research.
 

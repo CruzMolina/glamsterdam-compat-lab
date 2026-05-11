@@ -1,0 +1,441 @@
+{
+  "schemaVersion": 1,
+  "name": "public-seed",
+  "lastUpdated": "2026-05-11",
+  "description": "Deterministic seed dataset generated from safe-to-publish fixture inputs and threshold-profile comparisons.",
+  "toolVersion": "0.3.0",
+  "sourceManifest": "fixtures/provenance.json",
+  "thresholdProfiles": [
+    {
+      "name": "default",
+      "path": "data/detectors/thresholds.json"
+    },
+    {
+      "name": "research",
+      "path": "data/detectors/thresholds.research.json"
+    }
+  ],
+  "reports": [
+    {
+      "sourceFixture": "fixtures/bytecode/storage-heavy.hex",
+      "fixtureKind": "bytecode",
+      "thresholdProfile": "default",
+      "report": "reports/bytecode-storage-heavy--default.json",
+      "risk": "medium",
+      "findingCount": 6,
+      "findingIds": [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.contract-creation-opcodes",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/bytecode/storage-heavy.hex",
+      "fixtureKind": "bytecode",
+      "thresholdProfile": "research",
+      "report": "reports/bytecode-storage-heavy--research.json",
+      "risk": "medium",
+      "findingCount": 6,
+      "findingIds": [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.contract-creation-opcodes",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/indexers/balance-diff-indexer.json",
+      "fixtureKind": "indexer",
+      "thresholdProfile": "default",
+      "report": "reports/indexers-balance-diff-indexer--default.json",
+      "risk": "medium",
+      "findingCount": 2,
+      "findingIds": [
+        "indexer.balance-diff-native-transfer-assumption",
+        "indexer.missing-bal-readiness-metadata"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/indexers/subgraph.yaml",
+      "fixtureKind": "indexer",
+      "thresholdProfile": "default",
+      "report": "reports/indexers-subgraph--default.json",
+      "risk": "medium",
+      "findingCount": 5,
+      "findingIds": [
+        "indexer.event-only-assumption",
+        "indexer.native-eth-transfer-review-missing",
+        "indexer.missing-bal-readiness-metadata",
+        "indexer.missing-fork-compatibility-metadata",
+        "indexer.missing-replay-plan"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/besu-debug-structlogs.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "default",
+      "report": "reports/traces-besu-debug-structlogs--default.json",
+      "risk": "low",
+      "findingCount": 1,
+      "findingIds": [
+        "trace.logs-calls-visible"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/besu-debug-structlogs.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "research",
+      "report": "reports/traces-besu-debug-structlogs--research.json",
+      "risk": "low",
+      "findingCount": 1,
+      "findingIds": [
+        "trace.logs-calls-visible"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/call-tracer-tree.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "default",
+      "report": "reports/traces-call-tracer-tree--default.json",
+      "risk": "medium",
+      "findingCount": 3,
+      "findingIds": [
+        "trace.contract-creation-executed",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/call-tracer-tree.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "research",
+      "report": "reports/traces-call-tracer-tree--research.json",
+      "risk": "medium",
+      "findingCount": 3,
+      "findingIds": [
+        "trace.contract-creation-executed",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/drpc-call-tracer-real.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "default",
+      "report": "reports/traces-drpc-call-tracer-real--default.json",
+      "risk": "medium",
+      "findingCount": 3,
+      "findingIds": [
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/drpc-call-tracer-real.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "research",
+      "report": "reports/traces-drpc-call-tracer-real--research.json",
+      "risk": "medium",
+      "findingCount": 3,
+      "findingIds": [
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/erigon-action-trace.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "default",
+      "report": "reports/traces-erigon-action-trace--default.json",
+      "risk": "medium",
+      "findingCount": 3,
+      "findingIds": [
+        "trace.contract-creation-executed",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/erigon-action-trace.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "research",
+      "report": "reports/traces-erigon-action-trace--research.json",
+      "risk": "medium",
+      "findingCount": 3,
+      "findingIds": [
+        "trace.contract-creation-executed",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/foundry-json-trace.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "default",
+      "report": "reports/traces-foundry-json-trace--default.json",
+      "risk": "medium",
+      "findingCount": 2,
+      "findingIds": [
+        "trace.contract-creation-executed",
+        "trace.logs-calls-visible"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/foundry-json-trace.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "research",
+      "report": "reports/traces-foundry-json-trace--research.json",
+      "risk": "medium",
+      "findingCount": 3,
+      "findingIds": [
+        "trace.state-heavy-execution-medium",
+        "trace.contract-creation-executed",
+        "trace.logs-calls-visible"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/geth-json-rpc-structlogs.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "default",
+      "report": "reports/traces-geth-json-rpc-structlogs--default.json",
+      "risk": "low",
+      "findingCount": 2,
+      "findingIds": [
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/geth-json-rpc-structlogs.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "research",
+      "report": "reports/traces-geth-json-rpc-structlogs--research.json",
+      "risk": "low",
+      "findingCount": 2,
+      "findingIds": [
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/hardhat-debug-trace.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "default",
+      "report": "reports/traces-hardhat-debug-trace--default.json",
+      "risk": "medium",
+      "findingCount": 2,
+      "findingIds": [
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/hardhat-debug-trace.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "research",
+      "report": "reports/traces-hardhat-debug-trace--research.json",
+      "risk": "medium",
+      "findingCount": 2,
+      "findingIds": [
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/nethermind-debug-structlogs.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "default",
+      "report": "reports/traces-nethermind-debug-structlogs--default.json",
+      "risk": "medium",
+      "findingCount": 3,
+      "findingIds": [
+        "trace.calldata-heavy-execution",
+        "trace.contract-creation-executed",
+        "trace.logs-calls-visible"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/nethermind-debug-structlogs.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "research",
+      "report": "reports/traces-nethermind-debug-structlogs--research.json",
+      "risk": "medium",
+      "findingCount": 3,
+      "findingIds": [
+        "trace.calldata-heavy-execution",
+        "trace.contract-creation-executed",
+        "trace.logs-calls-visible"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/storage-heavy-trace.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "default",
+      "report": "reports/traces-storage-heavy-trace--default.json",
+      "risk": "medium",
+      "findingCount": 5,
+      "findingIds": [
+        "trace.state-heavy-execution-medium",
+        "trace.calldata-heavy-execution",
+        "trace.contract-creation-executed",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/storage-heavy-trace.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "research",
+      "report": "reports/traces-storage-heavy-trace--research.json",
+      "risk": "medium",
+      "findingCount": 5,
+      "findingIds": [
+        "trace.state-heavy-execution-medium",
+        "trace.calldata-heavy-execution",
+        "trace.contract-creation-executed",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/validator/operator-config.yaml",
+      "fixtureKind": "validator",
+      "thresholdProfile": "default",
+      "report": "reports/validator-operator-config--default.json",
+      "risk": "medium",
+      "findingCount": 6,
+      "findingIds": [
+        "validator.unknown-execution-client-compatibility",
+        "validator.unknown-consensus-client-compatibility",
+        "validator.missing-validator-client-version",
+        "validator.builder-enabled-without-endpoint",
+        "validator.missing-monitoring-endpoints",
+        "validator.missing-testnet-participation"
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "sourceFixture": "fixtures/bytecode/storage-heavy.hex",
+      "baselineReport": "reports/bytecode-storage-heavy--default.json",
+      "candidateReport": "reports/bytecode-storage-heavy--research.json",
+      "comparison": "comparisons/bytecode-storage-heavy--default-vs-research.json",
+      "riskChange": "medium->medium (unchanged)",
+      "addedCount": 0,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 6
+    },
+    {
+      "sourceFixture": "fixtures/traces/besu-debug-structlogs.json",
+      "baselineReport": "reports/traces-besu-debug-structlogs--default.json",
+      "candidateReport": "reports/traces-besu-debug-structlogs--research.json",
+      "comparison": "comparisons/traces-besu-debug-structlogs--default-vs-research.json",
+      "riskChange": "low->low (unchanged)",
+      "addedCount": 0,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 1
+    },
+    {
+      "sourceFixture": "fixtures/traces/call-tracer-tree.json",
+      "baselineReport": "reports/traces-call-tracer-tree--default.json",
+      "candidateReport": "reports/traces-call-tracer-tree--research.json",
+      "comparison": "comparisons/traces-call-tracer-tree--default-vs-research.json",
+      "riskChange": "medium->medium (unchanged)",
+      "addedCount": 0,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 3
+    },
+    {
+      "sourceFixture": "fixtures/traces/drpc-call-tracer-real.json",
+      "baselineReport": "reports/traces-drpc-call-tracer-real--default.json",
+      "candidateReport": "reports/traces-drpc-call-tracer-real--research.json",
+      "comparison": "comparisons/traces-drpc-call-tracer-real--default-vs-research.json",
+      "riskChange": "medium->medium (unchanged)",
+      "addedCount": 0,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 3
+    },
+    {
+      "sourceFixture": "fixtures/traces/erigon-action-trace.json",
+      "baselineReport": "reports/traces-erigon-action-trace--default.json",
+      "candidateReport": "reports/traces-erigon-action-trace--research.json",
+      "comparison": "comparisons/traces-erigon-action-trace--default-vs-research.json",
+      "riskChange": "medium->medium (unchanged)",
+      "addedCount": 0,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 3
+    },
+    {
+      "sourceFixture": "fixtures/traces/foundry-json-trace.json",
+      "baselineReport": "reports/traces-foundry-json-trace--default.json",
+      "candidateReport": "reports/traces-foundry-json-trace--research.json",
+      "comparison": "comparisons/traces-foundry-json-trace--default-vs-research.json",
+      "riskChange": "medium->medium (unchanged)",
+      "addedCount": 1,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 2
+    },
+    {
+      "sourceFixture": "fixtures/traces/geth-json-rpc-structlogs.json",
+      "baselineReport": "reports/traces-geth-json-rpc-structlogs--default.json",
+      "candidateReport": "reports/traces-geth-json-rpc-structlogs--research.json",
+      "comparison": "comparisons/traces-geth-json-rpc-structlogs--default-vs-research.json",
+      "riskChange": "low->low (unchanged)",
+      "addedCount": 0,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 2
+    },
+    {
+      "sourceFixture": "fixtures/traces/hardhat-debug-trace.json",
+      "baselineReport": "reports/traces-hardhat-debug-trace--default.json",
+      "candidateReport": "reports/traces-hardhat-debug-trace--research.json",
+      "comparison": "comparisons/traces-hardhat-debug-trace--default-vs-research.json",
+      "riskChange": "medium->medium (unchanged)",
+      "addedCount": 0,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 2
+    },
+    {
+      "sourceFixture": "fixtures/traces/nethermind-debug-structlogs.json",
+      "baselineReport": "reports/traces-nethermind-debug-structlogs--default.json",
+      "candidateReport": "reports/traces-nethermind-debug-structlogs--research.json",
+      "comparison": "comparisons/traces-nethermind-debug-structlogs--default-vs-research.json",
+      "riskChange": "medium->medium (unchanged)",
+      "addedCount": 0,
+      "removedCount": 0,
+      "changedCount": 1,
+      "unchangedCount": 2
+    },
+    {
+      "sourceFixture": "fixtures/traces/storage-heavy-trace.json",
+      "baselineReport": "reports/traces-storage-heavy-trace--default.json",
+      "candidateReport": "reports/traces-storage-heavy-trace--research.json",
+      "comparison": "comparisons/traces-storage-heavy-trace--default-vs-research.json",
+      "riskChange": "medium->medium (unchanged)",
+      "addedCount": 0,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 5
+    }
+  ],
+  "limitations": [
+    "This seed dataset is fixture-based and intentionally small; it is not an aggregate measurement of public-chain Glamsterdam readiness.",
+    "Synthetic fixtures provide parser and detector coverage but do not prove real client behavior.",
+    "Threshold-profile comparisons are structural report differences, not final fork gas deltas."
+  ]
+}

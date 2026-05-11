@@ -1,0 +1,506 @@
+{
+  "schemaVersion": 1,
+  "lastUpdated": "2026-05-11",
+  "notes": [
+    "This manifest records fixture provenance, redaction posture, and expected scanner signals. It is intentionally separate from scanner output so fixture submissions can be reviewed before report snapshots change.",
+    "Synthetic fixtures are small examples shaped after common tool outputs. They are useful for parser coverage but are not evidence of client behavior.",
+    "Public-chain fixtures may contain public addresses, calldata, and contract interactions. Do not add private traces or credentials."
+  ],
+  "fixtures": [
+    {
+      "path": "fixtures/bytecode/storage-heavy.hex",
+      "kind": "bytecode",
+      "description": "Focused runtime bytecode fixture that exercises storage, account, calldata-copy, contract-creation, and log opcode detectors.",
+      "source": {
+        "type": "synthetic",
+        "name": "Hand-authored EVM bytecode fixture",
+        "license": "MIT",
+        "notes": [
+          "Designed for deterministic detector coverage rather than contract realism."
+        ]
+      },
+      "capture": {
+        "tool": "hand-authored fixture",
+        "mode": "runtime bytecode"
+      },
+      "completeness": "focused-minimal",
+      "redaction": {
+        "status": "not-needed",
+        "notes": [
+          "No live addresses, keys, credentials, or private data are present."
+        ]
+      },
+      "expectedFindingIds": [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.contract-creation-opcodes",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7708",
+        "EIP-8038"
+      ]
+    },
+    {
+      "path": "fixtures/indexers/balance-diff-indexer.json",
+      "kind": "indexer",
+      "description": "Synthetic indexer configuration that models native ETH transfer visibility through balance-diff logic.",
+      "source": {
+        "type": "synthetic",
+        "name": "Hand-authored balance-diff indexer fixture",
+        "license": "MIT"
+      },
+      "capture": {
+        "tool": "hand-authored fixture",
+        "mode": "JSON indexer config"
+      },
+      "completeness": "focused-minimal",
+      "redaction": {
+        "status": "not-needed",
+        "notes": [
+          "No endpoints, credentials, hostnames, or private project names are present."
+        ]
+      },
+      "expectedFindingIds": [
+        "indexer.balance-diff-native-transfer-assumption",
+        "indexer.missing-bal-readiness-metadata"
+      ],
+      "relatedEips": [
+        "EIP-7708",
+        "EIP-7928"
+      ]
+    },
+    {
+      "path": "fixtures/indexers/subgraph.yaml",
+      "kind": "indexer",
+      "description": "Synthetic subgraph-shaped fixture with event-only handlers and intentionally incomplete compatibility metadata.",
+      "source": {
+        "type": "synthetic",
+        "name": "Hand-authored subgraph fixture",
+        "license": "MIT"
+      },
+      "capture": {
+        "tool": "hand-authored fixture",
+        "mode": "subgraph.yaml"
+      },
+      "completeness": "focused-minimal",
+      "redaction": {
+        "status": "not-needed",
+        "notes": [
+          "Uses placeholder names only and no private endpoints."
+        ]
+      },
+      "expectedFindingIds": [
+        "indexer.event-only-assumption",
+        "indexer.native-eth-transfer-review-missing",
+        "indexer.missing-bal-readiness-metadata",
+        "indexer.missing-fork-compatibility-metadata",
+        "indexer.missing-replay-plan"
+      ],
+      "relatedEips": [
+        "EIP-7708",
+        "EIP-7928"
+      ]
+    },
+    {
+      "path": "fixtures/reports/baseline-default-report.json",
+      "kind": "report",
+      "description": "Generated baseline report fixture used to exercise added, removed, changed, and unchanged comparison paths.",
+      "source": {
+        "type": "generated-example",
+        "name": "Baseline default-threshold report fixture",
+        "license": "MIT",
+        "notes": [
+          "The report is intentionally small and deterministic for comparison tests.",
+          "The target trace name inside the report is a synthetic label, not a committed trace fixture."
+        ]
+      },
+      "capture": {
+        "tool": "hand-authored fixture",
+        "mode": "compatibility report fixture"
+      },
+      "completeness": "focused-minimal",
+      "redaction": {
+        "status": "not-needed",
+        "notes": [
+          "Generated from synthetic report data."
+        ]
+      },
+      "expectedFindingIds": [
+        "trace.state-heavy-execution",
+        "trace.partial-evidence",
+        "trace.calldata-heavy-execution",
+        "trace.contract-creation-executed"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7708",
+        "EIP-8038"
+      ]
+    },
+    {
+      "path": "fixtures/reports/candidate-research-report.json",
+      "kind": "report",
+      "description": "Generated candidate report fixture used to exercise deterministic comparison deltas against the baseline report fixture.",
+      "source": {
+        "type": "generated-example",
+        "name": "Candidate research-threshold report fixture",
+        "license": "MIT",
+        "notes": [
+          "The report is intentionally small and deterministic for comparison tests.",
+          "The target trace name inside the report is a synthetic label, not a committed trace fixture."
+        ]
+      },
+      "capture": {
+        "tool": "hand-authored fixture",
+        "mode": "compatibility report fixture"
+      },
+      "completeness": "focused-minimal",
+      "redaction": {
+        "status": "not-needed",
+        "notes": [
+          "Generated from synthetic report data."
+        ]
+      },
+      "expectedFindingIds": [
+        "trace.state-heavy-execution",
+        "trace.partial-evidence",
+        "trace.logs-calls-visible",
+        "trace.contract-creation-executed"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7708",
+        "EIP-8038"
+      ]
+    },
+    {
+      "path": "fixtures/traces/besu-debug-structlogs.json",
+      "kind": "trace",
+      "description": "Synthetic Besu-shaped debug_traceTransaction structLogs response.",
+      "source": {
+        "type": "synthetic",
+        "name": "Hand-authored Besu structLogs fixture",
+        "license": "MIT",
+        "notes": [
+          "Shaped after Besu debug_traceTransaction output, not captured from a live Besu node."
+        ]
+      },
+      "capture": {
+        "tool": "hand-authored fixture",
+        "mode": "debug_traceTransaction structLogs"
+      },
+      "completeness": "focused-minimal",
+      "redaction": {
+        "status": "synthetic-placeholder",
+        "notes": [
+          "All values are synthetic placeholders."
+        ]
+      },
+      "expectedFindingIds": [
+        "trace.logs-calls-visible"
+      ],
+      "relatedEips": [
+        "EIP-7708"
+      ]
+    },
+    {
+      "path": "fixtures/traces/call-tracer-tree.json",
+      "kind": "trace",
+      "description": "Synthetic callTracer-like tree with nested calls and contract creation.",
+      "source": {
+        "type": "synthetic",
+        "name": "Hand-authored call-tracer fixture",
+        "license": "MIT"
+      },
+      "capture": {
+        "tool": "hand-authored fixture",
+        "mode": "callTracer tree"
+      },
+      "completeness": "focused-minimal",
+      "redaction": {
+        "status": "synthetic-placeholder",
+        "notes": [
+          "All addresses and call data are synthetic placeholders."
+        ]
+      },
+      "expectedFindingIds": [
+        "trace.contract-creation-executed",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ],
+      "relatedEips": [
+        "EIP-7708",
+        "EIP-8038"
+      ]
+    },
+    {
+      "path": "fixtures/traces/drpc-call-tracer-real.json",
+      "kind": "trace",
+      "description": "Public-chain callTracer response captured through a public dRPC endpoint.",
+      "source": {
+        "type": "public-chain",
+        "name": "Public Ethereum transaction traced through dRPC",
+        "license": "Public blockchain data; repository license applies to fixture packaging.",
+        "notes": [
+          "The original transaction hash was not retained in earlier fixture metadata, so provenance is partial.",
+          "The fixture should be treated as a normalization sample, not an endorsement of any RPC provider."
+        ]
+      },
+      "capture": {
+        "tool": "glamsterdam-compat-lab scan-tx",
+        "version": "0.2.1",
+        "command": "pnpm glamsterdam scan-tx --tracer callTracer --trace-out fixtures/traces/drpc-call-tracer-real.json",
+        "mode": "debug_traceTransaction callTracer"
+      },
+      "network": {
+        "name": "ethereum-mainnet",
+        "chainId": 1
+      },
+      "completeness": "partial",
+      "redaction": {
+        "status": "not-needed",
+        "notes": [
+          "The trace contains public-chain addresses and calldata only; the RPC URL was not recorded."
+        ]
+      },
+      "expectedFindingIds": [
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7708"
+      ]
+    },
+    {
+      "path": "fixtures/traces/erigon-action-trace.json",
+      "kind": "trace",
+      "description": "Synthetic Erigon/parity-style action trace array with call, create, reward, and suicide actions.",
+      "source": {
+        "type": "synthetic",
+        "name": "Hand-authored Erigon action trace fixture",
+        "license": "MIT"
+      },
+      "capture": {
+        "tool": "hand-authored fixture",
+        "mode": "Erigon/parity action trace"
+      },
+      "completeness": "focused-minimal",
+      "redaction": {
+        "status": "synthetic-placeholder",
+        "notes": [
+          "All addresses and values are synthetic placeholders."
+        ]
+      },
+      "expectedFindingIds": [
+        "trace.contract-creation-executed",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ],
+      "relatedEips": [
+        "EIP-7708",
+        "EIP-8038"
+      ]
+    },
+    {
+      "path": "fixtures/traces/foundry-json-trace.json",
+      "kind": "trace",
+      "description": "Synthetic Foundry-style JSON trace export with call and create actions.",
+      "source": {
+        "type": "synthetic",
+        "name": "Hand-authored Foundry trace fixture",
+        "license": "MIT",
+        "notes": [
+          "Representative of JSON-like Foundry trace exports, not a captured forge run."
+        ]
+      },
+      "capture": {
+        "tool": "hand-authored fixture",
+        "mode": "Foundry JSON trace"
+      },
+      "completeness": "focused-minimal",
+      "redaction": {
+        "status": "synthetic-placeholder",
+        "notes": [
+          "All values are synthetic placeholders."
+        ]
+      },
+      "expectedFindingIds": [
+        "trace.contract-creation-executed",
+        "trace.logs-calls-visible"
+      ],
+      "relatedEips": [
+        "EIP-7708",
+        "EIP-8038"
+      ]
+    },
+    {
+      "path": "fixtures/traces/geth-json-rpc-structlogs.json",
+      "kind": "trace",
+      "description": "Synthetic geth debug_traceTransaction JSON-RPC wrapper with structLogs.",
+      "source": {
+        "type": "synthetic",
+        "name": "Hand-authored geth structLogs fixture",
+        "license": "MIT",
+        "notes": [
+          "Shaped after geth debug_traceTransaction output, not captured from a live geth node."
+        ]
+      },
+      "capture": {
+        "tool": "hand-authored fixture",
+        "mode": "debug_traceTransaction structLogs"
+      },
+      "completeness": "focused-minimal",
+      "redaction": {
+        "status": "synthetic-placeholder",
+        "notes": [
+          "All values are synthetic placeholders."
+        ]
+      },
+      "expectedFindingIds": [
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7708"
+      ]
+    },
+    {
+      "path": "fixtures/traces/hardhat-debug-trace.json",
+      "kind": "trace",
+      "description": "Synthetic Hardhat-style debug trace with calldata and log evidence.",
+      "source": {
+        "type": "synthetic",
+        "name": "Hand-authored Hardhat trace fixture",
+        "license": "MIT",
+        "notes": [
+          "Representative of JSON-like Hardhat debug output, not a captured hardhat run."
+        ]
+      },
+      "capture": {
+        "tool": "hand-authored fixture",
+        "mode": "Hardhat debug trace"
+      },
+      "completeness": "focused-minimal",
+      "redaction": {
+        "status": "synthetic-placeholder",
+        "notes": [
+          "All values are synthetic placeholders."
+        ]
+      },
+      "expectedFindingIds": [
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7708"
+      ]
+    },
+    {
+      "path": "fixtures/traces/nethermind-debug-structlogs.json",
+      "kind": "trace",
+      "description": "Synthetic Nethermind-shaped debug_traceTransaction structLogs response.",
+      "source": {
+        "type": "synthetic",
+        "name": "Hand-authored Nethermind structLogs fixture",
+        "license": "MIT",
+        "notes": [
+          "Shaped after Nethermind debug_traceTransaction output, not captured from a live Nethermind node."
+        ]
+      },
+      "capture": {
+        "tool": "hand-authored fixture",
+        "mode": "debug_traceTransaction structLogs"
+      },
+      "completeness": "focused-minimal",
+      "redaction": {
+        "status": "synthetic-placeholder",
+        "notes": [
+          "All values are synthetic placeholders."
+        ]
+      },
+      "expectedFindingIds": [
+        "trace.calldata-heavy-execution",
+        "trace.contract-creation-executed",
+        "trace.logs-calls-visible"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7708",
+        "EIP-8038"
+      ]
+    },
+    {
+      "path": "fixtures/traces/storage-heavy-trace.json",
+      "kind": "trace",
+      "description": "Normalized synthetic trace that exercises storage-heavy, calldata-heavy, creation, log/call, and partial-evidence findings.",
+      "source": {
+        "type": "synthetic",
+        "name": "Hand-authored normalized trace fixture",
+        "license": "MIT"
+      },
+      "capture": {
+        "tool": "hand-authored fixture",
+        "mode": "glamsterdam-normalized-trace-v0"
+      },
+      "completeness": "focused-minimal",
+      "redaction": {
+        "status": "synthetic-placeholder",
+        "notes": [
+          "Uses zero transaction hash and synthetic execution steps."
+        ]
+      },
+      "expectedFindingIds": [
+        "trace.state-heavy-execution-medium",
+        "trace.calldata-heavy-execution",
+        "trace.contract-creation-executed",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7708",
+        "EIP-8038"
+      ]
+    },
+    {
+      "path": "fixtures/validator/operator-config.yaml",
+      "kind": "validator",
+      "description": "Synthetic validator/operator config with intentionally incomplete client, builder, monitoring, and testnet metadata.",
+      "source": {
+        "type": "synthetic",
+        "name": "Hand-authored validator operator fixture",
+        "license": "MIT"
+      },
+      "capture": {
+        "tool": "hand-authored fixture",
+        "mode": "YAML operator config"
+      },
+      "completeness": "focused-minimal",
+      "redaction": {
+        "status": "synthetic-placeholder",
+        "notes": [
+          "No validator keys, fee recipient secrets, endpoints, hostnames, or private infrastructure names are present."
+        ]
+      },
+      "expectedFindingIds": [
+        "validator.unknown-execution-client-compatibility",
+        "validator.unknown-consensus-client-compatibility",
+        "validator.missing-validator-client-version",
+        "validator.builder-enabled-without-endpoint",
+        "validator.missing-monitoring-endpoints",
+        "validator.missing-testnet-participation"
+      ],
+      "relatedEips": [
+        "EIP-7732"
+      ]
+    }
+  ]
+}

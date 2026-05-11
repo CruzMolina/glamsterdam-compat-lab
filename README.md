@@ -70,6 +70,16 @@ Each scanner accepts `--registry <path>` and `--thresholds <path>` so EIP metada
 - [Storage-heavy bytecode report](examples/storage-heavy-bytecode.md)
 - [Baseline comparison reports](examples/baseline-comparison.md)
 
+## Public dataset seed
+
+Fixture provenance lives in [fixtures/provenance.json](fixtures/provenance.json). The first deterministic dataset seed lives in [datasets/public-seed](datasets/public-seed) and includes generated JSON reports plus default-vs-research threshold comparisons for bytecode and trace fixtures.
+
+Regenerate it with:
+
+```sh
+pnpm dataset:generate
+```
+
 ## What the scanners can detect
 
 `scan-bytecode` normalizes EVM bytecode, disassembles opcodes while skipping PUSH data, counts relevant opcodes, and reports conservative risks around contract size, storage/account access, CREATE/CREATE2 usage, calldata copying, logs, and manual-review limits.

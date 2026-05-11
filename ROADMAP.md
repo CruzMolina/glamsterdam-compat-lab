@@ -52,8 +52,13 @@ Goal: compare compatibility reports across profiles and, later, across current-c
 
 ## Phase 2: Public Dataset
 
+Status: seeded after `v0.3.0`.
+
 Goal: publish reproducible compatibility research.
 
+- Track fixture provenance, source type, redaction posture, expected scanner signals, and known metadata gaps
+- Generate a deterministic public seed dataset from safe-to-publish fixtures
+- Compare default and research threshold profiles for bytecode and trace fixtures
 - Scan popular contracts and protocol surfaces
 - Publish deterministic report artifacts
 - Generate aggregate risk statistics

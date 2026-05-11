@@ -1,0 +1,168 @@
+{
+  "toolVersion": "0.3.0",
+  "fork": "glamsterdam",
+  "comparison": {
+    "baseline": {
+      "toolVersion": "0.3.0",
+      "fork": "glamsterdam",
+      "target": {
+        "kind": "bytecode",
+        "name": "fixtures/bytecode/storage-heavy.hex"
+      },
+      "summary": {
+        "risk": "medium",
+        "findingCount": 6,
+        "highCount": 0,
+        "mediumCount": 3,
+        "lowCount": 2,
+        "unknownCount": 1
+      }
+    },
+    "candidate": {
+      "toolVersion": "0.3.0",
+      "fork": "glamsterdam",
+      "target": {
+        "kind": "bytecode",
+        "name": "fixtures/bytecode/storage-heavy.hex"
+      },
+      "summary": {
+        "risk": "medium",
+        "findingCount": 6,
+        "highCount": 0,
+        "mediumCount": 3,
+        "lowCount": 2,
+        "unknownCount": 1
+      }
+    }
+  },
+  "summary": {
+    "riskChange": {
+      "from": "medium",
+      "to": "medium",
+      "direction": "unchanged"
+    },
+    "findingCount": {
+      "baseline": 6,
+      "candidate": 6,
+      "delta": 0
+    },
+    "addedCount": 0,
+    "removedCount": 0,
+    "changedCount": 0,
+    "unchangedCount": 6,
+    "severityIncreasedCount": 0,
+    "severityDecreasedCount": 0,
+    "severityChangedCount": 0,
+    "confidenceIncreasedCount": 0,
+    "confidenceDecreasedCount": 0,
+    "confidenceChangedCount": 0
+  },
+  "changes": {
+    "added": [],
+    "removed": [],
+    "changed": [],
+    "unchanged": [
+      {
+        "key": "bytecode.calldata-copy-exposure",
+        "id": "bytecode.calldata-copy-exposure",
+        "title": "Calldata copy opcode is present",
+        "severity": "low",
+        "confidence": "medium",
+        "domain": [
+          "contracts",
+          "execution"
+        ],
+        "relatedEips": [
+          "GAS-REPRICING",
+          "EIP-7976",
+          "EIP-7904",
+          "EIP-8038"
+        ]
+      },
+      {
+        "key": "bytecode.contract-creation-opcodes",
+        "id": "bytecode.contract-creation-opcodes",
+        "title": "Contract creation opcodes are present",
+        "severity": "medium",
+        "confidence": "high",
+        "domain": [
+          "contracts",
+          "execution"
+        ],
+        "relatedEips": [
+          "GAS-REPRICING",
+          "EIP-8037"
+        ]
+      },
+      {
+        "key": "bytecode.log-opcodes-present",
+        "id": "bytecode.log-opcodes-present",
+        "title": "Log opcodes are present",
+        "severity": "low",
+        "confidence": "medium",
+        "domain": [
+          "contracts",
+          "indexer",
+          "monitoring"
+        ],
+        "relatedEips": [
+          "EIP-7708"
+        ]
+      },
+      {
+        "key": "bytecode.manual-review-required",
+        "id": "bytecode.manual-review-required",
+        "title": "Manual review is still required for runtime behavior",
+        "severity": "unknown",
+        "confidence": "low",
+        "domain": [
+          "contracts",
+          "execution"
+        ],
+        "relatedEips": [
+          "GAS-REPRICING"
+        ]
+      },
+      {
+        "key": "bytecode.state-account-opcode-exposure",
+        "id": "bytecode.state-account-opcode-exposure",
+        "title": "State and account access opcodes are prominent in bytecode",
+        "severity": "medium",
+        "confidence": "medium",
+        "domain": [
+          "contracts",
+          "execution"
+        ],
+        "relatedEips": [
+          "GAS-REPRICING",
+          "EIP-7904",
+          "EIP-8038",
+          "EIP-7976"
+        ]
+      },
+      {
+        "key": "bytecode.storage-heavy-pattern",
+        "id": "bytecode.storage-heavy-pattern",
+        "title": "Storage-related opcodes appear frequently",
+        "severity": "medium",
+        "confidence": "medium",
+        "domain": [
+          "contracts",
+          "execution"
+        ],
+        "relatedEips": [
+          "GAS-REPRICING",
+          "EIP-8038"
+        ]
+      }
+    ]
+  },
+  "assumptions": [
+    "Reports were compared by finding id. Repeated finding ids are disambiguated with deterministic occurrence suffixes.",
+    "Severity and confidence changes are structural report changes, not protocol gas estimates."
+  ],
+  "limitations": [
+    "The comparison does not infer exact gas deltas, final Glamsterdam parameters, or current-vs-Glamsterdam client behavior unless those values are already present in the input reports.",
+    "Added and removed findings can reflect threshold profile differences, fixture coverage changes, registry updates, or detector changes; review the source reports before treating a diff as a protocol risk change."
+  ]
+}

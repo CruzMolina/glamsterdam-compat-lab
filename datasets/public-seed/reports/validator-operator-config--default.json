@@ -1,0 +1,154 @@
+{
+  "toolVersion": "0.3.0",
+  "fork": "glamsterdam",
+  "target": {
+    "kind": "validator",
+    "name": "fixtures/validator/operator-config.yaml"
+  },
+  "summary": {
+    "risk": "medium",
+    "findingCount": 6,
+    "highCount": 0,
+    "mediumCount": 4,
+    "lowCount": 0,
+    "unknownCount": 2
+  },
+  "findings": [
+    {
+      "id": "validator.unknown-execution-client-compatibility",
+      "title": "Unknown Glamsterdam compatibility for execution client",
+      "severity": "unknown",
+      "confidence": "high",
+      "domain": [
+        "validator"
+      ],
+      "relatedEips": [
+        "EIP-7732"
+      ],
+      "description": "The compatibility matrix does not contain a sourced status for geth v1.99.0-example as a execution client. The scanner will not infer compatibility from client name alone.",
+      "evidence": [
+        {
+          "role": "execution",
+          "name": "geth",
+          "version": "v1.99.0-example",
+          "matrixLastUpdated": "2026-05-08"
+        }
+      ],
+      "recommendation": "Update the client compatibility matrix with sourced release/devnet information, or treat this as a manual-readiness checklist item."
+    },
+    {
+      "id": "validator.unknown-consensus-client-compatibility",
+      "title": "Unknown Glamsterdam compatibility for consensus client",
+      "severity": "unknown",
+      "confidence": "high",
+      "domain": [
+        "validator"
+      ],
+      "relatedEips": [
+        "EIP-7732"
+      ],
+      "description": "The compatibility matrix does not contain a sourced status for lighthouse v9.99.0-example as a consensus client. The scanner will not infer compatibility from client name alone.",
+      "evidence": [
+        {
+          "role": "consensus",
+          "name": "lighthouse",
+          "version": "v9.99.0-example",
+          "matrixLastUpdated": "2026-05-08"
+        }
+      ],
+      "recommendation": "Update the client compatibility matrix with sourced release/devnet information, or treat this as a manual-readiness checklist item."
+    },
+    {
+      "id": "validator.missing-validator-client-version",
+      "title": "Missing validator client version",
+      "severity": "medium",
+      "confidence": "high",
+      "domain": [
+        "validator"
+      ],
+      "relatedEips": [
+        "EIP-7732"
+      ],
+      "description": "The config names lighthouse as the validator client, but does not include a version. Compatibility cannot be assessed without explicit version metadata.",
+      "evidence": [
+        {
+          "name": "lighthouse"
+        }
+      ],
+      "recommendation": "Add validatorClient.version and keep it updated from deployment automation or release inventory."
+    },
+    {
+      "id": "validator.builder-enabled-without-endpoint",
+      "title": "Builder integration is enabled but no endpoint is configured",
+      "severity": "medium",
+      "confidence": "high",
+      "domain": [
+        "validator",
+        "builder",
+        "consensus"
+      ],
+      "relatedEips": [
+        "EIP-7732"
+      ],
+      "description": "The config marks builder integration as enabled but does not include an endpoint. This may simply mean the local config is incomplete, so the scanner treats it as a readiness checklist item.",
+      "evidence": [
+        {
+          "builderEnabled": true
+        }
+      ],
+      "recommendation": "Add the intended builder endpoint or document why endpoint configuration is managed elsewhere."
+    },
+    {
+      "id": "validator.missing-monitoring-endpoints",
+      "title": "Monitoring endpoint metadata is incomplete",
+      "severity": "medium",
+      "confidence": "high",
+      "domain": [
+        "validator",
+        "monitoring"
+      ],
+      "relatedEips": [
+        "EIP-7732",
+        "EIP-7928"
+      ],
+      "description": "The config does not include both Prometheus and Grafana monitoring metadata. Glamsterdam readiness should include observable EL, CL, validator, builder, and fork-specific metrics.",
+      "evidence": [
+        {
+          "prometheus": ""
+        }
+      ],
+      "recommendation": "Record monitoring endpoints or dashboards and add alert coverage for devnet/testnet participation, missed duties, builder/API health, and sync status."
+    },
+    {
+      "id": "validator.missing-testnet-participation",
+      "title": "No testnet or devnet participation metadata found",
+      "severity": "medium",
+      "confidence": "high",
+      "domain": [
+        "validator",
+        "monitoring"
+      ],
+      "relatedEips": [
+        "EIP-7732",
+        "EIP-7928"
+      ],
+      "description": "The config does not list Glamsterdam-oriented testnet or devnet participation. Operator readiness should be validated before mainnet activation timing is final.",
+      "evidence": [
+        {
+          "testnetParticipation": []
+        }
+      ],
+      "recommendation": "Add planned or completed testnet/devnet participation, including client versions, dates, observed issues, and rollback notes."
+    }
+  ],
+  "assumptions": [
+    "Validator/operator readiness was checked from a local JSON/YAML config only.",
+    "Client compatibility was compared against /Users/cruzmolina/Documents/New project 2/data/client-compat/clients.example.json. Unknown entries are reported without guessing.",
+    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change."
+  ],
+  "limitations": [
+    "This scanner does not verify live node state, command-line flags, environment variables, firewall rules, or remote service health.",
+    "Client compatibility must come from a maintained matrix with explicit source links.",
+    "A clean report does not replace devnet/testnet participation or operational drills."
+  ]
+}

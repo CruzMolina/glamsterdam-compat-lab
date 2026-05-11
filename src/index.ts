@@ -1,5 +1,20 @@
 export { loadEipRegistry, defaultRegistryPath } from "./registry/eipRegistry.js";
 export type { EipEntry, EipRegistry, EipStatus, EipDomain } from "./registry/schemas.js";
+export {
+  defaultFixtureProvenancePath,
+  fixtureProvenanceEntrySchema,
+  fixtureProvenanceManifestSchema,
+  loadFixtureProvenance,
+  validateFixtureProvenance
+} from "./fixtures/provenance.js";
+export type {
+  FixtureCompleteness,
+  FixtureProvenanceEntry,
+  FixtureProvenanceKind,
+  FixtureProvenanceManifest,
+  FixtureRedactionStatus,
+  FixtureSourceType
+} from "./fixtures/provenance.js";
 
 export { scanBytecode } from "./scanners/bytecodeScanner.js";
 export { scanTrace, scanTraceFile, normalizeTrace } from "./scanners/traceScanner.js";

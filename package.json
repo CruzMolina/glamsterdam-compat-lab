@@ -35,6 +35,7 @@
     "fixtures",
     "docs",
     "examples",
+    "datasets",
     "README.md",
     "ROADMAP.md",
     "CONTRIBUTING.md",
@@ -43,6 +44,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "dataset:generate": "tsx scripts/generate-public-dataset.ts",
     "glamsterdam": "tsx src/cli.ts",
     "pack:dry-run": "node scripts/pack-dry-run.mjs",
     "prepublishOnly": "pnpm test && pnpm build",

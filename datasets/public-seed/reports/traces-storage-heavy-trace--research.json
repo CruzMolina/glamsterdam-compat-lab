@@ -1,0 +1,151 @@
+{
+  "toolVersion": "0.3.0",
+  "fork": "glamsterdam",
+  "target": {
+    "kind": "trace",
+    "name": "fixtures/traces/storage-heavy-trace.json"
+  },
+  "summary": {
+    "risk": "medium",
+    "findingCount": 5,
+    "highCount": 0,
+    "mediumCount": 3,
+    "lowCount": 1,
+    "unknownCount": 1
+  },
+  "findings": [
+    {
+      "id": "trace.state-heavy-execution-medium",
+      "title": "Trace shows state-heavy execution",
+      "severity": "medium",
+      "confidence": "high",
+      "domain": [
+        "contracts",
+        "execution"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7904",
+        "EIP-8038",
+        "EIP-7976"
+      ],
+      "description": "The executed trace includes repeated storage or state/account access operations. Glamsterdam repricing candidates may affect this cost profile, depending on final fork scope.",
+      "evidence": [
+        {
+          "storageOps": 12,
+          "sensitiveOpcodeCount": 12,
+          "opcodeCounts": {
+            "SLOAD": 6,
+            "SSTORE": 6
+          }
+        }
+      ],
+      "recommendation": "Keep this trace as a regression fixture and replay it when final Glamsterdam client configurations are available."
+    },
+    {
+      "id": "trace.calldata-heavy-execution",
+      "title": "Trace includes visible calldata-heavy execution",
+      "severity": "medium",
+      "confidence": "high",
+      "domain": [
+        "contracts",
+        "execution"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7976",
+        "EIP-7904",
+        "EIP-8038"
+      ],
+      "description": "The trace includes CALLDATACOPY or explicit calldata byte counts. Calldata repricing candidates are considered registry items, so large input paths should be tested.",
+      "evidence": [
+        {
+          "CALLDATACOPY": 1,
+          "calldataBytes": 8704
+        }
+      ],
+      "recommendation": "Replay large-input transactions and compare gas envelopes once a Glamsterdam configuration is available."
+    },
+    {
+      "id": "trace.contract-creation-executed",
+      "title": "Trace executed contract creation",
+      "severity": "medium",
+      "confidence": "high",
+      "domain": [
+        "contracts",
+        "execution"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-8037"
+      ],
+      "description": "The trace executed CREATE or CREATE2. This is direct evidence that this transaction class exercises state creation.",
+      "evidence": [
+        {
+          "CREATE": 0,
+          "CREATE2": 1
+        }
+      ],
+      "recommendation": "Replay creation-heavy flows against Glamsterdam test environments and verify gas budgeting, relayer assumptions, and deployment automation."
+    },
+    {
+      "id": "trace.logs-calls-visible",
+      "title": "Trace includes logs or external calls",
+      "severity": "low",
+      "confidence": "high",
+      "domain": [
+        "contracts",
+        "indexer",
+        "monitoring"
+      ],
+      "relatedEips": [
+        "EIP-7708",
+        "EIP-7928"
+      ],
+      "description": "The trace includes log or call activity that may be relevant to indexer, explorer, and monitoring assumptions under Glamsterdam-era changes.",
+      "evidence": [
+        {
+          "logOps": 1,
+          "explicitLogEntries": 0,
+          "callOps": 1,
+          "maxDepth": 2
+        }
+      ],
+      "recommendation": "Use traces like this to test indexer replay, alerting, and explorer display paths alongside contract gas behavior."
+    },
+    {
+      "id": "trace.partial-evidence",
+      "title": "Trace omits some useful compatibility evidence",
+      "severity": "unknown",
+      "confidence": "low",
+      "domain": [
+        "contracts",
+        "execution"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7976"
+      ],
+      "description": "The trace was usable, but some formats omit calldata byte counts or per-op gas costs. The scanner reports what it can see and avoids inferring missing data.",
+      "evidence": [
+        {
+          "hasCalldataEvidence": true,
+          "hasGasCostEvidence": false,
+          "warnings": []
+        }
+      ],
+      "recommendation": "Prefer traces that include executed opcodes, depth, calldata/input sizes, and gas costs when comparing current and Glamsterdam behavior."
+    }
+  ],
+  "assumptions": [
+    "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
+    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
+  ],
+  "limitations": [
+    "Trace coverage is only as good as the transaction samples provided.",
+    "Foundry and Hardhat can emit multiple trace shapes depending on command, plugin, and verbosity; this scanner supports representative JSON-like exports, not every console rendering.",
+    "Some trace formats omit calldata sizes, storage keys, gas costs, logs, or call details.",
+    "Findings are compatibility prompts and should be validated through replay or benchmarking."
+  ]
+}

@@ -28,6 +28,22 @@ When possible, include:
 - Whether the fixture is complete or intentionally partial.
 - Expected scanner behavior, including findings that should or should not appear.
 
+## Provenance Manifest
+
+Every committed fixture under `fixtures/` should have a matching entry in `fixtures/provenance.json`.
+
+Each manifest entry records:
+
+- Fixture path and scanner kind.
+- Source type, such as synthetic, public-chain, public repo, anonymized internal, or generated example.
+- Capture tool, version, command, and trace mode when known.
+- Network and transaction hash when the fixture came from public-chain data.
+- Completeness level and redaction posture.
+- Expected scanner finding IDs.
+- Related EIPs when the fixture is meant to exercise specific compatibility paths.
+
+If older fixture metadata is incomplete, mark it as partial and explain the gap in `source.notes` instead of filling in guesses.
+
 ## Licensing
 
 Only contribute fixtures that can be published under this repository's license. If a fixture came from another project, include the source URL and license. When in doubt, open a fixture contribution issue before opening a pull request.
@@ -45,6 +61,18 @@ pnpm build
 Snapshots are part of the product. They protect report language from accidental drift.
 
 Comparison fixtures live under `fixtures/reports/`. They should be small JSON reports that make added, removed, changed, and unchanged findings obvious. Keep them deterministic and avoid embedding inferred gas deltas unless the input report already contains explicit sourced values.
+
+## Public Dataset Seed
+
+The seed dataset in `datasets/public-seed/` is generated from the provenance manifest and current scanner output:
+
+```sh
+pnpm dataset:generate
+pnpm test
+pnpm build
+```
+
+The dataset includes default-profile reports for every scannable fixture and default-vs-research comparisons for bytecode and trace fixtures. Treat the seed as reproducibility scaffolding, not as an aggregate public-chain readiness study.
 
 ## Capturing RPC Traces
 

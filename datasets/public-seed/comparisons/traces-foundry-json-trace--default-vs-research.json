@@ -1,0 +1,124 @@
+{
+  "toolVersion": "0.3.0",
+  "fork": "glamsterdam",
+  "comparison": {
+    "baseline": {
+      "toolVersion": "0.3.0",
+      "fork": "glamsterdam",
+      "target": {
+        "kind": "trace",
+        "name": "fixtures/traces/foundry-json-trace.json"
+      },
+      "summary": {
+        "risk": "medium",
+        "findingCount": 2,
+        "highCount": 0,
+        "mediumCount": 1,
+        "lowCount": 1,
+        "unknownCount": 0
+      }
+    },
+    "candidate": {
+      "toolVersion": "0.3.0",
+      "fork": "glamsterdam",
+      "target": {
+        "kind": "trace",
+        "name": "fixtures/traces/foundry-json-trace.json"
+      },
+      "summary": {
+        "risk": "medium",
+        "findingCount": 3,
+        "highCount": 0,
+        "mediumCount": 2,
+        "lowCount": 1,
+        "unknownCount": 0
+      }
+    }
+  },
+  "summary": {
+    "riskChange": {
+      "from": "medium",
+      "to": "medium",
+      "direction": "unchanged"
+    },
+    "findingCount": {
+      "baseline": 2,
+      "candidate": 3,
+      "delta": 1
+    },
+    "addedCount": 1,
+    "removedCount": 0,
+    "changedCount": 0,
+    "unchangedCount": 2,
+    "severityIncreasedCount": 0,
+    "severityDecreasedCount": 0,
+    "severityChangedCount": 0,
+    "confidenceIncreasedCount": 0,
+    "confidenceDecreasedCount": 0,
+    "confidenceChangedCount": 0
+  },
+  "changes": {
+    "added": [
+      {
+        "key": "trace.state-heavy-execution-medium",
+        "id": "trace.state-heavy-execution-medium",
+        "title": "Trace shows state-heavy execution",
+        "severity": "medium",
+        "confidence": "high",
+        "domain": [
+          "contracts",
+          "execution"
+        ],
+        "relatedEips": [
+          "GAS-REPRICING",
+          "EIP-7904",
+          "EIP-8038",
+          "EIP-7976"
+        ]
+      }
+    ],
+    "removed": [],
+    "changed": [],
+    "unchanged": [
+      {
+        "key": "trace.contract-creation-executed",
+        "id": "trace.contract-creation-executed",
+        "title": "Trace executed contract creation",
+        "severity": "medium",
+        "confidence": "high",
+        "domain": [
+          "contracts",
+          "execution"
+        ],
+        "relatedEips": [
+          "GAS-REPRICING",
+          "EIP-8037"
+        ]
+      },
+      {
+        "key": "trace.logs-calls-visible",
+        "id": "trace.logs-calls-visible",
+        "title": "Trace includes logs or external calls",
+        "severity": "low",
+        "confidence": "high",
+        "domain": [
+          "contracts",
+          "indexer",
+          "monitoring"
+        ],
+        "relatedEips": [
+          "EIP-7708",
+          "EIP-7928"
+        ]
+      }
+    ]
+  },
+  "assumptions": [
+    "Reports were compared by finding id. Repeated finding ids are disambiguated with deterministic occurrence suffixes.",
+    "Severity and confidence changes are structural report changes, not protocol gas estimates."
+  ],
+  "limitations": [
+    "The comparison does not infer exact gas deltas, final Glamsterdam parameters, or current-vs-Glamsterdam client behavior unless those values are already present in the input reports.",
+    "Added and removed findings can reflect threshold profile differences, fixture coverage changes, registry updates, or detector changes; review the source reports before treating a diff as a protocol risk change."
+  ]
+}

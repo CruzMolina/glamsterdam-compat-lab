@@ -9,6 +9,9 @@ const packageJson = JSON.parse(readFileSync(new URL("../package.json", import.me
 const requiredEntries = [
   "package/package.json",
   "package/dist/cli.js",
+  "package/datasets/public-seed/manifest.json",
+  "package/datasets/public-seed/reports/traces-storage-heavy-trace--default.json",
+  "package/fixtures/provenance.json",
   "package/fixtures/reports/baseline-default-report.json",
   "package/fixtures/reports/candidate-research-report.json",
   "package/fixtures/traces/drpc-call-tracer-real.json"

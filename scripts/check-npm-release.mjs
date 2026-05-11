@@ -98,8 +98,10 @@ function checkWorkflowShape() {
   const setupNodeStep = publishJob?.steps?.find((step) => String(step?.uses ?? "").startsWith("actions/setup-node@"));
   const publishStep = publishJob?.steps?.find((step) => step?.name === "Publish");
   const dryRunStep = publishJob?.steps?.find((step) => step?.name === "Dry-run publish");
+  const dryRunPackageVersionStep = publishJob?.steps?.find((step) => step?.name === "Check dry-run package version");
   const publishRun = String(publishStep?.run ?? "");
   const dryRun = String(dryRunStep?.run ?? "");
+  const dryRunPackageVersionRun = String(dryRunPackageVersionStep?.run ?? "");
   const problems = [];
 
   if (workflow?.permissions?.["id-token"] !== "write") {
@@ -116,6 +118,12 @@ function checkWorkflowShape() {
   }
   if (!dryRun.includes("npm publish") || !dryRun.includes("--dry-run")) {
     problems.push("Dry-run publish step does not run npm publish --dry-run");
+  }
+  if (
+    !dryRunPackageVersionRun.includes("npm view") ||
+    !dryRunPackageVersionRun.includes("already_published=true")
+  ) {
+    problems.push("Dry-run publish does not preflight already-published versions");
   }
   if (publishRun.includes("unset NPM_CONFIG_USERCONFIG") || dryRun.includes("unset NPM_CONFIG_USERCONFIG")) {
     problems.push("tokenless path unsets setup-node npm userconfig");

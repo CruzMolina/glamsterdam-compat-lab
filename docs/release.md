@@ -96,7 +96,7 @@ gh workflow run npm-publish.yml \
 
 If the real publish fails with `ENEEDAUTH`, verify the npm Trusted Publishing configuration first. The workflow filename and repository fields are case-sensitive.
 
-If a dry run is repeated for a version already published on npm, npm may fail with `You cannot publish over the previously published versions`. Treat that as a version-state signal, not a build/test failure, after confirming the workflow reached the npm publish dry-run step.
+If a dry run is repeated for a version already published on npm, the workflow preflights that exact package version after install, tests, build, and packed-install checks. It exits successfully with an `Already published` notice instead of invoking `npm publish --dry-run`, because npm rejects previously published versions even in dry-run mode.
 
 If the logs show `Signed provenance statement` followed by `npm error 404 Not Found - PUT`, OIDC/provenance is working, but npm has not authorized this workflow or account to publish the package name. Verify the Trusted Publishing package grant.
 

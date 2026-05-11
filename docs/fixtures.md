@@ -44,6 +44,8 @@ pnpm build
 
 Snapshots are part of the product. They protect report language from accidental drift.
 
+Comparison fixtures live under `fixtures/reports/`. They should be small JSON reports that make added, removed, changed, and unchanged findings obvious. Keep them deterministic and avoid embedding inferred gas deltas unless the input report already contains explicit sourced values.
+
 ## Capturing RPC Traces
 
 Use `scan-tx --trace-out` when you have an execution RPC endpoint that supports `debug_traceTransaction`:

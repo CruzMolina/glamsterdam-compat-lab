@@ -9,6 +9,8 @@ const packageJson = JSON.parse(readFileSync(new URL("../package.json", import.me
 const requiredEntries = [
   "package/package.json",
   "package/dist/cli.js",
+  "package/fixtures/reports/baseline-default-report.json",
+  "package/fixtures/reports/candidate-research-report.json",
   "package/fixtures/traces/drpc-call-tracer-real.json"
 ];
 
@@ -72,6 +74,19 @@ try {
   const eipsReport = JSON.parse(eipsOutput);
   if (!Array.isArray(eipsReport.eips) || eipsReport.eips.length === 0) {
     fail("Packed glamsterdam eips --format json did not return any EIPs.");
+  }
+
+  const packageRoot = join(run("npm", ["root", "-g", "--prefix", prefixDir]), packageJson.name);
+  const comparisonOutput = run(bin, [
+    "compare-reports",
+    join(packageRoot, "fixtures/reports/baseline-default-report.json"),
+    join(packageRoot, "fixtures/reports/candidate-research-report.json"),
+    "--format",
+    "json"
+  ]);
+  const comparisonReport = JSON.parse(comparisonOutput);
+  if (comparisonReport.summary?.addedCount !== 1 || comparisonReport.summary?.changedCount !== 2) {
+    fail("Packed glamsterdam compare-reports did not return the expected comparison summary.");
   }
 
   console.log(`Packed install check passed for ${packageJson.name}@${packageJson.version}.`);

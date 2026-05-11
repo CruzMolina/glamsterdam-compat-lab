@@ -26,13 +26,22 @@ export type { DetectorThresholds } from "./detectors/thresholds.js";
 
 export {
   compatibilityReportSchema,
+  comparisonReportSchema,
+  comparisonFindingReferenceSchema,
+  changedFindingSchema,
   findingSchema,
   makeReport,
   summarizeFindings,
   validateCompatibilityReport,
+  validateComparisonReport,
   combineReports
 } from "./reports/reportTypes.js";
 export type {
+  ChangedFinding,
+  ComparisonDirection,
+  ComparisonField,
+  ComparisonFindingReference,
+  ComparisonReport,
   CompatibilityFinding,
   CompatibilityReport,
   Confidence,
@@ -41,8 +50,9 @@ export type {
   TargetKind
 } from "./reports/reportTypes.js";
 
-export { renderJsonReport } from "./reports/jsonReporter.js";
-export { renderMarkdownReport } from "./reports/markdownReporter.js";
+export { compareCompatibilityReports } from "./reports/compareReports.js";
+export { renderJsonComparisonReport, renderJsonReport } from "./reports/jsonReporter.js";
+export { renderMarkdownComparisonReport, renderMarkdownReport } from "./reports/markdownReporter.js";
 
 export {
   normalizeBytecode,

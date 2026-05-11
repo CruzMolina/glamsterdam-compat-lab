@@ -98,6 +98,34 @@
       ]
     },
     {
+      "sourceFixture": "fixtures/traces/besu-mainnet-tracoor-debug-structlogs.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "default",
+      "report": "reports/traces-besu-mainnet-tracoor-debug-structlogs--default.json",
+      "risk": "medium",
+      "findingCount": 4,
+      "findingIds": [
+        "trace.state-heavy-execution-medium",
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/besu-mainnet-tracoor-debug-structlogs.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "research",
+      "report": "reports/traces-besu-mainnet-tracoor-debug-structlogs--research.json",
+      "risk": "medium",
+      "findingCount": 4,
+      "findingIds": [
+        "trace.state-heavy-execution-medium",
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ]
+    },
+    {
       "sourceFixture": "fixtures/traces/call-tracer-tree.json",
       "fixtureKind": "trace",
       "thresholdProfile": "default",
@@ -275,6 +303,34 @@
       ]
     },
     {
+      "sourceFixture": "fixtures/traces/nethermind-mainnet-tracoor-debug-structlogs.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "default",
+      "report": "reports/traces-nethermind-mainnet-tracoor-debug-structlogs--default.json",
+      "risk": "medium",
+      "findingCount": 4,
+      "findingIds": [
+        "trace.state-heavy-execution-medium",
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/nethermind-mainnet-tracoor-debug-structlogs.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "research",
+      "report": "reports/traces-nethermind-mainnet-tracoor-debug-structlogs--research.json",
+      "risk": "medium",
+      "findingCount": 4,
+      "findingIds": [
+        "trace.state-heavy-execution-medium",
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ]
+    },
+    {
       "sourceFixture": "fixtures/traces/storage-heavy-trace.json",
       "fixtureKind": "trace",
       "thresholdProfile": "default",
@@ -343,6 +399,17 @@
       "removedCount": 0,
       "changedCount": 0,
       "unchangedCount": 1
+    },
+    {
+      "sourceFixture": "fixtures/traces/besu-mainnet-tracoor-debug-structlogs.json",
+      "baselineReport": "reports/traces-besu-mainnet-tracoor-debug-structlogs--default.json",
+      "candidateReport": "reports/traces-besu-mainnet-tracoor-debug-structlogs--research.json",
+      "comparison": "comparisons/traces-besu-mainnet-tracoor-debug-structlogs--default-vs-research.json",
+      "riskChange": "medium->medium (unchanged)",
+      "addedCount": 0,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 4
     },
     {
       "sourceFixture": "fixtures/traces/call-tracer-tree.json",
@@ -420,6 +487,17 @@
       "removedCount": 0,
       "changedCount": 1,
       "unchangedCount": 2
+    },
+    {
+      "sourceFixture": "fixtures/traces/nethermind-mainnet-tracoor-debug-structlogs.json",
+      "baselineReport": "reports/traces-nethermind-mainnet-tracoor-debug-structlogs--default.json",
+      "candidateReport": "reports/traces-nethermind-mainnet-tracoor-debug-structlogs--research.json",
+      "comparison": "comparisons/traces-nethermind-mainnet-tracoor-debug-structlogs--default-vs-research.json",
+      "riskChange": "medium->medium (unchanged)",
+      "addedCount": 0,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 4
     },
     {
       "sourceFixture": "fixtures/traces/storage-heavy-trace.json",

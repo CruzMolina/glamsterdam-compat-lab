@@ -45,8 +45,16 @@ describe("golden report snapshots", () => {
     expectTraceJsonSnapshot("besu-debug-structlogs.json");
   });
 
+  it("keeps real Besu Tracoor trace JSON report structure stable", () => {
+    expectTraceJsonSnapshot("besu-mainnet-tracoor-debug-structlogs.json");
+  });
+
   it("keeps Nethermind-style trace JSON report structure stable", () => {
     expectTraceJsonSnapshot("nethermind-debug-structlogs.json");
+  });
+
+  it("keeps real Nethermind Tracoor trace JSON report structure stable", () => {
+    expectTraceJsonSnapshot("nethermind-mainnet-tracoor-debug-structlogs.json");
   });
 
   it("keeps real dRPC call-tracer JSON report structure stable", () => {

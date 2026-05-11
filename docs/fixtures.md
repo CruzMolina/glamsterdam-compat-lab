@@ -88,3 +88,5 @@ ETH_RPC_URL=https://your-execution-rpc.example \
 Review the saved file before committing it. Remove credentials, internal hostnames, private transaction data, and anything that is not safe to publish.
 
 `fixtures/traces/drpc-call-tracer-real.json` is an example of this flow. It was captured from a public Ethereum transaction using a public dRPC endpoint with `--tracer callTracer`; the fixture is public-chain data and should be treated as a normalization sample, not as an endorsement of any RPC provider.
+
+`fixtures/traces/besu-mainnet-tracoor-debug-structlogs.json` and `fixtures/traces/nethermind-mainnet-tracoor-debug-structlogs.json` are public-chain examples extracted from Tracoor execution block trace exports. Keep extracted fixtures small, retain the source export URL in `fixtures/provenance.json`, and do not commit full block-trace downloads unless there is a specific review need.

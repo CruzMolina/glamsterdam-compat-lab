@@ -51,7 +51,9 @@ export function scanValidatorConfig(configPath: string, options: ValidatorScanOp
   const registry = options.registry ?? loadEipRegistry(options.registryPath);
   const thresholds = options.thresholds ?? loadDetectorThresholds(options.thresholdsPath);
   const config = loadStructuredFile(configPath);
-  const matrix = loadClientMatrix(options.clientMatrixPath ?? defaultClientMatrixPath());
+  const clientMatrixPath = options.clientMatrixPath ?? defaultClientMatrixPath();
+  const clientMatrixLabel = options.clientMatrixPath ?? "data/client-compat/clients.example.json";
+  const matrix = loadClientMatrix(clientMatrixPath);
   const context = {
     registry,
     thresholds,
@@ -80,7 +82,7 @@ export function scanValidatorConfig(configPath: string, options: ValidatorScanOp
     findings,
     assumptions: [
       "Validator/operator readiness was checked from a local JSON/YAML config only.",
-      `Client compatibility was compared against ${options.clientMatrixPath ?? defaultClientMatrixPath()}. Unknown entries are reported without guessing.`,
+      `Client compatibility was compared against ${clientMatrixLabel}. Unknown entries are reported without guessing.`,
       `The loaded registry is dated ${registry.lastUpdated}. Glamsterdam scope and gas parameters may change.`
     ],
     limitations: [

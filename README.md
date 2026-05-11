@@ -65,6 +65,11 @@ pnpm glamsterdam compare-reports baseline-report.json candidate-report.json --fo
 
 Each scanner accepts `--registry <path>` and `--thresholds <path>` so EIP metadata and detector thresholds can be updated without editing detector code.
 
+## Examples
+
+- [Storage-heavy bytecode report](examples/storage-heavy-bytecode.md)
+- [Baseline comparison reports](examples/baseline-comparison.md)
+
 ## What the scanners can detect
 
 `scan-bytecode` normalizes EVM bytecode, disassembles opcodes while skipping PUSH data, counts relevant opcodes, and reports conservative risks around contract size, storage/account access, CREATE/CREATE2 usage, calldata copying, logs, and manual-review limits.

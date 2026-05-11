@@ -29,17 +29,32 @@ function run(command, args) {
   };
 }
 
-function npmViewVersion() {
-  const result = run("npm", ["view", packageName, "version", "--json", `--registry=${registry}`]);
+function npmViewExpectedVersion() {
+  const result = run("npm", ["view", `${packageName}@${expectedVersion}`, "version", "--json", `--registry=${registry}`]);
 
   if (!result.ok) {
-    return { ok: false, version: null, detail: firstUsefulLine(result.stderr) || "package not visible on npm" };
+    return { ok: false, version: null, detail: firstUsefulLine(result.stderr) || "target version not visible on npm" };
   }
 
   try {
     return { ok: true, version: JSON.parse(result.stdout), detail: "" };
   } catch {
     return { ok: true, version: result.stdout.replace(/^"|"$/g, ""), detail: "" };
+  }
+}
+
+function npmViewDistTags() {
+  const result = run("npm", ["view", packageName, "dist-tags", "--json", `--registry=${registry}`]);
+
+  if (!result.ok) {
+    return { ok: false, latest: null, detail: firstUsefulLine(result.stderr) || "dist-tags not visible on npm" };
+  }
+
+  try {
+    const tags = JSON.parse(result.stdout);
+    return { ok: true, latest: typeof tags.latest === "string" ? tags.latest : null, detail: "" };
+  } catch {
+    return { ok: false, latest: null, detail: "could not parse npm dist-tags" };
   }
 }
 
@@ -143,7 +158,8 @@ function printTokenSecretCommand() {
   console.log(`   gh secret set NPM_TOKEN --repo ${repo} --env ${environment} --body "$NPM_TOKEN"`);
 }
 
-const published = npmViewVersion();
+const published = npmViewExpectedVersion();
+const distTags = npmViewDistTags();
 const whoami = npmWhoami();
 const repoSecrets = ghSecrets([]);
 const envSecrets = ghSecrets(["--env", environment]);
@@ -152,7 +168,8 @@ const localNodeAuthToken = hasEnvToken("NODE_AUTH_TOKEN");
 const localToken = localNpmToken || localNodeAuthToken;
 const workflowShape = checkWorkflowShape();
 const isExpectedVersion = published.ok && published.version === expectedVersion;
-const isPackageVisible = published.ok && published.version !== null;
+const isExpectedLatest = distTags.ok && distTags.latest === expectedVersion;
+const isPackageVisible = published.ok || distTags.ok;
 const hasTokenSecret = repoSecrets.hasToken || envSecrets.hasToken;
 
 console.log(`npm release readiness for ${packageName}@${expectedVersion}`);
@@ -160,6 +177,10 @@ console.log("");
 console.log(`${statusIcon(isExpectedVersion)} npm registry version: ${published.version ?? "not published"}`);
 if (published.detail) {
   console.log(`   ${published.detail}`);
+}
+console.log(`${statusIcon(isExpectedLatest)} npm latest dist-tag: ${distTags.latest ?? "not visible"}`);
+if (distTags.detail) {
+  console.log(`   ${distTags.detail}`);
 }
 console.log(`${statusIcon(whoami.ok)} local npm session: ${whoami.user ?? "not logged in"}`);
 if (whoami.detail) {
@@ -181,7 +202,7 @@ if (workflowShape.detail) {
 }
 console.log("");
 
-if (isExpectedVersion) {
+if (isExpectedVersion && isExpectedLatest) {
   console.log("Release is visible on npm at the expected version.");
   process.exit(0);
 }

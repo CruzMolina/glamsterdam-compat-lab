@@ -2,7 +2,7 @@
 
 exports[`golden report snapshots > keeps Besu-style trace JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.2.2",
+  "toolVersion": "0.3.0",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -60,7 +60,7 @@ exports[`golden report snapshots > keeps Besu-style trace JSON report structure 
 
 exports[`golden report snapshots > keeps Foundry trace JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.2.2",
+  "toolVersion": "0.3.0",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -140,7 +140,7 @@ exports[`golden report snapshots > keeps Foundry trace JSON report structure sta
 
 exports[`golden report snapshots > keeps Hardhat trace JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.2.2",
+  "toolVersion": "0.3.0",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -222,7 +222,7 @@ exports[`golden report snapshots > keeps Hardhat trace JSON report structure sta
 
 exports[`golden report snapshots > keeps Nethermind-style trace JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.2.2",
+  "toolVersion": "0.3.0",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -328,7 +328,7 @@ exports[`golden report snapshots > keeps bytecode Markdown report wording stable
 "# Glamsterdam Compatibility Report
 
 Target: bytecode fixtures/bytecode/storage-heavy.hex
-Tool version: 0.2.2
+Tool version: 0.3.0
 Fork registry: glamsterdam
 
 ## Summary
@@ -439,7 +439,7 @@ Recommendation: Use this report to choose transactions for trace replay and benc
 
 exports[`golden report snapshots > keeps call-tracer tree JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.2.2",
+  "toolVersion": "0.3.0",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -542,7 +542,7 @@ exports[`golden report snapshots > keeps call-tracer tree JSON report structure 
 
 exports[`golden report snapshots > keeps geth structLogs JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.2.2",
+  "toolVersion": "0.3.0",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -624,7 +624,7 @@ exports[`golden report snapshots > keeps geth structLogs JSON report structure s
 
 exports[`golden report snapshots > keeps real dRPC call-tracer JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.2.2",
+  "toolVersion": "0.3.0",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -731,7 +731,7 @@ exports[`golden report snapshots > keeps real dRPC call-tracer JSON report struc
 
 exports[`golden report snapshots > keeps trace JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.2.2",
+  "toolVersion": "0.3.0",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",

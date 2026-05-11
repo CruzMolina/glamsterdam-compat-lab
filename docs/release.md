@@ -5,8 +5,8 @@ This project publishes GitHub releases and npm packages separately. A release is
 ## Current npm package
 
 - Package: `glamsterdam-compat-lab`
-- Latest published release tag: `v0.2.2`
-- Latest published npm version: `0.2.2`
+- Latest published release tag: `v0.3.0`
+- Latest published npm version: `0.3.0`
 - Publish workflow: `.github/workflows/npm-publish.yml`
 - Trusted Publishing: configured for repository `CruzMolina/glamsterdam-compat-lab`, workflow `npm-publish.yml`, and environment `npm-publish`
 

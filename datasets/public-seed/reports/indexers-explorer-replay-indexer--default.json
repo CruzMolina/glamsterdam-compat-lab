@@ -1,0 +1,45 @@
+{
+  "toolVersion": "0.3.0",
+  "fork": "glamsterdam",
+  "target": {
+    "kind": "indexer",
+    "name": "fixtures/indexers/explorer-replay-indexer.json"
+  },
+  "summary": {
+    "risk": "medium",
+    "findingCount": 1,
+    "highCount": 0,
+    "mediumCount": 1,
+    "lowCount": 0,
+    "unknownCount": 0
+  },
+  "findings": [
+    {
+      "id": "indexer.balance-diff-native-transfer-assumption",
+      "title": "Indexer mentions balance-diff based native transfer handling",
+      "severity": "medium",
+      "confidence": "medium",
+      "domain": [
+        "indexer",
+        "monitoring"
+      ],
+      "relatedEips": [
+        "EIP-7708"
+      ],
+      "description": "The configuration mentions balance-diff based transfer handling. That can be a valid design, but it should be reviewed if native ETH transfer log proposals remain active or considered.",
+      "evidence": [
+        "Balance-diff marker found in configuration text."
+      ],
+      "recommendation": "Document whether native ETH transfers come from logs, balance diffs, traces, receipts, or a combined pipeline, and add replay tests for representative transfer cases."
+    }
+  ],
+  "assumptions": [
+    "JSON and YAML configs were parsed statically; subgraph-style handler fields were summarized when present.",
+    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change."
+  ],
+  "limitations": [
+    "Static indexer configuration cannot prove runtime indexing behavior.",
+    "Heuristics may miss compatibility logic implemented in code, environment variables, infrastructure manifests, or downstream pipelines.",
+    "Findings marked heuristic should be treated as review prompts."
+  ]
+}

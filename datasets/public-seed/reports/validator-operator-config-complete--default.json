@@ -1,0 +1,27 @@
+{
+  "toolVersion": "0.3.0",
+  "fork": "glamsterdam",
+  "target": {
+    "kind": "validator",
+    "name": "fixtures/validator/operator-config-complete.yaml"
+  },
+  "summary": {
+    "risk": "low",
+    "findingCount": 0,
+    "highCount": 0,
+    "mediumCount": 0,
+    "lowCount": 0,
+    "unknownCount": 0
+  },
+  "findings": [],
+  "assumptions": [
+    "Validator/operator readiness was checked from a local JSON/YAML config only.",
+    "Client compatibility was compared against data/client-compat/clients.example.json. Unknown entries are reported without guessing.",
+    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change."
+  ],
+  "limitations": [
+    "This scanner does not verify live node state, command-line flags, environment variables, firewall rules, or remote service health.",
+    "Client compatibility must come from a maintained matrix with explicit source links.",
+    "A clean report does not replace devnet/testnet participation or operational drills."
+  ]
+}

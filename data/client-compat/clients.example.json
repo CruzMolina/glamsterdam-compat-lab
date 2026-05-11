@@ -13,6 +13,11 @@
           "version": "0.0.0-example",
           "status": "unknown",
           "notes": "Placeholder only. Replace with a sourced compatibility statement before relying on this matrix."
+        },
+        {
+          "version": "1.0.0-compatible",
+          "status": "compatible",
+          "notes": "Synthetic compatible status used by safe fixture variants; do not treat as a real client release."
         }
       ]
     },
@@ -24,6 +29,11 @@
           "version": "0.0.0-example",
           "status": "unknown",
           "notes": "Placeholder only. Replace with a sourced compatibility statement before relying on this matrix."
+        },
+        {
+          "version": "1.0.0-compatible",
+          "status": "compatible",
+          "notes": "Synthetic compatible status used by safe fixture variants; do not treat as a real client release."
         }
       ]
     },
@@ -35,6 +45,11 @@
           "version": "0.0.0-example",
           "status": "unknown",
           "notes": "Placeholder only. Replace with a sourced compatibility statement before relying on this matrix."
+        },
+        {
+          "version": "1.0.0-compatible",
+          "status": "compatible",
+          "notes": "Synthetic compatible status used by safe fixture variants; do not treat as a real client release."
         }
       ]
     }

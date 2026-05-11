@@ -74,6 +74,39 @@
       ]
     },
     {
+      "path": "fixtures/indexers/explorer-replay-indexer.json",
+      "kind": "indexer",
+      "description": "Safe real-world-shaped explorer/indexer configuration with event, call, block, replay, native-transfer, and BAL readiness metadata.",
+      "source": {
+        "type": "synthetic",
+        "name": "Hand-authored explorer replay indexer fixture",
+        "license": "MIT",
+        "notes": [
+          "Models a realistic public-safe config shape without naming a real project or private endpoint.",
+          "Uses reserved placeholder addresses, project names, and example.invalid URLs."
+        ]
+      },
+      "capture": {
+        "tool": "hand-authored fixture",
+        "mode": "JSON explorer/indexer config"
+      },
+      "completeness": "focused-minimal",
+      "redaction": {
+        "status": "synthetic-placeholder",
+        "notes": [
+          "No credentials, internal hostnames, private endpoints, or private project names are present.",
+          "All addresses, network labels, project names, and URLs are placeholders."
+        ]
+      },
+      "expectedFindingIds": [
+        "indexer.balance-diff-native-transfer-assumption"
+      ],
+      "relatedEips": [
+        "EIP-7708",
+        "EIP-7928"
+      ]
+    },
+    {
       "path": "fixtures/indexers/subgraph.yaml",
       "kind": "indexer",
       "description": "Synthetic subgraph-shaped fixture with event-only handlers and intentionally incomplete compatibility metadata.",
@@ -560,6 +593,72 @@
         "GAS-REPRICING",
         "EIP-7708",
         "EIP-8038"
+      ]
+    },
+    {
+      "path": "fixtures/validator/operator-config-builder-gap.yaml",
+      "kind": "validator",
+      "description": "Synthetic validator/operator config with known-compatible placeholder clients but intentionally missing builder endpoint, Grafana, and testnet participation metadata.",
+      "source": {
+        "type": "synthetic",
+        "name": "Hand-authored validator builder-gap fixture",
+        "license": "MIT",
+        "notes": [
+          "Designed to isolate builder, monitoring, and testnet readiness findings from unknown-client compatibility findings.",
+          "Uses only placeholder clients and example.invalid URLs."
+        ]
+      },
+      "capture": {
+        "tool": "hand-authored fixture",
+        "mode": "YAML operator config"
+      },
+      "completeness": "partial",
+      "redaction": {
+        "status": "synthetic-placeholder",
+        "notes": [
+          "No validator keys, fee recipient secrets, RPC credentials, internal hostnames, or private infrastructure names are present.",
+          "All client names and monitoring URLs are placeholders."
+        ]
+      },
+      "expectedFindingIds": [
+        "validator.builder-enabled-without-endpoint",
+        "validator.missing-monitoring-endpoints",
+        "validator.missing-testnet-participation"
+      ],
+      "relatedEips": [
+        "EIP-7732",
+        "EIP-7928"
+      ]
+    },
+    {
+      "path": "fixtures/validator/operator-config-complete.yaml",
+      "kind": "validator",
+      "description": "Synthetic validator/operator config with complete placeholder client, builder, monitoring, testnet, and compatibility metadata.",
+      "source": {
+        "type": "synthetic",
+        "name": "Hand-authored complete validator operator fixture",
+        "license": "MIT",
+        "notes": [
+          "Designed as a clean metadata variant using placeholder compatible client entries from data/client-compat/clients.example.json.",
+          "Uses only placeholder clients and example.invalid URLs."
+        ]
+      },
+      "capture": {
+        "tool": "hand-authored fixture",
+        "mode": "YAML operator config"
+      },
+      "completeness": "focused-minimal",
+      "redaction": {
+        "status": "synthetic-placeholder",
+        "notes": [
+          "No validator keys, fee recipient secrets, RPC credentials, internal hostnames, or private infrastructure names are present.",
+          "All client names, network labels, and monitoring URLs are placeholders."
+        ]
+      },
+      "expectedFindingIds": [],
+      "relatedEips": [
+        "EIP-7732",
+        "EIP-7928"
       ]
     },
     {

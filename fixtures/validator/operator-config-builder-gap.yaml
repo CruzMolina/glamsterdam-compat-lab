@@ -1,0 +1,22 @@
+executionClient:
+  name: example-execution-client
+  version: 1.0.0-compatible
+consensusClient:
+  name: example-consensus-client
+  version: 1.0.0-compatible
+validatorClient:
+  name: example-validator-client
+  version: 1.0.0-compatible
+builder:
+  enabled: true
+monitoring:
+  prometheus: https://monitoring.example.invalid/prometheus
+networks:
+  primary: example-mainnet-shadow
+  testnetParticipation: []
+compatibility:
+  glamsterdam:
+    reviewedEips:
+      - EIP-7732
+    ownerNotes: "Builder endpoint and Grafana metadata are intentionally omitted to exercise focused readiness findings."
+notes: "Partial metadata variant for scanner coverage; all names and endpoints are reserved placeholders."

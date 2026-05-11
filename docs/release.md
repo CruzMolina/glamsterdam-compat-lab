@@ -2,12 +2,13 @@
 
 This project publishes GitHub releases and npm packages separately. A release is not complete until both the GitHub release exists and npm shows the expected package version.
 
-## Current npm target
+## Current npm package
 
 - Package: `glamsterdam-compat-lab`
-- Current release tag: `v0.2.2`
-- Expected npm version: `0.2.2`
+- Latest published release tag: `v0.2.2`
+- Latest published npm version: `0.2.2`
 - Publish workflow: `.github/workflows/npm-publish.yml`
+- Trusted Publishing: configured for repository `CruzMolina/glamsterdam-compat-lab`, workflow `npm-publish.yml`, and environment `npm-publish`
 
 ## Preflight
 
@@ -22,10 +23,10 @@ pnpm release:check-pack
 
 `pnpm release:check-pack` packs the current build, installs the tarball into a temporary global prefix, verifies the `glamsterdam` bin, and confirms the real public trace fixture is included.
 
-Confirm the package is not already published at the target version:
+Confirm the package state for the target version. A new release version should not already be published:
 
 ```sh
-npm view glamsterdam-compat-lab version --json
+npm view glamsterdam-compat-lab@<version> version --json
 ```
 
 You can also run the release readiness helper, which checks the npm registry, local npm login state, local `NPM_TOKEN` or `NODE_AUTH_TOKEN` environment presence, GitHub `NPM_TOKEN` secret presence, and the publish workflow's OIDC shape:
@@ -38,9 +39,9 @@ pnpm release:check-npm
 
 npm Trusted Publishing uses GitHub Actions OIDC instead of a long-lived npm token. The `Publish npm` workflow is configured for this path with a GitHub-hosted runner, Node 24, `id-token: write`, `actions/setup-node` registry setup for `https://registry.npmjs.org`, and `npm publish --provenance`.
 
-The default OIDC path does not require an npm token secret. If `NPM_TOKEN` is present, the workflow writes a temporary `.npmrc` only for that token fallback.
+The steady-state OIDC path does not require an npm token secret. Keep repository-level and `npm-publish` environment `NPM_TOKEN` secrets absent unless an emergency fallback is in use. If `NPM_TOKEN` is present, the workflow writes a temporary `.npmrc` only for that token fallback.
 
-Configure npm with:
+The package is configured on npm with:
 
 - Provider: GitHub Actions
 - Owner or organization: `CruzMolina`
@@ -59,7 +60,7 @@ npx --yes npm@11.14.0 trust github glamsterdam-compat-lab \
   --env npm-publish
 ```
 
-npm documents `npm trust` as the command-line equivalent of managing trusted publisher configurations on npmjs.com. It requires npm 11.10.0 or newer, an npm owner or publisher login, write permission on the package, and 2FA when the account requires it. If the command fails with `E401` and says you must be logged in to publish packages, authenticate with the npm owner or publisher account before retrying. For a first publish of this unscoped package, use an npm owner or publisher session to try the CLI or npmjs.com setup. If npm does not allow the trusted publisher to be configured before the first publish, use the `NPM_TOKEN` fallback below for the first publish and switch back to Trusted Publishing afterward.
+npm documents `npm trust` as the command-line equivalent of managing trusted publisher configurations on npmjs.com. It requires npm 11.10.0 or newer, an npm owner or publisher login, write permission on the package, and 2FA when the account requires it. If the command fails with `E401` and says you must be logged in to publish packages, authenticate with the npm owner or publisher account before retrying.
 
 Trusted Publishing also validates repository metadata during publish. Keep `package.json` `repository.url` aligned with `git+https://github.com/CruzMolina/glamsterdam-compat-lab.git`.
 
@@ -78,28 +79,30 @@ Then run the workflow from `main`:
 ```sh
 gh workflow run npm-publish.yml \
   --ref main \
-  -f release_tag=v0.2.2 \
+  -f release_tag=vX.Y.Z \
   -f dry_run=true \
   -f tag=latest
 ```
 
-If the dry run passes, run the real publish:
+If the dry run passes for a new release version, run the real publish:
 
 ```sh
 gh workflow run npm-publish.yml \
   --ref main \
-  -f release_tag=v0.2.2 \
+  -f release_tag=vX.Y.Z \
   -f dry_run=false \
   -f tag=latest
 ```
 
 If the real publish fails with `ENEEDAUTH`, verify the npm Trusted Publishing configuration first. The workflow filename and repository fields are case-sensitive.
 
-If the logs show `Signed provenance statement` followed by `npm error 404 Not Found - PUT`, OIDC/provenance is working, but npm has not authorized this workflow or account to publish the package name. Verify the Trusted Publishing package grant. If npm does not allow Trusted Publishing to be configured before the first publish of this unscoped package, use the token fallback below for the first publish, then switch the package to Trusted Publishing afterward.
+If a dry run is repeated for a version already published on npm, npm may fail with `You cannot publish over the previously published versions`. Treat that as a version-state signal, not a build/test failure, after confirming the workflow reached the npm publish dry-run step.
 
-## Fallback path: npm token
+If the logs show `Signed provenance statement` followed by `npm error 404 Not Found - PUT`, OIDC/provenance is working, but npm has not authorized this workflow or account to publish the package name. Verify the Trusted Publishing package grant.
 
-Create a granular npm access token with read/write package permission for `glamsterdam-compat-lab` or all packages the npm owner can publish. If the npm account or package requires 2FA, enable the token's bypass-2FA option for non-interactive CI publishing. Then add the token as the `NPM_TOKEN` secret on the `npm-publish` environment or as a repository secret.
+## Emergency fallback: npm token
+
+Use a token only if Trusted Publishing is unavailable and a release must be unblocked. Create a granular npm access token with read/write package permission for `glamsterdam-compat-lab` or all packages the npm owner can publish. If the npm account or package requires 2FA, enable the token's bypass-2FA option for non-interactive CI publishing. Then add the token as the `NPM_TOKEN` secret on the `npm-publish` environment or as a repository secret.
 
 If the token is available in your shell as `NPM_TOKEN` or `NODE_AUTH_TOKEN`, set the environment secret without printing the token value:
 
@@ -116,17 +119,18 @@ Rerun the same workflow:
 ```sh
 gh workflow run npm-publish.yml \
   --ref main \
-  -f release_tag=v0.2.2 \
+  -f release_tag=vX.Y.Z \
   -f dry_run=false \
   -f tag=latest
 ```
 
-After a successful token-based publish, configure Trusted Publishing for future releases and revoke unused publish tokens.
+After any token-based publish, remove the GitHub `NPM_TOKEN` secret, revoke the npm token, and return the package to Trusted Publishing.
 
 ## Done criteria
 
-The npm release is done when all of these are true:
+An npm release is done when all of these are true:
 
-- The `Publish npm` workflow completed successfully for `release_tag=v0.2.2`.
-- `npm view glamsterdam-compat-lab version --json` returns `"0.2.2"`.
-- Issue #17 is closed with the successful workflow run link.
+- npm shows the expected version for the release tag.
+- The `latest` dist-tag points at the expected version, unless intentionally publishing under another tag.
+- A fresh install smoke from the registry runs `glamsterdam --version` and a simple CLI command such as `glamsterdam eips --format json`.
+- The GitHub release notes or release task are updated with the successful publish and verification evidence.

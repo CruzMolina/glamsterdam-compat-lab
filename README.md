@@ -33,13 +33,20 @@ pnpm glamsterdam eips
 pnpm glamsterdam scan-bytecode fixtures/bytecode/storage-heavy.hex
 ```
 
-The package is configured as `glamsterdam-compat-lab` in `package.json`, but npm registry publication is still pending package-owner authentication. Until npm shows `glamsterdam-compat-lab@0.2.2`, the current installable release artifact is the v0.2.2 GitHub release tarball:
+Install the published CLI from npm:
+
+```sh
+npm install -g glamsterdam-compat-lab@0.2.2
+glamsterdam eips
+```
+
+The v0.2.2 GitHub release tarball remains available as a reproducible release artifact:
 
 ```sh
 npm install -g https://github.com/CruzMolina/glamsterdam-compat-lab/releases/download/v0.2.2/glamsterdam-compat-lab-0.2.2.tgz
 ```
 
-See [docs/release.md](docs/release.md) for npm publication status and maintainer release checks.
+See [docs/release.md](docs/release.md) for maintainer release checks and npm publishing notes.
 
 The default output format is Markdown. Use `--format json` for machine-readable reports.
 

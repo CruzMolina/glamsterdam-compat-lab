@@ -73,7 +73,7 @@ pnpm test
 pnpm build
 ```
 
-The dataset includes default-profile reports for every scannable fixture, default-vs-research comparisons for bytecode and trace fixtures, a small JSON summary of aggregate counts, and CSV exports for reports, findings, and flattened summary rows. Treat the seed as reproducibility scaffolding, not as an aggregate public-chain readiness study.
+The dataset includes default-profile reports for every scannable fixture, default-vs-research comparisons for bytecode and trace fixtures, a small JSON summary of aggregate counts, and CSV exports for reports, findings, and flattened summary rows. See `docs/dataset.md` for the dataset contract and `examples/public-seed-analysis.md` for small analysis snippets. Treat the seed as reproducibility scaffolding, not as an aggregate public-chain readiness study.
 
 ## Capturing RPC Traces
 

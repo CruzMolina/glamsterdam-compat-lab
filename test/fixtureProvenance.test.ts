@@ -60,6 +60,18 @@ describe("fixture provenance", () => {
       }
     }
   });
+
+  it("marks public document and repository fixtures with source URLs", () => {
+    const publicSourceFixtures = manifest.fixtures.filter(
+      (fixture) => fixture.source.type === "public-doc" || fixture.source.type === "public-repo"
+    );
+
+    expect(publicSourceFixtures.length).toBeGreaterThan(0);
+    for (const fixture of publicSourceFixtures) {
+      expect(fixture.source.url).toMatch(/^https:\/\//);
+      expect(fixture.source.license).toBeTruthy();
+    }
+  });
 });
 
 function reportForFixture(fixture: FixtureProvenanceEntry): CompatibilityReport {

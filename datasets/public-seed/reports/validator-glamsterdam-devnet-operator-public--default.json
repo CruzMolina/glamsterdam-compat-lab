@@ -1,0 +1,92 @@
+{
+  "toolVersion": "0.3.2",
+  "fork": "glamsterdam",
+  "target": {
+    "kind": "validator",
+    "name": "fixtures/validator/glamsterdam-devnet-operator-public.yaml"
+  },
+  "summary": {
+    "risk": "unknown",
+    "findingCount": 2,
+    "highCount": 0,
+    "mediumCount": 0,
+    "lowCount": 0,
+    "unknownCount": 2
+  },
+  "findings": [
+    {
+      "id": "validator.execution-client-status-partial",
+      "title": "execution client compatibility is partial",
+      "severity": "unknown",
+      "confidence": "high",
+      "domain": [
+        "validator"
+      ],
+      "relatedEips": [
+        "EIP-7732"
+      ],
+      "description": "The compatibility matrix reports partial for geth ethpandaops/geth:bal-devnet-6. The scanner reports the matrix value without trying to override it.",
+      "evidence": [
+        {
+          "role": "execution",
+          "name": "geth",
+          "version": "ethpandaops/geth:bal-devnet-6",
+          "matrixEntry": {
+            "version": "ethpandaops/geth:bal-devnet-6",
+            "status": "partial",
+            "source": {
+              "type": "public-devnet-spec",
+              "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+              "retrievedAt": "2026-05-12",
+              "claim": "The glamsterdam-devnet-2 Kurtosis example lists geth with image ethpandaops/geth:bal-devnet-6 as the execution-layer participant."
+            },
+            "notes": "Devnet image only. This is not a production Geth release compatibility claim."
+          }
+        }
+      ],
+      "recommendation": "Review the matrix source notes, update the client, or validate the status through testnet/devnet participation."
+    },
+    {
+      "id": "validator.consensus-client-status-partial",
+      "title": "consensus client compatibility is partial",
+      "severity": "unknown",
+      "confidence": "high",
+      "domain": [
+        "validator"
+      ],
+      "relatedEips": [
+        "EIP-7732"
+      ],
+      "description": "The compatibility matrix reports partial for lighthouse ethpandaops/lighthouse:glamsterdam-devnet-3. The scanner reports the matrix value without trying to override it.",
+      "evidence": [
+        {
+          "role": "consensus",
+          "name": "lighthouse",
+          "version": "ethpandaops/lighthouse:glamsterdam-devnet-3",
+          "matrixEntry": {
+            "version": "ethpandaops/lighthouse:glamsterdam-devnet-3",
+            "status": "partial",
+            "source": {
+              "type": "public-devnet-spec",
+              "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+              "retrievedAt": "2026-05-12",
+              "claim": "The glamsterdam-devnet-2 Kurtosis example lists lighthouse with image ethpandaops/lighthouse:glamsterdam-devnet-3 as a consensus-layer participant."
+            },
+            "notes": "Devnet image only. This is not a production Lighthouse release compatibility claim."
+          }
+        }
+      ],
+      "recommendation": "Review the matrix source notes, update the client, or validate the status through testnet/devnet participation."
+    }
+  ],
+  "assumptions": [
+    "Validator/operator readiness was checked from a local JSON/YAML config only.",
+    "Client compatibility was compared against data/client-compat/clients.example.json. Unknown entries are reported without guessing.",
+    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change."
+  ],
+  "limitations": [
+    "This scanner does not verify live node state, command-line flags, environment variables, firewall rules, or remote service health.",
+    "Client compatibility must come from a maintained matrix with explicit source links.",
+    "A clean report does not replace devnet/testnet participation or operational drills."
+  ]
+}

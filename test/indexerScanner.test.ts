@@ -46,4 +46,25 @@ describe("scanIndexer", () => {
     expect(findingIds).not.toContain("indexer.missing-fork-compatibility-metadata");
     expect(findingIds).not.toContain("indexer.missing-replay-plan");
   });
+
+  it("parses a reduced public-repo subgraph with handler-level contract calls", () => {
+    const fixture = resolve(rootDir, "fixtures/indexers/graph-network-subgraph-reduced.yaml");
+    const config = loadStructuredFile(fixture);
+    const summary = summarizeHandlers(config);
+    const report = scanIndexer(fixture);
+    const findingIds = report.findings.map((finding) => finding.id);
+
+    expect(summary).toEqual({
+      eventHandlers: 4,
+      callHandlers: 0,
+      blockHandlers: 0
+    });
+    expect(findingIds).toEqual([
+      "indexer.event-only-assumption",
+      "indexer.native-eth-transfer-review-missing",
+      "indexer.missing-bal-readiness-metadata",
+      "indexer.missing-fork-compatibility-metadata",
+      "indexer.missing-replay-plan"
+    ]);
+  });
 });

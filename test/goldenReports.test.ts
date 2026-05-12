@@ -90,8 +90,22 @@ describe("golden report snapshots", () => {
     expect(renderJsonReport(report)).toMatchSnapshot();
   });
 
+  it("keeps reduced public subgraph indexer JSON report structure stable", () => {
+    const targetName = "fixtures/indexers/graph-network-subgraph-reduced.yaml";
+    const report = scanIndexer(resolve(rootDir, targetName), { targetName });
+
+    expect(renderJsonReport(report)).toMatchSnapshot();
+  });
+
   it("keeps complete validator config JSON report structure stable", () => {
     const targetName = "fixtures/validator/operator-config-complete.yaml";
+    const report = scanValidatorConfig(resolve(rootDir, targetName), { targetName });
+
+    expect(renderJsonReport(report)).toMatchSnapshot();
+  });
+
+  it("keeps public devnet validator config JSON report structure stable", () => {
+    const targetName = "fixtures/validator/glamsterdam-devnet-operator-public.yaml";
     const report = scanValidatorConfig(resolve(rootDir, targetName), { targetName });
 
     expect(renderJsonReport(report)).toMatchSnapshot();

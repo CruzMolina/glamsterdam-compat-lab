@@ -16,6 +16,7 @@ export const fixtureProvenanceKindSchema = z.enum(["bytecode", "trace", "indexer
 export const fixtureSourceTypeSchema = z.enum([
   "synthetic",
   "public-chain",
+  "public-doc",
   "public-repo",
   "anonymized-internal",
   "generated-example"

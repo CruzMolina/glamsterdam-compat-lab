@@ -4,8 +4,8 @@
   "lastUpdated": "2026-05-12",
   "toolVersion": "0.3.2",
   "sourceManifest": "fixtures/provenance.json",
-  "fixtureCount": 23,
-  "reportCount": 40,
+  "fixtureCount": 25,
+  "reportCount": 42,
   "comparisonCount": 17,
   "counts": {
     "fixturesByKind": [
@@ -15,7 +15,7 @@
       },
       {
         "key": "indexer",
-        "count": 3
+        "count": 4
       },
       {
         "key": "trace",
@@ -23,13 +23,21 @@
       },
       {
         "key": "validator",
-        "count": 3
+        "count": 4
       }
     ],
     "fixturesBySourceType": [
       {
         "key": "public-chain",
         "count": 8
+      },
+      {
+        "key": "public-doc",
+        "count": 1
+      },
+      {
+        "key": "public-repo",
+        "count": 1
       },
       {
         "key": "synthetic",
@@ -43,7 +51,11 @@
       },
       {
         "key": "medium",
-        "count": 33
+        "count": 34
+      },
+      {
+        "key": "unknown",
+        "count": 1
       }
     ],
     "reportsByFixtureKind": [
@@ -53,7 +65,7 @@
       },
       {
         "key": "indexer",
-        "count": 3
+        "count": 4
       },
       {
         "key": "trace",
@@ -61,13 +73,13 @@
       },
       {
         "key": "validator",
-        "count": 3
+        "count": 4
       }
     ],
     "reportsByThresholdProfile": [
       {
         "key": "default",
-        "count": 23
+        "count": 25
       },
       {
         "key": "research",
@@ -109,23 +121,23 @@
       },
       {
         "key": "indexer.event-only-assumption",
-        "count": 1
-      },
-      {
-        "key": "indexer.missing-bal-readiness-metadata",
         "count": 2
       },
       {
+        "key": "indexer.missing-bal-readiness-metadata",
+        "count": 3
+      },
+      {
         "key": "indexer.missing-fork-compatibility-metadata",
-        "count": 1
+        "count": 2
       },
       {
         "key": "indexer.missing-replay-plan",
-        "count": 1
+        "count": 2
       },
       {
         "key": "indexer.native-eth-transfer-review-missing",
-        "count": 1
+        "count": 2
       },
       {
         "key": "trace.calldata-heavy-execution",
@@ -150,6 +162,14 @@
       {
         "key": "validator.builder-enabled-without-endpoint",
         "count": 2
+      },
+      {
+        "key": "validator.consensus-client-status-partial",
+        "count": 1
+      },
+      {
+        "key": "validator.execution-client-status-partial",
+        "count": 1
       },
       {
         "key": "validator.missing-monitoring-endpoints",

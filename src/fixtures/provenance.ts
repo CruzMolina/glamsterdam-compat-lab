@@ -43,6 +43,8 @@ export const fixtureProvenanceEntrySchema = z.object({
   network: z.object({
     name: z.string().min(1),
     chainId: z.number().int().positive().optional(),
+    blockNumber: z.number().int().positive().optional(),
+    contractAddress: z.string().regex(/^0x[a-fA-F0-9]{40}$/).optional(),
     transactionHash: z.string().regex(/^0x[a-fA-F0-9]{64}$/).optional()
   }).optional(),
   completeness: fixtureCompletenessSchema,

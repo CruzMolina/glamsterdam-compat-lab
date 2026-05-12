@@ -53,6 +53,11 @@ describe("fixture provenance", () => {
     expect(publicChainFixtures.length).toBeGreaterThan(0);
     for (const fixture of publicChainFixtures) {
       expect(fixture.network?.name).toBeTruthy();
+
+      if (fixture.kind === "bytecode") {
+        expect(fixture.network?.contractAddress).toMatch(/^0x[a-fA-F0-9]{40}$/);
+        expect(fixture.network?.blockNumber).toBeGreaterThan(0);
+      }
     }
   });
 });

@@ -37,12 +37,18 @@ interface DatasetComparisonEntry {
   unchangedCount: number;
 }
 
+interface DatasetSummaryCount {
+  key: string;
+  count: number;
+}
+
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const datasetDir = resolve(rootDir, "datasets/public-seed");
 const reportsDir = resolve(datasetDir, "reports");
 const comparisonsDir = resolve(datasetDir, "comparisons");
 const defaultThresholdsPath = resolve(rootDir, "data/detectors/thresholds.json");
 const researchThresholdsPath = resolve(rootDir, "data/detectors/thresholds.research.json");
+const datasetLastUpdated = "2026-05-12";
 
 const manifest = loadFixtureProvenance(resolve(rootDir, "fixtures/provenance.json"));
 const scannableFixtures = manifest.fixtures
@@ -86,11 +92,12 @@ for (const fixture of scannableFixtures) {
 writeJson(resolve(datasetDir, "manifest.json"), {
   schemaVersion: 1,
   name: "public-seed",
-  lastUpdated: "2026-05-11",
+  lastUpdated: datasetLastUpdated,
   description:
     "Deterministic seed dataset generated from safe-to-publish fixture inputs and threshold-profile comparisons.",
   toolVersion: TOOL_VERSION,
   sourceManifest: "fixtures/provenance.json",
+  summary: "summary.json",
   thresholdProfiles: [
     {
       name: "default",
@@ -109,6 +116,7 @@ writeJson(resolve(datasetDir, "manifest.json"), {
     "Threshold-profile comparisons are structural report differences, not final fork gas deltas."
   ]
 });
+writeJson(resolve(datasetDir, "summary.json"), buildSummary());
 writeReadme();
 
 function scanFixture(fixture: FixtureProvenanceEntry, thresholdsPath: string): CompatibilityReport {
@@ -172,6 +180,42 @@ function writeJson(path: string, value: unknown): void {
   writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`);
 }
 
+function buildSummary(): unknown {
+  return {
+    schemaVersion: 1,
+    name: "public-seed-summary",
+    lastUpdated: datasetLastUpdated,
+    toolVersion: TOOL_VERSION,
+    sourceManifest: "fixtures/provenance.json",
+    fixtureCount: scannableFixtures.length,
+    reportCount: reportEntries.length,
+    comparisonCount: comparisonEntries.length,
+    counts: {
+      fixturesByKind: countBy(scannableFixtures, (fixture) => fixture.kind),
+      fixturesBySourceType: countBy(scannableFixtures, (fixture) => fixture.source.type),
+      reportsByRisk: countBy(reportEntries, (entry) => entry.risk),
+      reportsByFixtureKind: countBy(reportEntries, (entry) => entry.fixtureKind),
+      reportsByThresholdProfile: countBy(reportEntries, (entry) => entry.thresholdProfile),
+      findingsById: countBy(
+        reportEntries.flatMap((entry) => entry.findingIds),
+        (findingId) => findingId
+      )
+    }
+  };
+}
+
+function countBy<T>(items: T[], keyForItem: (item: T) => string): DatasetSummaryCount[] {
+  const counts = items.reduce<Record<string, number>>((totals, item) => {
+    const key = keyForItem(item);
+    totals[key] = (totals[key] ?? 0) + 1;
+    return totals;
+  }, {});
+
+  return Object.entries(counts)
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([key, count]) => ({ key, count }));
+}
+
 function writeReadme(): void {
   writeFileSync(resolve(datasetDir, "README.md"), `# Public Seed Dataset
 
@@ -182,6 +226,7 @@ The seed is intentionally small. It is meant to prove the dataset workflow, not 
 ## Contents
 
 - \`manifest.json\`: index of generated reports, comparisons, source fixtures, threshold profiles, and limitations.
+- \`summary.json\`: aggregate counts by fixture kind, source type, report risk, threshold profile, and finding ID.
 - \`reports/\`: JSON compatibility reports generated from source fixtures.
 - \`comparisons/\`: JSON comparison reports for default-vs-research threshold profiles on bytecode and trace fixtures.
 

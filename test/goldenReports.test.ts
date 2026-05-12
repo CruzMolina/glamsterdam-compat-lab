@@ -19,6 +19,26 @@ describe("golden report snapshots", () => {
     expect(renderMarkdownReport(report)).toMatchSnapshot();
   });
 
+  it("keeps ENS Registry runtime bytecode JSON report structure stable", () => {
+    expectBytecodeJsonSnapshot("ens-registry-mainnet-runtime.hex");
+  });
+
+  it("keeps Multicall3 runtime bytecode JSON report structure stable", () => {
+    expectBytecodeJsonSnapshot("multicall3-mainnet-runtime.hex");
+  });
+
+  it("keeps Uniswap V2 Factory runtime bytecode JSON report structure stable", () => {
+    expectBytecodeJsonSnapshot("uniswap-v2-factory-mainnet-runtime.hex");
+  });
+
+  it("keeps USDC proxy runtime bytecode JSON report structure stable", () => {
+    expectBytecodeJsonSnapshot("usdc-proxy-mainnet-runtime.hex");
+  });
+
+  it("keeps WETH9 runtime bytecode JSON report structure stable", () => {
+    expectBytecodeJsonSnapshot("weth9-mainnet-runtime.hex");
+  });
+
   it("keeps trace JSON report structure stable", () => {
     const report = scanTraceFile(resolve(rootDir, "fixtures/traces/storage-heavy-trace.json"), {
       targetName: "fixtures/traces/storage-heavy-trace.json"
@@ -88,6 +108,13 @@ describe("golden report snapshots", () => {
 function expectTraceJsonSnapshot(fixtureName: string): void {
   const targetName = `fixtures/traces/${fixtureName}`;
   const report = scanTraceFile(resolve(rootDir, targetName), { targetName });
+
+  expect(renderJsonReport(report)).toMatchSnapshot();
+}
+
+function expectBytecodeJsonSnapshot(fixtureName: string): void {
+  const targetName = `fixtures/bytecode/${fixtureName}`;
+  const report = scanBytecode(resolve(rootDir, targetName), { targetName });
 
   expect(renderJsonReport(report)).toMatchSnapshot();
 }

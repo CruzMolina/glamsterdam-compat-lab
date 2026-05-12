@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "name": "public-seed-summary",
   "lastUpdated": "2026-05-12",
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "sourceManifest": "fixtures/provenance.json",
   "fixtureCount": 23,
   "reportCount": 40,

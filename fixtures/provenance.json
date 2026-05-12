@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastUpdated": "2026-05-11",
+  "lastUpdated": "2026-05-12",
   "notes": [
     "This manifest records fixture provenance, redaction posture, and expected scanner signals. It is intentionally separate from scanner output so fixture submissions can be reviewed before report snapshots change.",
     "Synthetic fixtures are small examples shaped after common tool outputs. They are useful for parser coverage but are not evidence of client behavior.",
@@ -34,6 +34,235 @@
         "bytecode.state-account-opcode-exposure",
         "bytecode.calldata-copy-exposure",
         "bytecode.contract-creation-opcodes",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7708",
+        "EIP-8038"
+      ]
+    },
+    {
+      "path": "fixtures/bytecode/ens-registry-mainnet-runtime.hex",
+      "kind": "bytecode",
+      "description": "Public Ethereum mainnet runtime bytecode for the ENS Registry contract.",
+      "source": {
+        "type": "public-chain",
+        "name": "ENS Registry runtime bytecode on Ethereum mainnet",
+        "url": "https://etherscan.io/address/0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e#code",
+        "license": "Public blockchain data; repository license applies to fixture packaging.",
+        "notes": [
+          "Fetched with eth_getCode at block 25075351 through a public Ethereum RPC endpoint.",
+          "The fixture stores deployed runtime bytecode only, not source code or constructor arguments."
+        ]
+      },
+      "capture": {
+        "tool": "eth_getCode via ethereum-rpc.publicnode.com",
+        "command": "eth_getCode(0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e, 0x17e9e97)",
+        "mode": "runtime bytecode"
+      },
+      "network": {
+        "name": "ethereum-mainnet",
+        "chainId": 1,
+        "blockNumber": 25075351,
+        "contractAddress": "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"
+      },
+      "completeness": "complete",
+      "redaction": {
+        "status": "not-needed",
+        "notes": [
+          "Contract runtime bytecode and address are public Ethereum mainnet data.",
+          "No credentials, private endpoints, or private transaction data are present."
+        ]
+      },
+      "expectedFindingIds": [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7708",
+        "EIP-8038"
+      ]
+    },
+    {
+      "path": "fixtures/bytecode/multicall3-mainnet-runtime.hex",
+      "kind": "bytecode",
+      "description": "Public Ethereum mainnet runtime bytecode for the Multicall3 contract.",
+      "source": {
+        "type": "public-chain",
+        "name": "Multicall3 runtime bytecode on Ethereum mainnet",
+        "url": "https://etherscan.io/address/0xcA11bde05977b3631167028862bE2a173976CA11#code",
+        "license": "Public blockchain data; repository license applies to fixture packaging.",
+        "notes": [
+          "Fetched with eth_getCode at block 25075351 through a public Ethereum RPC endpoint.",
+          "The fixture stores deployed runtime bytecode only, not source code or constructor arguments."
+        ]
+      },
+      "capture": {
+        "tool": "eth_getCode via ethereum-rpc.publicnode.com",
+        "command": "eth_getCode(0xcA11bde05977b3631167028862bE2a173976CA11, 0x17e9e97)",
+        "mode": "runtime bytecode"
+      },
+      "network": {
+        "name": "ethereum-mainnet",
+        "chainId": 1,
+        "blockNumber": 25075351,
+        "contractAddress": "0xcA11bde05977b3631167028862bE2a173976CA11"
+      },
+      "completeness": "complete",
+      "redaction": {
+        "status": "not-needed",
+        "notes": [
+          "Contract runtime bytecode and address are public Ethereum mainnet data.",
+          "No credentials, private endpoints, or private transaction data are present."
+        ]
+      },
+      "expectedFindingIds": [
+        "bytecode.calldata-copy-exposure",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7708",
+        "EIP-7976"
+      ]
+    },
+    {
+      "path": "fixtures/bytecode/uniswap-v2-factory-mainnet-runtime.hex",
+      "kind": "bytecode",
+      "description": "Public Ethereum mainnet runtime bytecode for the Uniswap V2 Factory contract.",
+      "source": {
+        "type": "public-chain",
+        "name": "Uniswap V2 Factory runtime bytecode on Ethereum mainnet",
+        "url": "https://etherscan.io/address/0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f#code",
+        "license": "Public blockchain data; repository license applies to fixture packaging.",
+        "notes": [
+          "Fetched with eth_getCode at block 25075351 through a public Ethereum RPC endpoint.",
+          "The fixture stores deployed runtime bytecode only, not source code or constructor arguments."
+        ]
+      },
+      "capture": {
+        "tool": "eth_getCode via ethereum-rpc.publicnode.com",
+        "command": "eth_getCode(0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f, 0x17e9e97)",
+        "mode": "runtime bytecode"
+      },
+      "network": {
+        "name": "ethereum-mainnet",
+        "chainId": 1,
+        "blockNumber": 25075351,
+        "contractAddress": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f"
+      },
+      "completeness": "complete",
+      "redaction": {
+        "status": "not-needed",
+        "notes": [
+          "Contract runtime bytecode and address are public Ethereum mainnet data.",
+          "No credentials, private endpoints, or private transaction data are present."
+        ]
+      },
+      "expectedFindingIds": [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.contract-creation-opcodes",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7708",
+        "EIP-7976",
+        "EIP-8037",
+        "EIP-8038"
+      ]
+    },
+    {
+      "path": "fixtures/bytecode/usdc-proxy-mainnet-runtime.hex",
+      "kind": "bytecode",
+      "description": "Public Ethereum mainnet runtime bytecode for the USDC FiatToken proxy contract.",
+      "source": {
+        "type": "public-chain",
+        "name": "USDC FiatToken proxy runtime bytecode on Ethereum mainnet",
+        "url": "https://etherscan.io/address/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48#code",
+        "license": "Public blockchain data; repository license applies to fixture packaging.",
+        "notes": [
+          "Fetched with eth_getCode at block 25075351 through a public Ethereum RPC endpoint.",
+          "The fixture stores deployed runtime bytecode only, not source code or constructor arguments."
+        ]
+      },
+      "capture": {
+        "tool": "eth_getCode via ethereum-rpc.publicnode.com",
+        "command": "eth_getCode(0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48, 0x17e9e97)",
+        "mode": "runtime bytecode"
+      },
+      "network": {
+        "name": "ethereum-mainnet",
+        "chainId": 1,
+        "blockNumber": 25075351,
+        "contractAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+      },
+      "completeness": "complete",
+      "redaction": {
+        "status": "not-needed",
+        "notes": [
+          "Contract runtime bytecode and address are public Ethereum mainnet data.",
+          "No credentials, private endpoints, or private transaction data are present."
+        ]
+      },
+      "expectedFindingIds": [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7708",
+        "EIP-7976",
+        "EIP-8038"
+      ]
+    },
+    {
+      "path": "fixtures/bytecode/weth9-mainnet-runtime.hex",
+      "kind": "bytecode",
+      "description": "Public Ethereum mainnet runtime bytecode for the WETH9 contract.",
+      "source": {
+        "type": "public-chain",
+        "name": "WETH9 runtime bytecode on Ethereum mainnet",
+        "url": "https://etherscan.io/address/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2#code",
+        "license": "Public blockchain data; repository license applies to fixture packaging.",
+        "notes": [
+          "Fetched with eth_getCode at block 25075351 through a public Ethereum RPC endpoint.",
+          "The fixture stores deployed runtime bytecode only, not source code or constructor arguments."
+        ]
+      },
+      "capture": {
+        "tool": "eth_getCode via ethereum-rpc.publicnode.com",
+        "command": "eth_getCode(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2, 0x17e9e97)",
+        "mode": "runtime bytecode"
+      },
+      "network": {
+        "name": "ethereum-mainnet",
+        "chainId": 1,
+        "blockNumber": 25075351,
+        "contractAddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+      },
+      "completeness": "complete",
+      "redaction": {
+        "status": "not-needed",
+        "notes": [
+          "Contract runtime bytecode and address are public Ethereum mainnet data.",
+          "No credentials, private endpoints, or private transaction data are present."
+        ]
+      },
+      "expectedFindingIds": [
+        "bytecode.state-account-opcode-exposure",
         "bytecode.storage-heavy-pattern",
         "bytecode.log-opcodes-present",
         "bytecode.manual-review-required"

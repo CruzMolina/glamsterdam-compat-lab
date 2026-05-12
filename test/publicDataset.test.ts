@@ -40,6 +40,7 @@ const publicSeedManifestSchema = z.object({
   description: z.string().min(1),
   toolVersion: z.string().min(1),
   sourceManifest: z.literal("fixtures/provenance.json"),
+  summary: z.literal("summary.json"),
   thresholdProfiles: z.array(z.object({
     name: z.enum(["default", "research"]),
     path: z.string().min(1)
@@ -49,8 +50,35 @@ const publicSeedManifestSchema = z.object({
   limitations: z.array(z.string().min(1)).min(1)
 });
 
+const datasetSummaryCountSchema = z.object({
+  key: z.string().min(1),
+  count: z.number().int().nonnegative()
+});
+
+const publicSeedSummarySchema = z.object({
+  schemaVersion: z.literal(1),
+  name: z.literal("public-seed-summary"),
+  lastUpdated: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  toolVersion: z.string().min(1),
+  sourceManifest: z.literal("fixtures/provenance.json"),
+  fixtureCount: z.number().int().nonnegative(),
+  reportCount: z.number().int().nonnegative(),
+  comparisonCount: z.number().int().nonnegative(),
+  counts: z.object({
+    fixturesByKind: z.array(datasetSummaryCountSchema),
+    fixturesBySourceType: z.array(datasetSummaryCountSchema),
+    reportsByRisk: z.array(datasetSummaryCountSchema),
+    reportsByFixtureKind: z.array(datasetSummaryCountSchema),
+    reportsByThresholdProfile: z.array(datasetSummaryCountSchema),
+    findingsById: z.array(datasetSummaryCountSchema)
+  })
+});
+
 const datasetManifest = publicSeedManifestSchema.parse(
   JSON.parse(readFileSync(resolve(rootDir, "datasets/public-seed/manifest.json"), "utf8"))
+);
+const datasetSummary = publicSeedSummarySchema.parse(
+  JSON.parse(readFileSync(resolve(rootDir, "datasets/public-seed/summary.json"), "utf8"))
 );
 const fixtureManifest = loadFixtureProvenance(resolve(rootDir, "fixtures/provenance.json"));
 
@@ -107,4 +135,38 @@ describe("public seed dataset", () => {
       expect(comparison.summary.unchangedCount).toBe(entry.unchangedCount);
     }
   });
+
+  it("keeps summary counts aligned with the manifest and reports", () => {
+    const scannableFixtures = fixtureManifest.fixtures.filter((fixture) => fixture.kind !== "report");
+
+    expect(existsSync(resolve(rootDir, "datasets/public-seed", datasetManifest.summary))).toBe(true);
+    expect(datasetSummary.fixtureCount).toBe(scannableFixtures.length);
+    expect(datasetSummary.reportCount).toBe(datasetManifest.reports.length);
+    expect(datasetSummary.comparisonCount).toBe(datasetManifest.comparisons.length);
+    expect(datasetSummary.counts.fixturesByKind).toEqual(countBy(scannableFixtures.map((fixture) => fixture.kind)));
+    expect(datasetSummary.counts.fixturesBySourceType).toEqual(
+      countBy(scannableFixtures.map((fixture) => fixture.source.type))
+    );
+    expect(datasetSummary.counts.reportsByRisk).toEqual(countBy(datasetManifest.reports.map((report) => report.risk)));
+    expect(datasetSummary.counts.reportsByFixtureKind).toEqual(
+      countBy(datasetManifest.reports.map((report) => report.fixtureKind))
+    );
+    expect(datasetSummary.counts.reportsByThresholdProfile).toEqual(
+      countBy(datasetManifest.reports.map((report) => report.thresholdProfile))
+    );
+    expect(datasetSummary.counts.findingsById).toEqual(
+      countBy(datasetManifest.reports.flatMap((report) => report.findingIds))
+    );
+  });
 });
+
+function countBy(values: string[]): Array<{ key: string; count: number }> {
+  const counts = values.reduce<Record<string, number>>((totals, value) => {
+    totals[value] = (totals[value] ?? 0) + 1;
+    return totals;
+  }, {});
+
+  return Object.entries(counts)
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([key, count]) => ({ key, count }));
+}

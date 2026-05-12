@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "name": "public-seed-summary",
+  "lastUpdated": "2026-05-12",
+  "toolVersion": "0.3.1",
+  "sourceManifest": "fixtures/provenance.json",
+  "fixtureCount": 23,
+  "reportCount": 40,
+  "comparisonCount": 17,
+  "counts": {
+    "fixturesByKind": [
+      {
+        "key": "bytecode",
+        "count": 6
+      },
+      {
+        "key": "indexer",
+        "count": 3
+      },
+      {
+        "key": "trace",
+        "count": 11
+      },
+      {
+        "key": "validator",
+        "count": 3
+      }
+    ],
+    "fixturesBySourceType": [
+      {
+        "key": "public-chain",
+        "count": 8
+      },
+      {
+        "key": "synthetic",
+        "count": 15
+      }
+    ],
+    "reportsByRisk": [
+      {
+        "key": "low",
+        "count": 7
+      },
+      {
+        "key": "medium",
+        "count": 33
+      }
+    ],
+    "reportsByFixtureKind": [
+      {
+        "key": "bytecode",
+        "count": 12
+      },
+      {
+        "key": "indexer",
+        "count": 3
+      },
+      {
+        "key": "trace",
+        "count": 22
+      },
+      {
+        "key": "validator",
+        "count": 3
+      }
+    ],
+    "reportsByThresholdProfile": [
+      {
+        "key": "default",
+        "count": 23
+      },
+      {
+        "key": "research",
+        "count": 17
+      }
+    ],
+    "findingsById": [
+      {
+        "key": "bytecode.calldata-copy-exposure",
+        "count": 8
+      },
+      {
+        "key": "bytecode.contract-creation-opcodes",
+        "count": 4
+      },
+      {
+        "key": "bytecode.log-opcodes-present",
+        "count": 12
+      },
+      {
+        "key": "bytecode.manual-review-required",
+        "count": 12
+      },
+      {
+        "key": "bytecode.state-account-opcode-exposure",
+        "count": 10
+      },
+      {
+        "key": "bytecode.state-account-opcode-presence",
+        "count": 1
+      },
+      {
+        "key": "bytecode.storage-heavy-pattern",
+        "count": 9
+      },
+      {
+        "key": "indexer.balance-diff-native-transfer-assumption",
+        "count": 2
+      },
+      {
+        "key": "indexer.event-only-assumption",
+        "count": 1
+      },
+      {
+        "key": "indexer.missing-bal-readiness-metadata",
+        "count": 2
+      },
+      {
+        "key": "indexer.missing-fork-compatibility-metadata",
+        "count": 1
+      },
+      {
+        "key": "indexer.missing-replay-plan",
+        "count": 1
+      },
+      {
+        "key": "indexer.native-eth-transfer-review-missing",
+        "count": 1
+      },
+      {
+        "key": "trace.calldata-heavy-execution",
+        "count": 14
+      },
+      {
+        "key": "trace.contract-creation-executed",
+        "count": 10
+      },
+      {
+        "key": "trace.logs-calls-visible",
+        "count": 22
+      },
+      {
+        "key": "trace.partial-evidence",
+        "count": 12
+      },
+      {
+        "key": "trace.state-heavy-execution-medium",
+        "count": 7
+      },
+      {
+        "key": "validator.builder-enabled-without-endpoint",
+        "count": 2
+      },
+      {
+        "key": "validator.missing-monitoring-endpoints",
+        "count": 2
+      },
+      {
+        "key": "validator.missing-testnet-participation",
+        "count": 2
+      },
+      {
+        "key": "validator.missing-validator-client-version",
+        "count": 1
+      },
+      {
+        "key": "validator.unknown-consensus-client-compatibility",
+        "count": 1
+      },
+      {
+        "key": "validator.unknown-execution-client-compatibility",
+        "count": 1
+      }
+    ]
+  }
+}

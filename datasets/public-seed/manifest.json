@@ -222,6 +222,21 @@
       ]
     },
     {
+      "sourceFixture": "fixtures/indexers/graph-network-subgraph-reduced.yaml",
+      "fixtureKind": "indexer",
+      "thresholdProfile": "default",
+      "report": "reports/indexers-graph-network-subgraph-reduced--default.json",
+      "risk": "medium",
+      "findingCount": 5,
+      "findingIds": [
+        "indexer.event-only-assumption",
+        "indexer.native-eth-transfer-review-missing",
+        "indexer.missing-bal-readiness-metadata",
+        "indexer.missing-fork-compatibility-metadata",
+        "indexer.missing-replay-plan"
+      ]
+    },
+    {
       "sourceFixture": "fixtures/indexers/subgraph.yaml",
       "fixtureKind": "indexer",
       "thresholdProfile": "default",
@@ -519,6 +534,18 @@
         "trace.contract-creation-executed",
         "trace.logs-calls-visible",
         "trace.partial-evidence"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/validator/glamsterdam-devnet-operator-public.yaml",
+      "fixtureKind": "validator",
+      "thresholdProfile": "default",
+      "report": "reports/validator-glamsterdam-devnet-operator-public--default.json",
+      "risk": "unknown",
+      "findingCount": 2,
+      "findingIds": [
+        "validator.execution-client-status-partial",
+        "validator.consensus-client-status-partial"
       ]
     },
     {

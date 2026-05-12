@@ -128,4 +128,24 @@ describe("scanValidatorConfig", () => {
       rmSync(tempDir, { recursive: true, force: true });
     }
   });
+
+  it("reports public devnet client images as partial compatibility", () => {
+    const fixture = resolve(rootDir, "fixtures/validator/glamsterdam-devnet-operator-public.yaml");
+    const report = scanValidatorConfig(fixture);
+    const findingIds = report.findings.map((finding) => finding.id);
+
+    expect(findingIds).toEqual([
+      "validator.execution-client-status-partial",
+      "validator.consensus-client-status-partial"
+    ]);
+    expect(report.findings.every((finding) => finding.severity === "unknown")).toBe(true);
+    expect(report.findings[0]?.evidence[0]).toMatchObject({
+      matrixEntry: {
+        source: {
+          type: "public-devnet-spec",
+          url: "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2"
+        }
+      }
+    });
+  });
 });

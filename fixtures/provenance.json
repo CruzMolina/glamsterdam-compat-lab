@@ -336,6 +336,46 @@
       ]
     },
     {
+      "path": "fixtures/indexers/graph-network-subgraph-reduced.yaml",
+      "kind": "indexer",
+      "description": "Reduced public Graph Network subgraph manifest excerpt that preserves real event-handler and contract-call metadata shape without committing the full upstream template.",
+      "source": {
+        "type": "public-repo",
+        "name": "graphprotocol/graph-network-subgraph subgraph.template.yaml",
+        "url": "https://github.com/graphprotocol/graph-network-subgraph/blob/69c99a97b283e42fc940ddc328d6cb663a72fcc7/subgraph.template.yaml",
+        "license": "MIT",
+        "notes": [
+          "Upstream repository license is MIT.",
+          "Reduced from commit 69c99a97b283e42fc940ddc328d6cb663a72fcc7, whose latest commit date was 2026-03-02.",
+          "The fixture keeps representative dataSources, eventHandlers, and handler-level calls only; it is not a full copy of the 1131-line upstream template."
+        ]
+      },
+      "capture": {
+        "tool": "GitHub contents API",
+        "version": "69c99a97b283e42fc940ddc328d6cb663a72fcc7",
+        "mode": "reduced subgraph.yaml excerpt"
+      },
+      "completeness": "partial",
+      "redaction": {
+        "status": "redacted",
+        "notes": [
+          "The upstream template uses deployment placeholders; this fixture replaces contract addresses with reserved zero-style addresses.",
+          "No RPC URLs, access tokens, credentials, internal hostnames, or private deployment notes are present."
+        ]
+      },
+      "expectedFindingIds": [
+        "indexer.event-only-assumption",
+        "indexer.native-eth-transfer-review-missing",
+        "indexer.missing-bal-readiness-metadata",
+        "indexer.missing-fork-compatibility-metadata",
+        "indexer.missing-replay-plan"
+      ],
+      "relatedEips": [
+        "EIP-7708",
+        "EIP-7928"
+      ]
+    },
+    {
       "path": "fixtures/indexers/subgraph.yaml",
       "kind": "indexer",
       "description": "Synthetic subgraph-shaped fixture with event-only handlers and intentionally incomplete compatibility metadata.",
@@ -886,6 +926,43 @@
       },
       "expectedFindingIds": [],
       "relatedEips": [
+        "EIP-7732",
+        "EIP-7928"
+      ]
+    },
+    {
+      "path": "fixtures/validator/glamsterdam-devnet-operator-public.yaml",
+      "kind": "validator",
+      "description": "Public-safe validator/operator config shaped from the glamsterdam-devnet-2 participant matrix with sourced devnet client images and placeholder endpoints.",
+      "source": {
+        "type": "public-doc",
+        "name": "EthPandaOps glamsterdam-devnet-2 public devnet spec",
+        "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "license": "Public documentation; repository license applies to reduced fixture packaging.",
+        "notes": [
+          "The source spec lists geth image ethpandaops/geth:bal-devnet-6 and lighthouse image ethpandaops/lighthouse:glamsterdam-devnet-3 in its Kurtosis participants matrix.",
+          "This fixture keeps public client-image metadata and replaces all operator-specific endpoints with example.invalid placeholders.",
+          "The validator client remains a synthetic compatible placeholder because the public devnet spec lists consensus images, not validator-key inventory."
+        ]
+      },
+      "capture": {
+        "tool": "hand-authored reduction",
+        "mode": "YAML operator config based on public devnet participants"
+      },
+      "completeness": "partial",
+      "redaction": {
+        "status": "redacted",
+        "notes": [
+          "No validator keys, JWT secrets, fee-recipient addresses, private RPC endpoints, internal hostnames, IPs, firewall details, or private topology are present.",
+          "Monitoring and builder URLs use reserved example.invalid placeholders."
+        ]
+      },
+      "expectedFindingIds": [
+        "validator.execution-client-status-partial",
+        "validator.consensus-client-status-partial"
+      ],
+      "relatedEips": [
+        "EIP-7708",
         "EIP-7732",
         "EIP-7928"
       ]

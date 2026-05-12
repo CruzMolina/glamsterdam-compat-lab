@@ -20,7 +20,7 @@ For public-chain examples, addresses and transaction hashes are usually fine if 
 
 When possible, include:
 
-- Source type: synthetic, public-chain, public repo, anonymized internal, or generated example.
+- Source type: synthetic, `public-chain`, `public-doc`, `public-repo`, anonymized internal, or generated example.
 - Tool or client name and version.
 - Command or API used to produce the fixture.
 - Trace mode or tracer name, such as `structLogs` or `callTracer`.
@@ -35,7 +35,7 @@ Every committed fixture under `fixtures/` should have a matching entry in `fixtu
 Each manifest entry records:
 
 - Fixture path and scanner kind.
-- Source type, such as synthetic, public-chain, public repo, anonymized internal, or generated example.
+- Source type, such as synthetic, `public-chain`, `public-doc`, `public-repo`, anonymized internal, or generated example.
 - Capture tool, version, command, and trace mode when known.
 - Network and transaction hash when the fixture came from public-chain data.
 - Contract address and block number when a bytecode fixture came from public-chain `eth_getCode` data.

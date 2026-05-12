@@ -1,0 +1,30 @@
+executionClient:
+  name: geth
+  version: ethpandaops/geth:bal-devnet-6
+consensusClient:
+  name: lighthouse
+  version: ethpandaops/lighthouse:glamsterdam-devnet-3
+validatorClient:
+  name: example-validator-client
+  version: 1.0.0-compatible
+builder:
+  enabled: true
+  endpoint: https://builder.example.invalid/api
+monitoring:
+  prometheus: https://monitoring.example.invalid/prometheus
+  grafana: https://monitoring.example.invalid/grafana
+networks:
+  primary: glamsterdam-devnet-2
+  testnetParticipation:
+    - network: glamsterdam-devnet-2
+      status: public-devnet
+      source: https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2
+compatibility:
+  glamsterdam:
+    reviewedEips:
+      - EIP-7708
+      - EIP-7732
+      - EIP-7928
+    devnetSource: https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2
+    notes: "Client images are public devnet examples; operator endpoints are reserved placeholders."
+notes: "Public-safe operator fixture based on the glamsterdam-devnet-2 participant matrix. No validator keys, JWT secrets, fee-recipient addresses, or private topology are present."

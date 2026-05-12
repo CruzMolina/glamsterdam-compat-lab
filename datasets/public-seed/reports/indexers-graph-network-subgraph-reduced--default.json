@@ -1,0 +1,123 @@
+{
+  "toolVersion": "0.3.2",
+  "fork": "glamsterdam",
+  "target": {
+    "kind": "indexer",
+    "name": "fixtures/indexers/graph-network-subgraph-reduced.yaml"
+  },
+  "summary": {
+    "risk": "medium",
+    "findingCount": 5,
+    "highCount": 0,
+    "mediumCount": 4,
+    "lowCount": 0,
+    "unknownCount": 1
+  },
+  "findings": [
+    {
+      "id": "indexer.event-only-assumption",
+      "title": "Indexer appears to rely on event-only handlers",
+      "severity": "medium",
+      "confidence": "medium",
+      "domain": [
+        "indexer"
+      ],
+      "relatedEips": [
+        "EIP-7708"
+      ],
+      "description": "This looks like an event-only indexer configuration. Event-only pipelines should be reviewed for native ETH transfer visibility, balance-diff assumptions, and fork-specific log semantics if related EIPs remain active or considered.",
+      "evidence": [
+        {
+          "eventHandlers": 4,
+          "callHandlers": 0,
+          "blockHandlers": 0
+        }
+      ],
+      "recommendation": "Document how native ETH transfers are represented today, how they would be represented if transfer-log proposals are included, and how historical replay would be validated."
+    },
+    {
+      "id": "indexer.native-eth-transfer-review-missing",
+      "title": "No native ETH transfer handling metadata found",
+      "severity": "unknown",
+      "confidence": "low",
+      "domain": [
+        "indexer",
+        "monitoring"
+      ],
+      "relatedEips": [
+        "EIP-7708"
+      ],
+      "description": "The configuration does not mention native ETH transfers, balance diffs, or EIP-7708. Static config cannot determine whether the runtime indexer already handles this elsewhere.",
+      "evidence": [
+        "No native-transfer marker found in configuration text."
+      ],
+      "recommendation": "Add an explicit compatibility note or test plan for native ETH transfers, especially if dashboards or alerts currently infer transfers from balance diffs."
+    },
+    {
+      "id": "indexer.missing-bal-readiness-metadata",
+      "title": "No explicit Block-Level Access List readiness metadata found",
+      "severity": "medium",
+      "confidence": "medium",
+      "domain": [
+        "indexer",
+        "monitoring"
+      ],
+      "relatedEips": [
+        "EIP-7928"
+      ],
+      "description": "The configuration does not mention BALs or EIP-7928. Static config cannot prove whether the indexer is incompatible, but explorer and indexer teams should explicitly track BAL ingestion and monitoring assumptions.",
+      "evidence": [
+        "No BAL/EIP-7928 marker found in configuration text."
+      ],
+      "recommendation": "Add fork-readiness metadata documenting whether BAL-related block data is ignored, stored, displayed, monitored, or replay-tested."
+    },
+    {
+      "id": "indexer.missing-fork-compatibility-metadata",
+      "title": "No explicit fork or EIP compatibility metadata found",
+      "severity": "medium",
+      "confidence": "medium",
+      "domain": [
+        "indexer",
+        "tooling"
+      ],
+      "relatedEips": [
+        "EIP-7928",
+        "EIP-7708"
+      ],
+      "description": "The config does not include explicit Glamsterdam, fork, or EIP compatibility metadata. That may be fine for older configs, but it makes readiness tracking harder.",
+      "evidence": [
+        "No Glamsterdam/fork/EIP/compatibility marker found in configuration text."
+      ],
+      "recommendation": "Add a small compatibility section that records reviewed EIPs, replay status, testnet/devnet coverage, and owner notes."
+    },
+    {
+      "id": "indexer.missing-replay-plan",
+      "title": "No replay, testnet, or devnet plan found",
+      "severity": "medium",
+      "confidence": "medium",
+      "domain": [
+        "indexer",
+        "monitoring"
+      ],
+      "relatedEips": [
+        "EIP-7928",
+        "EIP-7708",
+        "GAS-REPRICING"
+      ],
+      "description": "The config does not mention a replay or testnet/devnet plan. Indexer compatibility is usually validated by replaying representative data rather than by static config alone.",
+      "evidence": [
+        "No replay/testnet/devnet marker found in configuration text."
+      ],
+      "recommendation": "Add a replay plan that covers historical sync, recent blocks, expected reorg behavior, native ETH transfer handling, and BAL-related block data."
+    }
+  ],
+  "assumptions": [
+    "JSON and YAML configs were parsed statically; subgraph-style handler fields were summarized when present.",
+    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change."
+  ],
+  "limitations": [
+    "Static indexer configuration cannot prove runtime indexing behavior.",
+    "Heuristics may miss compatibility logic implemented in code, environment variables, infrastructure manifests, or downstream pipelines.",
+    "Findings marked heuristic should be treated as review prompts."
+  ]
+}

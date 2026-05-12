@@ -1,0 +1,66 @@
+specVersion: 1.2.0
+description: Reduced Graph Network subgraph manifest sample
+repository: https://github.com/graphprotocol/graph-network-subgraph
+schema:
+  file: ./schema.graphql
+features:
+  - fullTextSearch
+dataSources:
+  - kind: ethereum/contract
+    name: Controller
+    network: mainnet
+    source:
+      address: "0x0000000000000000000000000000000000000001"
+      abi: Controller
+      startBlock: 11446765
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: ./src/mappings/controller.ts
+      entities:
+        - Indexer
+      abis:
+        - name: Controller
+          file: ./abis/Controller.json
+        - name: EpochManager
+          file: ./abis/EpochManager.json
+      eventHandlers:
+        - event: SetContractProxy(indexed bytes32,address)
+          handler: handleSetContractProxy
+          calls:
+            EpochManager.blockNum: EpochManager[0x0000000000000000000000000000000000000002].blockNum()
+        - event: NewOwnership(indexed address,indexed address)
+          handler: handleNewOwnership
+          calls:
+            EpochManager.blockNum: EpochManager[0x0000000000000000000000000000000000000002].blockNum()
+  - kind: ethereum/contract
+    name: GNS
+    network: mainnet
+    source:
+      address: "0x0000000000000000000000000000000000000003"
+      abi: GNSStitched
+      startBlock: 11446765
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: ./src/mappings/gns.ts
+      entities:
+        - Subgraph
+        - SubgraphVersion
+        - SubgraphDeployment
+        - GraphAccount
+        - NameSignal
+      abis:
+        - name: GNSStitched
+          file: ./abis/GNSStitched.json
+        - name: EpochManager
+          file: ./abis/EpochManager.json
+      eventHandlers:
+        - event: SubgraphPublished(indexed address,indexed uint256,indexed bytes32,bytes32)
+          handler: handleSubgraphPublished
+        - event: SubgraphDeprecated(indexed address,indexed uint256)
+          handler: handleSubgraphDeprecated
+          calls:
+            EpochManager.blockNum: EpochManager[0x0000000000000000000000000000000000000002].blockNum()

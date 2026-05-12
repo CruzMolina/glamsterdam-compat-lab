@@ -1,9 +1,9 @@
 {
-  "toolVersion": "0.3.0",
+  "toolVersion": "0.3.1",
   "fork": "glamsterdam",
   "comparison": {
     "baseline": {
-      "toolVersion": "0.3.0",
+      "toolVersion": "0.3.1",
       "fork": "glamsterdam",
       "target": {
         "kind": "trace",
@@ -19,7 +19,7 @@
       }
     },
     "candidate": {
-      "toolVersion": "0.3.0",
+      "toolVersion": "0.3.1",
       "fork": "glamsterdam",
       "target": {
         "kind": "trace",

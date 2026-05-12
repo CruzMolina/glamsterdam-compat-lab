@@ -2,7 +2,7 @@
 
 exports[`golden report snapshots > keeps Besu-style trace JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -60,7 +60,7 @@ exports[`golden report snapshots > keeps Besu-style trace JSON report structure 
 
 exports[`golden report snapshots > keeps ENS Registry runtime bytecode JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "bytecode",
@@ -190,7 +190,7 @@ exports[`golden report snapshots > keeps ENS Registry runtime bytecode JSON repo
 
 exports[`golden report snapshots > keeps Foundry trace JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -270,7 +270,7 @@ exports[`golden report snapshots > keeps Foundry trace JSON report structure sta
 
 exports[`golden report snapshots > keeps Hardhat trace JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -352,7 +352,7 @@ exports[`golden report snapshots > keeps Hardhat trace JSON report structure sta
 
 exports[`golden report snapshots > keeps Multicall3 runtime bytecode JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "bytecode",
@@ -453,7 +453,7 @@ exports[`golden report snapshots > keeps Multicall3 runtime bytecode JSON report
 
 exports[`golden report snapshots > keeps Nethermind-style trace JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -557,7 +557,7 @@ exports[`golden report snapshots > keeps Nethermind-style trace JSON report stru
 
 exports[`golden report snapshots > keeps USDC proxy runtime bytecode JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "bytecode",
@@ -688,7 +688,7 @@ exports[`golden report snapshots > keeps USDC proxy runtime bytecode JSON report
 
 exports[`golden report snapshots > keeps Uniswap V2 Factory runtime bytecode JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "bytecode",
@@ -864,7 +864,7 @@ exports[`golden report snapshots > keeps Uniswap V2 Factory runtime bytecode JSO
 
 exports[`golden report snapshots > keeps WETH9 runtime bytecode JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "bytecode",
@@ -997,7 +997,7 @@ exports[`golden report snapshots > keeps bytecode Markdown report wording stable
 "# Glamsterdam Compatibility Report
 
 Target: bytecode fixtures/bytecode/storage-heavy.hex
-Tool version: 0.3.1
+Tool version: 0.3.2
 Fork registry: glamsterdam
 
 ## Summary
@@ -1108,7 +1108,7 @@ Recommendation: Use this report to choose transactions for trace replay and benc
 
 exports[`golden report snapshots > keeps call-tracer tree JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -1211,7 +1211,7 @@ exports[`golden report snapshots > keeps call-tracer tree JSON report structure 
 
 exports[`golden report snapshots > keeps complete validator config JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "validator",
@@ -1242,7 +1242,7 @@ exports[`golden report snapshots > keeps complete validator config JSON report s
 
 exports[`golden report snapshots > keeps geth structLogs JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -1324,7 +1324,7 @@ exports[`golden report snapshots > keeps geth structLogs JSON report structure s
 
 exports[`golden report snapshots > keeps mixed explorer indexer JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "indexer",
@@ -1373,7 +1373,7 @@ exports[`golden report snapshots > keeps mixed explorer indexer JSON report stru
 
 exports[`golden report snapshots > keeps real Besu Tracoor trace JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -1508,7 +1508,7 @@ exports[`golden report snapshots > keeps real Besu Tracoor trace JSON report str
 
 exports[`golden report snapshots > keeps real Nethermind Tracoor trace JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -1643,7 +1643,7 @@ exports[`golden report snapshots > keeps real Nethermind Tracoor trace JSON repo
 
 exports[`golden report snapshots > keeps real dRPC call-tracer JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -1750,7 +1750,7 @@ exports[`golden report snapshots > keeps real dRPC call-tracer JSON report struc
 
 exports[`golden report snapshots > keeps trace JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "trace",
@@ -1905,7 +1905,7 @@ exports[`golden report snapshots > keeps trace JSON report structure stable 1`] 
 
 exports[`golden report snapshots > keeps validator builder-gap JSON report structure stable 1`] = `
 "{
-  "toolVersion": "0.3.1",
+  "toolVersion": "0.3.2",
   "fork": "glamsterdam",
   "target": {
     "kind": "validator",

@@ -20,7 +20,7 @@ Output excerpt:
 
 Baseline: trace fixtures/traces/profile-default.json (medium risk, 4 findings)
 Candidate: trace fixtures/traces/profile-research.json (high risk, 4 findings)
-Tool version: 0.3.1
+Tool version: 0.3.2
 Fork registry: glamsterdam
 
 ## Summary

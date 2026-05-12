@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       release_tag:
-        description: Git release tag to publish, such as v0.2.2.
+        description: Git release tag to publish, such as v0.3.2.
         required: true
         type: string
       dry_run:
@@ -23,13 +23,17 @@ on:
 
 permissions:
   contents: read
-  id-token: write
 
 jobs:
-  publish:
-    name: Publish package
+  preflight:
+    name: Preflight package
     runs-on: ubuntu-latest
-    environment: npm-publish
+    permissions:
+      contents: read
+    outputs:
+      already_published: ${{ steps.dry_run_package_version.outputs.already_published || 'false' }}
+      package_name: ${{ steps.package_metadata.outputs.package_name }}
+      package_version: ${{ steps.package_metadata.outputs.package_version }}
 
     steps:
       - name: Check release tag input
@@ -37,7 +41,7 @@ jobs:
           RELEASE_TAG: ${{ inputs.release_tag }}
         run: |
           if ! printf '%s' "$RELEASE_TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
-            echo "Expected a semver tag like v0.2.2, got $RELEASE_TAG."
+            echo "Expected a semver tag like v0.3.2, got $RELEASE_TAG."
             exit 1
           fi
 
@@ -53,7 +57,6 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          registry-url: https://registry.npmjs.org
 
       - name: Show package tooling versions
         run: |
@@ -72,6 +75,12 @@ jobs:
             echo "package.json version $package_version does not match tag $RELEASE_TAG."
             exit 1
           fi
+
+      - name: Capture package metadata
+        id: package_metadata
+        run: |
+          echo "package_name=$(node -p "require('./package.json').name")" >> "$GITHUB_OUTPUT"
+          echo "package_version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -94,8 +103,9 @@ jobs:
         id: dry_run_package_version
         if: ${{ inputs.dry_run == 'true' }}
         run: |
-          package_name="$(node -p "require('./package.json').name")"
-          package_version="$(node -p "require('./package.json').version")"
+          package_name="${{ steps.package_metadata.outputs.package_name }}"
+          package_version="${{ steps.package_metadata.outputs.package_version }}"
+          echo "already_published=false" >> "$GITHUB_OUTPUT"
 
           if published_version="$(npm view "$package_name@$package_version" version --json --registry=https://registry.npmjs.org/ 2>/tmp/npm-view-version.err)"; then
             published_version="$(node -e "console.log(JSON.parse(process.argv[1]))" "$published_version")"
@@ -109,44 +119,79 @@ jobs:
             echo "No published $package_name@$package_version found on npm; continuing to npm publish --dry-run."
           fi
 
-      - name: Dry-run publish
-        if: ${{ inputs.dry_run == 'true' && steps.dry_run_package_version.outputs.already_published != 'true' }}
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_TAG: ${{ inputs.tag }}
+      - name: Pack publish artifact
+        if: ${{ inputs.dry_run != 'true' || steps.dry_run_package_version.outputs.already_published != 'true' }}
         run: |
-          if [ -n "${NPM_TOKEN:-}" ]; then
-            export NODE_AUTH_TOKEN="$NPM_TOKEN"
-            export NPM_CONFIG_USERCONFIG="$RUNNER_TEMP/npm-publish.npmrc"
-            printf '%s\n' \
-              'registry=https://registry.npmjs.org/' \
-              '//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}' \
-              > "$NPM_CONFIG_USERCONFIG"
-            echo "Using NPM_TOKEN fallback for npm dry-run publish."
-          else
-            unset NODE_AUTH_TOKEN
-            echo "No NPM_TOKEN configured; relying on npm Trusted Publishing/OIDC for dry-run publish."
+          mkdir -p "$RUNNER_TEMP/npm-publish"
+          pack_output="$(npm pack --json --pack-destination "$RUNNER_TEMP/npm-publish")"
+          tarball_name="$(node -e "console.log(JSON.parse(process.argv[1])[0].filename)" "$pack_output")"
+          tarball_path="$RUNNER_TEMP/npm-publish/$tarball_name"
+
+          if [ ! -s "$tarball_path" ]; then
+            echo "Packed tarball was not created at $tarball_path."
+            exit 1
           fi
 
-          npm publish --registry=https://registry.npmjs.org/ --access public --tag "$NPM_TAG" --provenance --dry-run
+          echo "Packed $tarball_name for the isolated publish job."
+
+      - name: Upload package artifact
+        if: ${{ inputs.dry_run != 'true' || steps.dry_run_package_version.outputs.already_published != 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-package
+          path: ${{ runner.temp }}/npm-publish/*.tgz
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    name: Publish package
+    needs: preflight
+    if: ${{ inputs.dry_run != 'true' || needs.preflight.outputs.already_published != 'true' }}
+    runs-on: ubuntu-latest
+    environment: npm-publish
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Download package artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: npm-package
+          path: npm-package
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Show package tooling versions
+        run: |
+          node --version
+          npm --version
+
+      - name: Dry-run publish
+        if: ${{ inputs.dry_run == 'true' }}
+        env:
+          NPM_TAG: ${{ inputs.tag }}
+        run: |
+          tarball="$(find npm-package -maxdepth 1 -type f -name '*.tgz' | head -n 1)"
+          if [ -z "$tarball" ]; then
+            echo "No package tarball found."
+            exit 1
+          fi
+
+          npm publish "$tarball" --registry=https://registry.npmjs.org/ --access public --tag "$NPM_TAG" --provenance --dry-run
 
       - name: Publish
         if: ${{ inputs.dry_run != 'true' }}
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TAG: ${{ inputs.tag }}
         run: |
-          if [ -n "${NPM_TOKEN:-}" ]; then
-            export NODE_AUTH_TOKEN="$NPM_TOKEN"
-            export NPM_CONFIG_USERCONFIG="$RUNNER_TEMP/npm-publish.npmrc"
-            printf '%s\n' \
-              'registry=https://registry.npmjs.org/' \
-              '//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}' \
-              > "$NPM_CONFIG_USERCONFIG"
-            echo "Using NPM_TOKEN fallback for npm publish."
-          else
-            unset NODE_AUTH_TOKEN
-            echo "No NPM_TOKEN configured; relying on npm Trusted Publishing/OIDC for publish."
+          tarball="$(find npm-package -maxdepth 1 -type f -name '*.tgz' | head -n 1)"
+          if [ -z "$tarball" ]; then
+            echo "No package tarball found."
+            exit 1
           fi
 
-          npm publish --registry=https://registry.npmjs.org/ --access public --tag "$NPM_TAG" --provenance
+          npm publish "$tarball" --registry=https://registry.npmjs.org/ --access public --tag "$NPM_TAG" --provenance

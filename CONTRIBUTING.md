@@ -22,9 +22,9 @@ pnpm test:update
 
 Releases are published from semver tags. After CI is green on `main`, create the GitHub release tag, then run the manual `Publish npm` workflow from `main` with the release tag as `release_tag`.
 
-Start with `dry_run=true` for a new, unpublished release version. Real publishes use npm Trusted Publishing for `glamsterdam-compat-lab` with repository `CruzMolina/glamsterdam-compat-lab`, workflow file `npm-publish.yml`, and environment `npm-publish`. Do not configure `NPM_TOKEN` for the normal release path; use a short-lived token only as an emergency fallback, remove the GitHub secret immediately afterward, and revoke the npm token.
+Start with `dry_run=true` for a new, unpublished release version. Real publishes use npm Trusted Publishing for `glamsterdam-compat-lab` with repository `CruzMolina/glamsterdam-compat-lab`, workflow file `npm-publish.yml`, and environment `npm-publish`. Do not configure `NPM_TOKEN`; the release workflow is intentionally tokenless and grants OIDC only to the isolated publish job.
 
-The workflow checks out the requested semver tag, verifies that `package.json` matches the tag, installs dependencies, runs tests, builds, and then runs `npm publish --provenance`.
+The workflow checks out the requested semver tag in a read-only preflight job, verifies that `package.json` matches the tag, installs dependencies, runs tests, builds, packs the npm tarball, and uploads that tarball for the publish job. The publish job downloads the tarball and runs `npm publish --provenance` without dependency install, tests, or build steps.
 
 See `docs/release.md` for the full release checklist and npm troubleshooting notes.
 

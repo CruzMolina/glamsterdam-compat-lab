@@ -31,7 +31,7 @@ Confirm the package state for the target version. A new release version should n
 npm view glamsterdam-compat-lab@<version> version --json
 ```
 
-You can also run the release readiness helper, which checks the npm registry, local npm login state, local `NPM_TOKEN` or `NODE_AUTH_TOKEN` environment presence, GitHub `NPM_TOKEN` secret presence, and the publish workflow's OIDC shape:
+You can also run the release readiness helper, which checks the npm registry, local npm login state, absence of local or GitHub npm token credentials, and the publish workflow's OIDC shape:
 
 ```sh
 pnpm release:check-npm
@@ -39,9 +39,9 @@ pnpm release:check-npm
 
 ## Preferred path: npm Trusted Publishing
 
-npm Trusted Publishing uses GitHub Actions OIDC instead of a long-lived npm token. The `Publish npm` workflow is configured for this path with a GitHub-hosted runner, Node 24, `id-token: write`, `actions/setup-node` registry setup for `https://registry.npmjs.org`, and `npm publish --provenance`.
+npm Trusted Publishing uses GitHub Actions OIDC instead of a long-lived npm token. The `Publish npm` workflow is configured for this path with a GitHub-hosted runner, Node 24, and `npm publish --provenance`.
 
-The steady-state OIDC path does not require an npm token secret. Keep repository-level and `npm-publish` environment `NPM_TOKEN` secrets absent unless an emergency fallback is in use. If `NPM_TOKEN` is present, the workflow writes a temporary `.npmrc` only for that token fallback.
+The workflow is intentionally tokenless. Keep repository-level and `npm-publish` environment `NPM_TOKEN` secrets absent. Dependency install, tests, build, and package checks run in a read-only `preflight` job without `id-token: write`; only the isolated `publish` job has `id-token: write`, and that job only downloads the preflight tarball and invokes npm publish.
 
 The package is configured on npm with:
 
@@ -102,31 +102,9 @@ If a dry run is repeated for a version already published on npm, the workflow pr
 
 If the logs show `Signed provenance statement` followed by `npm error 404 Not Found - PUT`, OIDC/provenance is working, but npm has not authorized this workflow or account to publish the package name. Verify the Trusted Publishing package grant.
 
-## Emergency fallback: npm token
+## Token fallback policy
 
-Use a token only if Trusted Publishing is unavailable and a release must be unblocked. Create a granular npm access token with read/write package permission for `glamsterdam-compat-lab` or all packages the npm owner can publish. If the npm account or package requires 2FA, enable the token's bypass-2FA option for non-interactive CI publishing. Then add the token as the `NPM_TOKEN` secret on the `npm-publish` environment or as a repository secret.
-
-If the token is available in your shell as `NPM_TOKEN` or `NODE_AUTH_TOKEN`, set the environment secret without printing the token value:
-
-```sh
-NPM_TOKEN="${NPM_TOKEN:-${NODE_AUTH_TOKEN:-}}"
-test -n "${NPM_TOKEN:-}" || { echo "Set NPM_TOKEN or NODE_AUTH_TOKEN first"; exit 1; }
-gh secret set NPM_TOKEN --repo CruzMolina/glamsterdam-compat-lab --env npm-publish --body "$NPM_TOKEN"
-```
-
-When this secret is present, the workflow exports it as `NODE_AUTH_TOKEN` and writes a temporary npm user config for the publish step. When the secret is absent, the workflow leaves token auth unset and relies on Trusted Publishing/OIDC.
-
-Rerun the same workflow:
-
-```sh
-gh workflow run npm-publish.yml \
-  --ref main \
-  -f release_tag=vX.Y.Z \
-  -f dry_run=false \
-  -f tag=latest
-```
-
-After any token-based publish, remove the GitHub `NPM_TOKEN` secret, revoke the npm token, and return the package to Trusted Publishing.
+The release workflow does not support `NPM_TOKEN`. If Trusted Publishing becomes unavailable, pause the release and fix the npm trusted-publisher configuration. A token-based emergency publish should be treated as a deliberate, temporary workflow change with a short-lived token, immediate GitHub secret removal, and npm token revocation afterward.
 
 ## Done criteria
 

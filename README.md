@@ -123,7 +123,7 @@ Use `--trace-out <path>` to save the fetched JSON-RPC trace response while also 
 
 `scan-indexer` parses JSON and YAML, including `subgraph.yaml`-style configs. It flags event-only indexing assumptions, missing fork/EIP compatibility metadata, missing replay or testnet plans, missing BAL review metadata, and native ETH transfer log readiness as heuristic findings.
 
-`scan-validator` parses JSON and YAML operator configs. It checks for execution, consensus, validator, builder/API, monitoring, and testnet/devnet metadata. It compares client names and versions against `data/client-compat/clients.example.json` or a user-provided matrix, but it does not guess compatibility.
+`scan-validator` parses JSON and YAML operator configs. It checks for execution, consensus, validator, builder/API, monitoring, and testnet/devnet metadata. It compares client names and versions against `data/client-compat/clients.example.json` or a user-provided matrix, but it does not guess compatibility. See [docs/client-compat.md](docs/client-compat.md) for the sourced matrix format.
 
 `compare-reports` accepts two saved JSON compatibility reports and emits deterministic JSON or Markdown deltas. It compares findings by stable finding ID, reports findings added, removed, changed, and unchanged, and highlights severity and confidence changes. It does not invent exact gas deltas; those must come from explicit input data or future client outputs.
 

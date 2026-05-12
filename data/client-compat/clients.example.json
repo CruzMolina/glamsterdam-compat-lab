@@ -1,8 +1,38 @@
 {
   "fork": "glamsterdam",
-  "lastUpdated": "2026-05-08",
+  "lastUpdated": "2026-05-12",
   "sources": [
-    "Replace with client release notes, devnet pages, or operator-maintained compatibility sources."
+    {
+      "type": "public-interop-recap",
+      "url": "https://blog.ethereum.org/2026/05/02/soldogn-interop-recap",
+      "sourceDate": "2026-05-02",
+      "retrievedAt": "2026-05-12",
+      "claim": "The Ethereum Foundation Soldogn recap says the week ended with a stable multi-client Glamsterdam devnet running the latest ePBS, repricing, and block access list specs, and that nearly all clients were running together on glamsterdam-devnet-2 with the external builders pipeline tested end-to-end.",
+      "notes": "This source supports devnet/interoperability context, not production release compatibility."
+    },
+    {
+      "type": "public-devnet-spec",
+      "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+      "retrievedAt": "2026-05-12",
+      "claim": "The EthPandaOps glamsterdam-devnet-2 spec lists a Kurtosis participants matrix with geth as the execution client image and prysm, lodestar, lighthouse, teku, nimbus, and grandine as consensus client images.",
+      "notes": "This source supports devnet participant examples. It does not claim mainnet-ready client releases."
+    },
+    {
+      "type": "public-spec-release",
+      "url": "https://github.com/ethereum/consensus-specs/releases/tag/v1.7.0-alpha.7",
+      "sourceDate": "2026-04-29",
+      "retrievedAt": "2026-05-12",
+      "claim": "The consensus-specs v1.7.0-alpha.7 release is a pre-release containing Gloas changes used by the glamsterdam-devnet-2 spec.",
+      "notes": "Spec release metadata is useful provenance for devnet test entries, but is not a client release."
+    },
+    {
+      "type": "public-spec-release",
+      "url": "https://github.com/ethereum/execution-spec-tests/releases/tag/bal%40v5.6.1",
+      "sourceDate": "2026-04-02",
+      "retrievedAt": "2026-05-12",
+      "claim": "The execution-spec-tests bal@v5.6.1 pre-release is labeled for bal-devnet-3 v7 and includes BAL/state-gas test updates referenced by the glamsterdam-devnet-2 spec.",
+      "notes": "Spec-test release metadata is useful provenance for devnet test entries, but is not a client release."
+    }
   ],
   "clients": [
     {
@@ -12,12 +42,46 @@
         {
           "version": "0.0.0-example",
           "status": "unknown",
+          "source": {
+            "type": "synthetic-example",
+            "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+            "retrievedAt": "2026-05-12",
+            "claim": "Synthetic unknown status used to exercise matrix behavior when no sourced compatibility statement exists."
+          },
           "notes": "Placeholder only. Replace with a sourced compatibility statement before relying on this matrix."
         },
         {
           "version": "1.0.0-compatible",
           "status": "compatible",
+          "source": {
+            "type": "synthetic-example",
+            "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+            "retrievedAt": "2026-05-12",
+            "claim": "Synthetic compatible status used by safe fixture variants to exercise clean scanner paths."
+          },
           "notes": "Synthetic compatible status used by safe fixture variants; do not treat as a real client release."
+        },
+        {
+          "version": "1.1.0-partial",
+          "status": "partial",
+          "source": {
+            "type": "synthetic-example",
+            "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+            "retrievedAt": "2026-05-12",
+            "claim": "Synthetic partial status used to exercise scanner behavior for incomplete readiness."
+          },
+          "notes": "Synthetic partial status for tests and examples only."
+        },
+        {
+          "version": "2.0.0-incompatible",
+          "status": "incompatible",
+          "source": {
+            "type": "synthetic-example",
+            "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+            "retrievedAt": "2026-05-12",
+            "claim": "Synthetic incompatible status used to exercise scanner behavior for blocking readiness findings."
+          },
+          "notes": "Synthetic incompatible status for tests and examples only."
         }
       ]
     },
@@ -28,12 +92,46 @@
         {
           "version": "0.0.0-example",
           "status": "unknown",
+          "source": {
+            "type": "synthetic-example",
+            "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+            "retrievedAt": "2026-05-12",
+            "claim": "Synthetic unknown status used to exercise matrix behavior when no sourced compatibility statement exists."
+          },
           "notes": "Placeholder only. Replace with a sourced compatibility statement before relying on this matrix."
         },
         {
           "version": "1.0.0-compatible",
           "status": "compatible",
+          "source": {
+            "type": "synthetic-example",
+            "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+            "retrievedAt": "2026-05-12",
+            "claim": "Synthetic compatible status used by safe fixture variants to exercise clean scanner paths."
+          },
           "notes": "Synthetic compatible status used by safe fixture variants; do not treat as a real client release."
+        },
+        {
+          "version": "1.1.0-partial",
+          "status": "partial",
+          "source": {
+            "type": "synthetic-example",
+            "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+            "retrievedAt": "2026-05-12",
+            "claim": "Synthetic partial status used to exercise scanner behavior for incomplete readiness."
+          },
+          "notes": "Synthetic partial status for tests and examples only."
+        },
+        {
+          "version": "2.0.0-incompatible",
+          "status": "incompatible",
+          "source": {
+            "type": "synthetic-example",
+            "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+            "retrievedAt": "2026-05-12",
+            "claim": "Synthetic incompatible status used to exercise scanner behavior for blocking readiness findings."
+          },
+          "notes": "Synthetic incompatible status for tests and examples only."
         }
       ]
     },
@@ -44,14 +142,201 @@
         {
           "version": "0.0.0-example",
           "status": "unknown",
+          "source": {
+            "type": "synthetic-example",
+            "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+            "retrievedAt": "2026-05-12",
+            "claim": "Synthetic unknown status used to exercise matrix behavior when no sourced compatibility statement exists."
+          },
           "notes": "Placeholder only. Replace with a sourced compatibility statement before relying on this matrix."
         },
         {
           "version": "1.0.0-compatible",
           "status": "compatible",
+          "source": {
+            "type": "synthetic-example",
+            "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+            "retrievedAt": "2026-05-12",
+            "claim": "Synthetic compatible status used by safe fixture variants to exercise clean scanner paths."
+          },
           "notes": "Synthetic compatible status used by safe fixture variants; do not treat as a real client release."
+        },
+        {
+          "version": "1.1.0-partial",
+          "status": "partial",
+          "source": {
+            "type": "synthetic-example",
+            "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+            "retrievedAt": "2026-05-12",
+            "claim": "Synthetic partial status used to exercise scanner behavior for incomplete readiness."
+          },
+          "notes": "Synthetic partial status for tests and examples only."
+        },
+        {
+          "version": "2.0.0-incompatible",
+          "status": "incompatible",
+          "source": {
+            "type": "synthetic-example",
+            "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+            "retrievedAt": "2026-05-12",
+            "claim": "Synthetic incompatible status used to exercise scanner behavior for blocking readiness findings."
+          },
+          "notes": "Synthetic incompatible status for tests and examples only."
         }
       ]
+    },
+    {
+      "name": "geth",
+      "role": "execution",
+      "versions": [
+        {
+          "version": "ethpandaops/geth:bal-devnet-6",
+          "status": "partial",
+          "source": {
+            "type": "public-devnet-spec",
+            "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+            "retrievedAt": "2026-05-12",
+            "claim": "The glamsterdam-devnet-2 Kurtosis example lists geth with image ethpandaops/geth:bal-devnet-6 as the execution-layer participant."
+          },
+          "notes": "Devnet image only. This is not a production Geth release compatibility claim."
+        }
+      ]
+    },
+    {
+      "name": "lighthouse",
+      "role": "consensus",
+      "versions": [
+        {
+          "version": "ethpandaops/lighthouse:glamsterdam-devnet-3",
+          "status": "partial",
+          "source": {
+            "type": "public-devnet-spec",
+            "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+            "retrievedAt": "2026-05-12",
+            "claim": "The glamsterdam-devnet-2 Kurtosis example lists lighthouse with image ethpandaops/lighthouse:glamsterdam-devnet-3 as a consensus-layer participant."
+          },
+          "notes": "Devnet image only. This is not a production Lighthouse release compatibility claim."
+        }
+      ]
+    },
+    {
+      "name": "teku",
+      "role": "consensus",
+      "versions": [
+        {
+          "version": "ethpandaops/teku:glamsterdam-devnet-2",
+          "status": "partial",
+          "source": {
+            "type": "public-devnet-spec",
+            "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+            "retrievedAt": "2026-05-12",
+            "claim": "The glamsterdam-devnet-2 Kurtosis example lists teku with image ethpandaops/teku:glamsterdam-devnet-2 as a consensus-layer participant."
+          },
+          "notes": "Devnet image only. This is not a production Teku release compatibility claim."
+        }
+      ]
+    }
+  ],
+  "devnets": [
+    {
+      "name": "glamsterdam-devnet-2",
+      "status": "partial",
+      "source": {
+        "type": "public-devnet-spec",
+        "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "retrievedAt": "2026-05-12",
+        "claim": "The glamsterdam-devnet-2 spec targets launch on 2026-04-30 and includes a Kurtosis participants matrix with specific EL and CL devnet images."
+      },
+      "participants": [
+        {
+          "role": "execution",
+          "name": "geth",
+          "image": "ethpandaops/geth:bal-devnet-6",
+          "status": "partial",
+          "notes": "Listed as the execution-layer participant image in the public devnet spec."
+        },
+        {
+          "role": "consensus",
+          "name": "prysm",
+          "image": "ethpandaops/prysm-beacon-chain:glamsterdam-devnet-3-minimal",
+          "status": "partial",
+          "notes": "Listed as a consensus-layer participant image in the public devnet spec."
+        },
+        {
+          "role": "consensus",
+          "name": "lodestar",
+          "image": "ethpandaops/lodestar:glamsterdam-devnet-2",
+          "status": "partial",
+          "notes": "Listed as a consensus-layer participant image in the public devnet spec."
+        },
+        {
+          "role": "consensus",
+          "name": "lighthouse",
+          "image": "ethpandaops/lighthouse:glamsterdam-devnet-3",
+          "status": "partial",
+          "notes": "Listed as a consensus-layer participant image in the public devnet spec."
+        },
+        {
+          "role": "consensus",
+          "name": "teku",
+          "image": "ethpandaops/teku:glamsterdam-devnet-2",
+          "status": "partial",
+          "notes": "Listed as a consensus-layer participant image in the public devnet spec."
+        },
+        {
+          "role": "consensus",
+          "name": "nimbus",
+          "image": "ethpandaops/nimbus-eth2:glamsterdam-devnet-2-minimal",
+          "status": "partial",
+          "notes": "Listed as a consensus-layer participant image in the public devnet spec."
+        },
+        {
+          "role": "consensus",
+          "name": "grandine",
+          "image": "ethpandaops/grandine:glamsterdam-devnet-2-minimal",
+          "status": "partial",
+          "notes": "Listed as a consensus-layer participant image in the public devnet spec."
+        }
+      ],
+      "specVersions": [
+        {
+          "name": "consensus-specs",
+          "version": "v1.7.0-alpha.7",
+          "source": {
+            "type": "public-spec-release",
+            "url": "https://github.com/ethereum/consensus-specs/releases/tag/v1.7.0-alpha.7",
+            "sourceDate": "2026-04-29",
+            "retrievedAt": "2026-05-12",
+            "claim": "The consensus-specs v1.7.0-alpha.7 release is a pre-release containing Gloas changes used by the glamsterdam-devnet-2 spec."
+          }
+        },
+        {
+          "name": "execution-spec-tests",
+          "version": "bal@v5.6.1",
+          "source": {
+            "type": "public-spec-release",
+            "url": "https://github.com/ethereum/execution-spec-tests/releases/tag/bal%40v5.6.1",
+            "sourceDate": "2026-04-02",
+            "retrievedAt": "2026-05-12",
+            "claim": "The execution-spec-tests bal@v5.6.1 pre-release is labeled for bal-devnet-3 v7 and includes BAL/state-gas test updates referenced by the glamsterdam-devnet-2 spec."
+          }
+        }
+      ],
+      "notes": "Devnet participation is tracked as partial readiness. Production release compatibility must come from client release notes or other explicit public statements."
+    },
+    {
+      "name": "soldogn-interop",
+      "status": "stable-multi-client-devnet-reported",
+      "source": {
+        "type": "public-interop-recap",
+        "url": "https://blog.ethereum.org/2026/05/02/soldogn-interop-recap",
+        "sourceDate": "2026-05-02",
+        "retrievedAt": "2026-05-12",
+        "claim": "The Ethereum Foundation Soldogn recap reports a stable multi-client Glamsterdam devnet running the latest ePBS, repricing, and block access list specs, with nearly all clients running together on glamsterdam-devnet-2 by Friday."
+      },
+      "participants": [],
+      "specVersions": [],
+      "notes": "Interop recap is useful context for the matrix, but this entry intentionally avoids per-client production compatibility claims."
     }
   ]
 }

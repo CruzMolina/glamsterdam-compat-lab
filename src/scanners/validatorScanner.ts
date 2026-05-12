@@ -12,9 +12,27 @@ import { loadStructuredFile } from "../utils/files.js";
 
 const moduleDir = dirname(fileURLToPath(import.meta.url));
 
+const isoDateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+
+const clientMatrixSourceSchema = z.object({
+  type: z.enum([
+    "public-devnet-spec",
+    "public-interop-recap",
+    "public-spec-release",
+    "synthetic-example",
+    "operator-maintained"
+  ]),
+  url: z.string().min(1),
+  sourceDate: isoDateSchema.optional(),
+  retrievedAt: isoDateSchema,
+  claim: z.string().min(1),
+  notes: z.string().optional()
+});
+
 const clientVersionSchema = z.object({
   version: z.string(),
   status: z.enum(["compatible", "incompatible", "partial", "unknown"]),
+  source: clientMatrixSourceSchema,
   notes: z.string().optional()
 });
 
@@ -24,11 +42,33 @@ const clientEntrySchema = z.object({
   versions: z.array(clientVersionSchema)
 });
 
+const devnetParticipantSchema = z.object({
+  role: z.enum(["execution", "consensus", "validator", "builder", "tooling"]),
+  name: z.string(),
+  image: z.string().optional(),
+  status: z.enum(["compatible", "incompatible", "partial", "unknown"]),
+  notes: z.string().optional()
+});
+
+const devnetEntrySchema = z.object({
+  name: z.string(),
+  status: z.string(),
+  source: clientMatrixSourceSchema,
+  participants: z.array(devnetParticipantSchema).default([]),
+  specVersions: z.array(z.object({
+    name: z.string(),
+    version: z.string(),
+    source: clientMatrixSourceSchema.optional()
+  })).default([]),
+  notes: z.string().optional()
+});
+
 const clientMatrixSchema = z.object({
   fork: z.string(),
-  lastUpdated: z.string(),
-  sources: z.array(z.string()).default([]),
-  clients: z.array(clientEntrySchema).default([])
+  lastUpdated: isoDateSchema,
+  sources: z.array(clientMatrixSourceSchema).default([]),
+  clients: z.array(clientEntrySchema).default([]),
+  devnets: z.array(devnetEntrySchema).default([])
 });
 
 type ClientMatrix = z.infer<typeof clientMatrixSchema>;
@@ -249,7 +289,7 @@ function findClientMatrixEntry(
   role: ClientRole,
   name: string,
   version: string
-): { version: string; status: "compatible" | "incompatible" | "partial" | "unknown"; notes?: string } | undefined {
+): z.infer<typeof clientVersionSchema> | undefined {
   const normalizedName = name.toLowerCase();
   const client = matrix.clients.find(
     (entry) => entry.role === role && entry.name.toLowerCase() === normalizedName

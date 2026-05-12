@@ -45,6 +45,12 @@ Each manifest entry records:
 
 If older fixture metadata is incomplete, mark it as partial and explain the gap in `source.notes` instead of filling in guesses.
 
+## Client Compatibility Matrix
+
+Validator/operator scanner compatibility comes from `data/client-compat/clients.example.json` or a user-provided `--client-matrix` file. Matrix entries must carry explicit source metadata so scanner output stays auditable.
+
+See `docs/client-compat.md` for status meanings, source fields, devnet entries, and update expectations.
+
 ## Licensing
 
 Only contribute fixtures that can be published under this repository's license. If a fixture came from another project, include the source URL and license. When in doubt, open a fixture contribution issue before opening a pull request.

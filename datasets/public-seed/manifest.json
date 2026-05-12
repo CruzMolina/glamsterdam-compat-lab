@@ -1,10 +1,11 @@
 {
   "schemaVersion": 1,
   "name": "public-seed",
-  "lastUpdated": "2026-05-11",
+  "lastUpdated": "2026-05-12",
   "description": "Deterministic seed dataset generated from safe-to-publish fixture inputs and threshold-profile comparisons.",
   "toolVersion": "0.3.1",
   "sourceManifest": "fixtures/provenance.json",
+  "summary": "summary.json",
   "thresholdProfiles": [
     {
       "name": "default",
@@ -16,6 +17,61 @@
     }
   ],
   "reports": [
+    {
+      "sourceFixture": "fixtures/bytecode/ens-registry-mainnet-runtime.hex",
+      "fixtureKind": "bytecode",
+      "thresholdProfile": "default",
+      "report": "reports/bytecode-ens-registry-mainnet-runtime--default.json",
+      "risk": "medium",
+      "findingCount": 4,
+      "findingIds": [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/bytecode/ens-registry-mainnet-runtime.hex",
+      "fixtureKind": "bytecode",
+      "thresholdProfile": "research",
+      "report": "reports/bytecode-ens-registry-mainnet-runtime--research.json",
+      "risk": "medium",
+      "findingCount": 4,
+      "findingIds": [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/bytecode/multicall3-mainnet-runtime.hex",
+      "fixtureKind": "bytecode",
+      "thresholdProfile": "default",
+      "report": "reports/bytecode-multicall3-mainnet-runtime--default.json",
+      "risk": "low",
+      "findingCount": 3,
+      "findingIds": [
+        "bytecode.calldata-copy-exposure",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/bytecode/multicall3-mainnet-runtime.hex",
+      "fixtureKind": "bytecode",
+      "thresholdProfile": "research",
+      "report": "reports/bytecode-multicall3-mainnet-runtime--research.json",
+      "risk": "low",
+      "findingCount": 4,
+      "findingIds": [
+        "bytecode.state-account-opcode-presence",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ]
+    },
     {
       "sourceFixture": "fixtures/bytecode/storage-heavy.hex",
       "fixtureKind": "bytecode",
@@ -43,6 +99,95 @@
         "bytecode.state-account-opcode-exposure",
         "bytecode.calldata-copy-exposure",
         "bytecode.contract-creation-opcodes",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/bytecode/uniswap-v2-factory-mainnet-runtime.hex",
+      "fixtureKind": "bytecode",
+      "thresholdProfile": "default",
+      "report": "reports/bytecode-uniswap-v2-factory-mainnet-runtime--default.json",
+      "risk": "medium",
+      "findingCount": 6,
+      "findingIds": [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.contract-creation-opcodes",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/bytecode/uniswap-v2-factory-mainnet-runtime.hex",
+      "fixtureKind": "bytecode",
+      "thresholdProfile": "research",
+      "report": "reports/bytecode-uniswap-v2-factory-mainnet-runtime--research.json",
+      "risk": "medium",
+      "findingCount": 6,
+      "findingIds": [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.contract-creation-opcodes",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/bytecode/usdc-proxy-mainnet-runtime.hex",
+      "fixtureKind": "bytecode",
+      "thresholdProfile": "default",
+      "report": "reports/bytecode-usdc-proxy-mainnet-runtime--default.json",
+      "risk": "medium",
+      "findingCount": 4,
+      "findingIds": [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/bytecode/usdc-proxy-mainnet-runtime.hex",
+      "fixtureKind": "bytecode",
+      "thresholdProfile": "research",
+      "report": "reports/bytecode-usdc-proxy-mainnet-runtime--research.json",
+      "risk": "medium",
+      "findingCount": 5,
+      "findingIds": [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/bytecode/weth9-mainnet-runtime.hex",
+      "fixtureKind": "bytecode",
+      "thresholdProfile": "default",
+      "report": "reports/bytecode-weth9-mainnet-runtime--default.json",
+      "risk": "medium",
+      "findingCount": 4,
+      "findingIds": [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/bytecode/weth9-mainnet-runtime.hex",
+      "fixtureKind": "bytecode",
+      "thresholdProfile": "research",
+      "report": "reports/bytecode-weth9-mainnet-runtime--research.json",
+      "risk": "medium",
+      "findingCount": 4,
+      "findingIds": [
+        "bytecode.state-account-opcode-exposure",
         "bytecode.storage-heavy-pattern",
         "bytecode.log-opcodes-present",
         "bytecode.manual-review-required"
@@ -412,6 +557,28 @@
   ],
   "comparisons": [
     {
+      "sourceFixture": "fixtures/bytecode/ens-registry-mainnet-runtime.hex",
+      "baselineReport": "reports/bytecode-ens-registry-mainnet-runtime--default.json",
+      "candidateReport": "reports/bytecode-ens-registry-mainnet-runtime--research.json",
+      "comparison": "comparisons/bytecode-ens-registry-mainnet-runtime--default-vs-research.json",
+      "riskChange": "medium->medium (unchanged)",
+      "addedCount": 0,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 4
+    },
+    {
+      "sourceFixture": "fixtures/bytecode/multicall3-mainnet-runtime.hex",
+      "baselineReport": "reports/bytecode-multicall3-mainnet-runtime--default.json",
+      "candidateReport": "reports/bytecode-multicall3-mainnet-runtime--research.json",
+      "comparison": "comparisons/bytecode-multicall3-mainnet-runtime--default-vs-research.json",
+      "riskChange": "low->low (unchanged)",
+      "addedCount": 1,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 3
+    },
+    {
       "sourceFixture": "fixtures/bytecode/storage-heavy.hex",
       "baselineReport": "reports/bytecode-storage-heavy--default.json",
       "candidateReport": "reports/bytecode-storage-heavy--research.json",
@@ -421,6 +588,39 @@
       "removedCount": 0,
       "changedCount": 0,
       "unchangedCount": 6
+    },
+    {
+      "sourceFixture": "fixtures/bytecode/uniswap-v2-factory-mainnet-runtime.hex",
+      "baselineReport": "reports/bytecode-uniswap-v2-factory-mainnet-runtime--default.json",
+      "candidateReport": "reports/bytecode-uniswap-v2-factory-mainnet-runtime--research.json",
+      "comparison": "comparisons/bytecode-uniswap-v2-factory-mainnet-runtime--default-vs-research.json",
+      "riskChange": "medium->medium (unchanged)",
+      "addedCount": 0,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 6
+    },
+    {
+      "sourceFixture": "fixtures/bytecode/usdc-proxy-mainnet-runtime.hex",
+      "baselineReport": "reports/bytecode-usdc-proxy-mainnet-runtime--default.json",
+      "candidateReport": "reports/bytecode-usdc-proxy-mainnet-runtime--research.json",
+      "comparison": "comparisons/bytecode-usdc-proxy-mainnet-runtime--default-vs-research.json",
+      "riskChange": "medium->medium (unchanged)",
+      "addedCount": 1,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 4
+    },
+    {
+      "sourceFixture": "fixtures/bytecode/weth9-mainnet-runtime.hex",
+      "baselineReport": "reports/bytecode-weth9-mainnet-runtime--default.json",
+      "candidateReport": "reports/bytecode-weth9-mainnet-runtime--research.json",
+      "comparison": "comparisons/bytecode-weth9-mainnet-runtime--default-vs-research.json",
+      "riskChange": "medium->medium (unchanged)",
+      "addedCount": 0,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 4
     },
     {
       "sourceFixture": "fixtures/traces/besu-debug-structlogs.json",

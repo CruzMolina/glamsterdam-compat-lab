@@ -31,4 +31,57 @@ describe("scanBytecode", () => {
     expect(report.findings.some((finding) => finding.id === "bytecode.storage-heavy-pattern")).toBe(true);
     expect(report.findings.some((finding) => finding.id === "bytecode.contract-creation-opcodes")).toBe(true);
   });
+
+  it.each([
+    {
+      fixture: "ens-registry-mainnet-runtime.hex",
+      expectedFindingIds: [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present"
+      ]
+    },
+    {
+      fixture: "multicall3-mainnet-runtime.hex",
+      expectedFindingIds: [
+        "bytecode.calldata-copy-exposure",
+        "bytecode.log-opcodes-present"
+      ]
+    },
+    {
+      fixture: "uniswap-v2-factory-mainnet-runtime.hex",
+      expectedFindingIds: [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.contract-creation-opcodes",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present"
+      ]
+    },
+    {
+      fixture: "usdc-proxy-mainnet-runtime.hex",
+      expectedFindingIds: [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.log-opcodes-present"
+      ]
+    },
+    {
+      fixture: "weth9-mainnet-runtime.hex",
+      expectedFindingIds: [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present"
+      ]
+    }
+  ])("scans public mainnet runtime bytecode fixture $fixture", ({ fixture, expectedFindingIds }) => {
+    const report = scanBytecode(resolve(rootDir, "fixtures/bytecode", fixture));
+    const findingIds = report.findings.map((finding) => finding.id);
+
+    expect(report.target.kind).toBe("bytecode");
+    expect(findingIds).toContain("bytecode.manual-review-required");
+    for (const expectedFindingId of expectedFindingIds) {
+      expect(findingIds).toContain(expectedFindingId);
+    }
+  });
 });

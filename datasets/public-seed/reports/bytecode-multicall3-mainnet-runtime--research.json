@@ -1,0 +1,124 @@
+{
+  "toolVersion": "0.3.1",
+  "fork": "glamsterdam",
+  "target": {
+    "kind": "bytecode",
+    "name": "fixtures/bytecode/multicall3-mainnet-runtime.hex"
+  },
+  "summary": {
+    "risk": "low",
+    "findingCount": 4,
+    "highCount": 0,
+    "mediumCount": 0,
+    "lowCount": 3,
+    "unknownCount": 1
+  },
+  "findings": [
+    {
+      "id": "bytecode.state-account-opcode-presence",
+      "title": "State and account access opcodes are present",
+      "severity": "low",
+      "confidence": "medium",
+      "domain": [
+        "contracts",
+        "execution"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7904",
+        "EIP-8038",
+        "EIP-7976"
+      ],
+      "description": "This bytecode contains some opcodes that are commonly involved in gas repricing discussions. The scan cannot determine execution frequency.",
+      "evidence": [
+        {
+          "sensitiveOpcodeCount": 2,
+          "opcodeCounts": {
+            "BALANCE": 1,
+            "SHA3": 1
+          }
+        }
+      ],
+      "recommendation": "Include transactions that exercise these paths in fork-readiness tests."
+    },
+    {
+      "id": "bytecode.calldata-copy-exposure",
+      "title": "Calldata copy opcode is present",
+      "severity": "low",
+      "confidence": "medium",
+      "domain": [
+        "contracts",
+        "execution"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7976",
+        "EIP-7904",
+        "EIP-8038"
+      ],
+      "description": "CALLDATACOPY appears in the bytecode. Calldata-related repricing candidates should be tested if this contract processes large calldata in production.",
+      "evidence": [
+        {
+          "CALLDATACOPY": 1
+        }
+      ],
+      "recommendation": "Add large-calldata cases to benchmarks and trace replay when final Glamsterdam parameters are known."
+    },
+    {
+      "id": "bytecode.log-opcodes-present",
+      "title": "Log opcodes are present",
+      "severity": "low",
+      "confidence": "medium",
+      "domain": [
+        "contracts",
+        "indexer",
+        "monitoring"
+      ],
+      "relatedEips": [
+        "EIP-7708"
+      ],
+      "description": "The bytecode can emit logs. Indexers and monitoring systems should include representative log-emitting transactions when testing Glamsterdam-era assumptions.",
+      "evidence": [
+        {
+          "LOG0": 0,
+          "LOG1": 0,
+          "LOG2": 1,
+          "LOG3": 0,
+          "LOG4": 0
+        }
+      ],
+      "recommendation": "Include log-emitting paths in trace replay and indexer regression tests, especially where native ETH transfer visibility matters."
+    },
+    {
+      "id": "bytecode.manual-review-required",
+      "title": "Manual review is still required for runtime behavior",
+      "severity": "unknown",
+      "confidence": "low",
+      "domain": [
+        "contracts",
+        "execution"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING"
+      ],
+      "description": "The scanner found static opcode evidence, but exact fork impact depends on executed paths, calldata, storage warmness, account state, compiler output, and final Glamsterdam parameters.",
+      "evidence": [
+        {
+          "byteLength": 3808,
+          "opcodeKinds": 77
+        }
+      ],
+      "recommendation": "Use this report to choose transactions for trace replay and benchmark them under current and Glamsterdam configurations."
+    }
+  ],
+  "assumptions": [
+    "Input was interpreted as EVM bytecode after removing whitespace and an optional 0x prefix.",
+    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
+  ],
+  "limitations": [
+    "Static bytecode scanning cannot determine which branches are executed in production.",
+    "Opcode counts are not gas estimates and do not include dynamic call targets, storage keys, calldata sizes, or transaction context.",
+    "Findings are compatibility prompts, not predictions that a contract will fail."
+  ]
+}

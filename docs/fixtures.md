@@ -38,6 +38,7 @@ Each manifest entry records:
 - Source type, such as synthetic, public-chain, public repo, anonymized internal, or generated example.
 - Capture tool, version, command, and trace mode when known.
 - Network and transaction hash when the fixture came from public-chain data.
+- Contract address and block number when a bytecode fixture came from public-chain `eth_getCode` data.
 - Completeness level and redaction posture.
 - Expected scanner finding IDs.
 - Related EIPs when the fixture is meant to exercise specific compatibility paths.
@@ -72,7 +73,7 @@ pnpm test
 pnpm build
 ```
 
-The dataset includes default-profile reports for every scannable fixture and default-vs-research comparisons for bytecode and trace fixtures. Treat the seed as reproducibility scaffolding, not as an aggregate public-chain readiness study.
+The dataset includes default-profile reports for every scannable fixture, default-vs-research comparisons for bytecode and trace fixtures, and a small summary of aggregate counts. Treat the seed as reproducibility scaffolding, not as an aggregate public-chain readiness study.
 
 ## Capturing RPC Traces
 

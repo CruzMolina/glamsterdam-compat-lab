@@ -1,0 +1,139 @@
+{
+  "toolVersion": "0.3.1",
+  "fork": "glamsterdam",
+  "comparison": {
+    "baseline": {
+      "toolVersion": "0.3.1",
+      "fork": "glamsterdam",
+      "target": {
+        "kind": "bytecode",
+        "name": "fixtures/bytecode/multicall3-mainnet-runtime.hex"
+      },
+      "summary": {
+        "risk": "low",
+        "findingCount": 3,
+        "highCount": 0,
+        "mediumCount": 0,
+        "lowCount": 2,
+        "unknownCount": 1
+      }
+    },
+    "candidate": {
+      "toolVersion": "0.3.1",
+      "fork": "glamsterdam",
+      "target": {
+        "kind": "bytecode",
+        "name": "fixtures/bytecode/multicall3-mainnet-runtime.hex"
+      },
+      "summary": {
+        "risk": "low",
+        "findingCount": 4,
+        "highCount": 0,
+        "mediumCount": 0,
+        "lowCount": 3,
+        "unknownCount": 1
+      }
+    }
+  },
+  "summary": {
+    "riskChange": {
+      "from": "low",
+      "to": "low",
+      "direction": "unchanged"
+    },
+    "findingCount": {
+      "baseline": 3,
+      "candidate": 4,
+      "delta": 1
+    },
+    "addedCount": 1,
+    "removedCount": 0,
+    "changedCount": 0,
+    "unchangedCount": 3,
+    "severityIncreasedCount": 0,
+    "severityDecreasedCount": 0,
+    "severityChangedCount": 0,
+    "confidenceIncreasedCount": 0,
+    "confidenceDecreasedCount": 0,
+    "confidenceChangedCount": 0
+  },
+  "changes": {
+    "added": [
+      {
+        "key": "bytecode.state-account-opcode-presence",
+        "id": "bytecode.state-account-opcode-presence",
+        "title": "State and account access opcodes are present",
+        "severity": "low",
+        "confidence": "medium",
+        "domain": [
+          "contracts",
+          "execution"
+        ],
+        "relatedEips": [
+          "GAS-REPRICING",
+          "EIP-7904",
+          "EIP-8038",
+          "EIP-7976"
+        ]
+      }
+    ],
+    "removed": [],
+    "changed": [],
+    "unchanged": [
+      {
+        "key": "bytecode.calldata-copy-exposure",
+        "id": "bytecode.calldata-copy-exposure",
+        "title": "Calldata copy opcode is present",
+        "severity": "low",
+        "confidence": "medium",
+        "domain": [
+          "contracts",
+          "execution"
+        ],
+        "relatedEips": [
+          "GAS-REPRICING",
+          "EIP-7976",
+          "EIP-7904",
+          "EIP-8038"
+        ]
+      },
+      {
+        "key": "bytecode.log-opcodes-present",
+        "id": "bytecode.log-opcodes-present",
+        "title": "Log opcodes are present",
+        "severity": "low",
+        "confidence": "medium",
+        "domain": [
+          "contracts",
+          "indexer",
+          "monitoring"
+        ],
+        "relatedEips": [
+          "EIP-7708"
+        ]
+      },
+      {
+        "key": "bytecode.manual-review-required",
+        "id": "bytecode.manual-review-required",
+        "title": "Manual review is still required for runtime behavior",
+        "severity": "unknown",
+        "confidence": "low",
+        "domain": [
+          "contracts",
+          "execution"
+        ],
+        "relatedEips": [
+          "GAS-REPRICING"
+        ]
+      }
+    ]
+  },
+  "assumptions": [
+    "Reports were compared by finding id. Repeated finding ids are disambiguated with deterministic occurrence suffixes.",
+    "Severity and confidence changes are structural report changes, not protocol gas estimates."
+  ],
+  "limitations": [
+    "The comparison does not infer exact gas deltas, final Glamsterdam parameters, or current-vs-Glamsterdam client behavior unless those values are already present in the input reports.",
+    "Added and removed findings can reflect threshold profile differences, fixture coverage changes, registry updates, or detector changes; review the source reports before treating a diff as a protocol risk change."
+  ]
+}

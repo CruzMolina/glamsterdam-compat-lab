@@ -8,6 +8,9 @@ The seed is intentionally small. It is meant to prove the dataset workflow, not 
 
 - `manifest.json`: index of generated reports, comparisons, source fixtures, threshold profiles, and limitations.
 - `summary.json`: aggregate counts by fixture kind, source type, report risk, threshold profile, and finding ID.
+- `reports.csv`: flat index of generated reports for spreadsheet and warehouse import.
+- `findings.csv`: one row per generated report finding, including severity, confidence, domains, and related EIPs.
+- `summary.csv`: flattened aggregate totals and counts from `summary.json`.
 - `reports/`: JSON compatibility reports generated from source fixtures.
 - `comparisons/`: JSON comparison reports for default-vs-research threshold profiles on bytecode and trace fixtures.
 

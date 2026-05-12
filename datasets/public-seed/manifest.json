@@ -6,6 +6,11 @@
   "toolVersion": "0.3.1",
   "sourceManifest": "fixtures/provenance.json",
   "summary": "summary.json",
+  "csvExports": {
+    "reports": "reports.csv",
+    "findings": "findings.csv",
+    "summary": "summary.csv"
+  },
   "thresholdProfiles": [
     {
       "name": "default",

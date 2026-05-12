@@ -41,6 +41,11 @@ const publicSeedManifestSchema = z.object({
   toolVersion: z.string().min(1),
   sourceManifest: z.literal("fixtures/provenance.json"),
   summary: z.literal("summary.json"),
+  csvExports: z.object({
+    reports: z.literal("reports.csv"),
+    findings: z.literal("findings.csv"),
+    summary: z.literal("summary.csv")
+  }),
   thresholdProfiles: z.array(z.object({
     name: z.enum(["default", "research"]),
     path: z.string().min(1)
@@ -81,6 +86,9 @@ const datasetSummary = publicSeedSummarySchema.parse(
   JSON.parse(readFileSync(resolve(rootDir, "datasets/public-seed/summary.json"), "utf8"))
 );
 const fixtureManifest = loadFixtureProvenance(resolve(rootDir, "fixtures/provenance.json"));
+const reportCsvRows = parseCsvFile(resolve(rootDir, "datasets/public-seed", datasetManifest.csvExports.reports));
+const findingCsvRows = parseCsvFile(resolve(rootDir, "datasets/public-seed", datasetManifest.csvExports.findings));
+const summaryCsvRows = parseCsvFile(resolve(rootDir, "datasets/public-seed", datasetManifest.csvExports.summary));
 
 describe("public seed dataset", () => {
   it("has default reports for every scannable fixture", () => {
@@ -158,6 +166,57 @@ describe("public seed dataset", () => {
       countBy(datasetManifest.reports.flatMap((report) => report.findingIds))
     );
   });
+
+  it("exports report CSV rows aligned with the manifest", () => {
+    expect(reportCsvRows).toEqual(
+      datasetManifest.reports.map((entry) => ({
+        sourceFixture: entry.sourceFixture,
+        fixtureKind: entry.fixtureKind,
+        thresholdProfile: entry.thresholdProfile,
+        report: entry.report,
+        risk: entry.risk,
+        findingCount: String(entry.findingCount),
+        findingIds: entry.findingIds.join("|")
+      }))
+    );
+  });
+
+  it("exports finding CSV rows aligned with JSON report findings", () => {
+    const expectedRows = datasetManifest.reports.flatMap((entry) => {
+      const reportPath = resolve(rootDir, "datasets/public-seed", entry.report);
+      const report = validateCompatibilityReport(JSON.parse(readFileSync(reportPath, "utf8")));
+
+      return report.findings.map((finding, index) => ({
+        sourceFixture: entry.sourceFixture,
+        fixtureKind: entry.fixtureKind,
+        thresholdProfile: entry.thresholdProfile,
+        report: entry.report,
+        findingIndex: String(index + 1),
+        findingId: finding.id,
+        title: finding.title,
+        severity: finding.severity,
+        confidence: finding.confidence,
+        domains: finding.domain.join("|"),
+        relatedEips: finding.relatedEips.join("|")
+      }));
+    });
+
+    expect(findingCsvRows).toEqual(expectedRows);
+  });
+
+  it("exports summary CSV rows aligned with the JSON summary", () => {
+    expect(summaryCsvRows).toEqual([
+      { category: "totals", key: "fixtureCount", count: String(datasetSummary.fixtureCount) },
+      { category: "totals", key: "reportCount", count: String(datasetSummary.reportCount) },
+      { category: "totals", key: "comparisonCount", count: String(datasetSummary.comparisonCount) },
+      ...summaryCountRows("fixturesByKind", datasetSummary.counts.fixturesByKind),
+      ...summaryCountRows("fixturesBySourceType", datasetSummary.counts.fixturesBySourceType),
+      ...summaryCountRows("reportsByRisk", datasetSummary.counts.reportsByRisk),
+      ...summaryCountRows("reportsByFixtureKind", datasetSummary.counts.reportsByFixtureKind),
+      ...summaryCountRows("reportsByThresholdProfile", datasetSummary.counts.reportsByThresholdProfile),
+      ...summaryCountRows("findingsById", datasetSummary.counts.findingsById)
+    ]);
+  });
 });
 
 function countBy(values: string[]): Array<{ key: string; count: number }> {
@@ -169,4 +228,71 @@ function countBy(values: string[]): Array<{ key: string; count: number }> {
   return Object.entries(counts)
     .sort(([left], [right]) => left.localeCompare(right))
     .map(([key, count]) => ({ key, count }));
+}
+
+function summaryCountRows(
+  category: string,
+  counts: Array<{ key: string; count: number }>
+): Array<{ category: string; key: string; count: string }> {
+  return counts.map((count) => ({
+    category,
+    key: count.key,
+    count: String(count.count)
+  }));
+}
+
+function parseCsvFile(path: string): Array<Record<string, string>> {
+  if (!existsSync(path)) {
+    throw new Error(`Missing CSV export: ${path}`);
+  }
+  const rows = parseCsv(readFileSync(path, "utf8"));
+  const [headers, ...dataRows] = rows;
+
+  return dataRows.map((row) =>
+    Object.fromEntries(headers.map((header, index) => [header, row[index] ?? ""]))
+  );
+}
+
+function parseCsv(text: string): string[][] {
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let field = "";
+  let quoted = false;
+
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index];
+
+    if (quoted) {
+      if (char === "\"" && text[index + 1] === "\"") {
+        field += "\"";
+        index += 1;
+      } else if (char === "\"") {
+        quoted = false;
+      } else {
+        field += char;
+      }
+      continue;
+    }
+
+    if (char === "\"") {
+      quoted = true;
+    } else if (char === ",") {
+      row.push(field);
+      field = "";
+    } else if (char === "\n") {
+      row.push(field);
+      rows.push(row);
+      row = [];
+      field = "";
+    } else if (char !== "\r") {
+      field += char;
+    }
+  }
+
+  if (field.length > 0 || row.length > 0) {
+    row.push(field);
+    rows.push(row);
+  }
+
+  return rows;
 }

@@ -10,6 +10,7 @@ import {
   scanIndexer,
   scanTraceFile,
   scanValidatorConfig,
+  type CompatibilityFinding,
   type CompatibilityReport,
   type FixtureProvenanceEntry
 } from "../src/index.js";
@@ -37,10 +38,45 @@ interface DatasetComparisonEntry {
   unchangedCount: number;
 }
 
+interface DatasetFindingEntry {
+  sourceFixture: string;
+  fixtureKind: FixtureProvenanceEntry["kind"];
+  thresholdProfile: DatasetReportEntry["thresholdProfile"];
+  report: string;
+  findingIndex: number;
+  findingId: string;
+  title: string;
+  severity: CompatibilityFinding["severity"];
+  confidence: CompatibilityFinding["confidence"];
+  domains: string[];
+  relatedEips: string[];
+}
+
 interface DatasetSummaryCount {
   key: string;
   count: number;
 }
+
+interface DatasetSummary {
+  schemaVersion: 1;
+  name: "public-seed-summary";
+  lastUpdated: string;
+  toolVersion: string;
+  sourceManifest: "fixtures/provenance.json";
+  fixtureCount: number;
+  reportCount: number;
+  comparisonCount: number;
+  counts: {
+    fixturesByKind: DatasetSummaryCount[];
+    fixturesBySourceType: DatasetSummaryCount[];
+    reportsByRisk: DatasetSummaryCount[];
+    reportsByFixtureKind: DatasetSummaryCount[];
+    reportsByThresholdProfile: DatasetSummaryCount[];
+    findingsById: DatasetSummaryCount[];
+  };
+}
+
+type CsvValue = string | number;
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const datasetDir = resolve(rootDir, "datasets/public-seed");
@@ -49,6 +85,11 @@ const comparisonsDir = resolve(datasetDir, "comparisons");
 const defaultThresholdsPath = resolve(rootDir, "data/detectors/thresholds.json");
 const researchThresholdsPath = resolve(rootDir, "data/detectors/thresholds.research.json");
 const datasetLastUpdated = "2026-05-12";
+const csvExports = {
+  reports: "reports.csv",
+  findings: "findings.csv",
+  summary: "summary.csv"
+} as const;
 
 const manifest = loadFixtureProvenance(resolve(rootDir, "fixtures/provenance.json"));
 const scannableFixtures = manifest.fixtures
@@ -57,6 +98,7 @@ const scannableFixtures = manifest.fixtures
 
 const reportEntries: DatasetReportEntry[] = [];
 const comparisonEntries: DatasetComparisonEntry[] = [];
+const findingEntries: DatasetFindingEntry[] = [];
 
 rmSync(datasetDir, { recursive: true, force: true });
 mkdirSync(reportsDir, { recursive: true });
@@ -66,11 +108,13 @@ for (const fixture of scannableFixtures) {
   const defaultReport = scanFixture(fixture, defaultThresholdsPath);
   const defaultReportPath = writeReport(fixture, "default", defaultReport);
   reportEntries.push(reportEntry(fixture, "default", defaultReportPath, defaultReport));
+  findingEntries.push(...findingEntriesForReport(fixture, "default", defaultReportPath, defaultReport));
 
   if (fixture.kind === "bytecode" || fixture.kind === "trace") {
     const researchReport = scanFixture(fixture, researchThresholdsPath);
     const researchReportPath = writeReport(fixture, "research", researchReport);
     reportEntries.push(reportEntry(fixture, "research", researchReportPath, researchReport));
+    findingEntries.push(...findingEntriesForReport(fixture, "research", researchReportPath, researchReport));
 
     const comparison = compareCompatibilityReports(defaultReport, researchReport);
     const comparisonPath = `comparisons/${slugFixturePath(fixture.path)}--default-vs-research.json`;
@@ -89,6 +133,8 @@ for (const fixture of scannableFixtures) {
   }
 }
 
+const summary = buildSummary();
+
 writeJson(resolve(datasetDir, "manifest.json"), {
   schemaVersion: 1,
   name: "public-seed",
@@ -98,6 +144,7 @@ writeJson(resolve(datasetDir, "manifest.json"), {
   toolVersion: TOOL_VERSION,
   sourceManifest: "fixtures/provenance.json",
   summary: "summary.json",
+  csvExports,
   thresholdProfiles: [
     {
       name: "default",
@@ -116,7 +163,10 @@ writeJson(resolve(datasetDir, "manifest.json"), {
     "Threshold-profile comparisons are structural report differences, not final fork gas deltas."
   ]
 });
-writeJson(resolve(datasetDir, "summary.json"), buildSummary());
+writeJson(resolve(datasetDir, "summary.json"), summary);
+writeCsv(resolve(datasetDir, csvExports.reports), reportCsvRows());
+writeCsv(resolve(datasetDir, csvExports.findings), findingCsvRows());
+writeCsv(resolve(datasetDir, csvExports.summary), summaryCsvRows(summary));
 writeReadme();
 
 function scanFixture(fixture: FixtureProvenanceEntry, thresholdsPath: string): CompatibilityReport {
@@ -167,6 +217,27 @@ function reportEntry(
   };
 }
 
+function findingEntriesForReport(
+  fixture: FixtureProvenanceEntry,
+  thresholdProfile: DatasetReportEntry["thresholdProfile"],
+  reportPath: string,
+  report: CompatibilityReport
+): DatasetFindingEntry[] {
+  return report.findings.map((finding, index) => ({
+    sourceFixture: fixture.path,
+    fixtureKind: fixture.kind,
+    thresholdProfile,
+    report: reportPath,
+    findingIndex: index + 1,
+    findingId: finding.id,
+    title: finding.title,
+    severity: finding.severity,
+    confidence: finding.confidence,
+    domains: finding.domain,
+    relatedEips: finding.relatedEips
+  }));
+}
+
 function slugFixturePath(path: string): string {
   return path
     .replace(/^fixtures\//, "")
@@ -180,7 +251,76 @@ function writeJson(path: string, value: unknown): void {
   writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`);
 }
 
-function buildSummary(): unknown {
+function writeCsv(path: string, rows: Array<Record<string, CsvValue>>): void {
+  if (rows.length === 0) {
+    throw new Error(`Cannot write empty CSV: ${path}`);
+  }
+
+  const headers = Object.keys(rows[0]);
+  const lines = [
+    headers.join(","),
+    ...rows.map((row) => headers.map((header) => formatCsvValue(row[header] ?? "")).join(","))
+  ];
+  mkdirSync(dirname(path), { recursive: true });
+  writeFileSync(path, `${lines.join("\n")}\n`);
+}
+
+function formatCsvValue(value: CsvValue): string {
+  const text = String(value);
+  return /[",\n\r]/.test(text) ? `"${text.replaceAll("\"", "\"\"")}"` : text;
+}
+
+function reportCsvRows(): Array<Record<string, CsvValue>> {
+  return reportEntries.map((entry) => ({
+    sourceFixture: entry.sourceFixture,
+    fixtureKind: entry.fixtureKind,
+    thresholdProfile: entry.thresholdProfile,
+    report: entry.report,
+    risk: entry.risk,
+    findingCount: entry.findingCount,
+    findingIds: entry.findingIds.join("|")
+  }));
+}
+
+function findingCsvRows(): Array<Record<string, CsvValue>> {
+  return findingEntries.map((entry) => ({
+    sourceFixture: entry.sourceFixture,
+    fixtureKind: entry.fixtureKind,
+    thresholdProfile: entry.thresholdProfile,
+    report: entry.report,
+    findingIndex: entry.findingIndex,
+    findingId: entry.findingId,
+    title: entry.title,
+    severity: entry.severity,
+    confidence: entry.confidence,
+    domains: entry.domains.join("|"),
+    relatedEips: entry.relatedEips.join("|")
+  }));
+}
+
+function summaryCsvRows(summary: DatasetSummary): Array<Record<string, CsvValue>> {
+  return [
+    { category: "totals", key: "fixtureCount", count: summary.fixtureCount },
+    { category: "totals", key: "reportCount", count: summary.reportCount },
+    { category: "totals", key: "comparisonCount", count: summary.comparisonCount },
+    ...summary.counts.fixturesByKind.map((count) => summaryCsvRow("fixturesByKind", count)),
+    ...summary.counts.fixturesBySourceType.map((count) => summaryCsvRow("fixturesBySourceType", count)),
+    ...summary.counts.reportsByRisk.map((count) => summaryCsvRow("reportsByRisk", count)),
+    ...summary.counts.reportsByFixtureKind.map((count) => summaryCsvRow("reportsByFixtureKind", count)),
+    ...summary.counts.reportsByThresholdProfile.map((count) => summaryCsvRow("reportsByThresholdProfile", count)),
+    ...summary.counts.findingsById.map((count) => summaryCsvRow("findingsById", count))
+  ];
+}
+
+function summaryCsvRow(category: string, count: DatasetSummaryCount): Record<string, CsvValue> {
+  return {
+    category,
+    key: count.key,
+    count: count.count
+  };
+}
+
+function buildSummary(): DatasetSummary {
   return {
     schemaVersion: 1,
     name: "public-seed-summary",
@@ -227,6 +367,9 @@ The seed is intentionally small. It is meant to prove the dataset workflow, not 
 
 - \`manifest.json\`: index of generated reports, comparisons, source fixtures, threshold profiles, and limitations.
 - \`summary.json\`: aggregate counts by fixture kind, source type, report risk, threshold profile, and finding ID.
+- \`reports.csv\`: flat index of generated reports for spreadsheet and warehouse import.
+- \`findings.csv\`: one row per generated report finding, including severity, confidence, domains, and related EIPs.
+- \`summary.csv\`: flattened aggregate totals and counts from \`summary.json\`.
 - \`reports/\`: JSON compatibility reports generated from source fixtures.
 - \`comparisons/\`: JSON comparison reports for default-vs-research threshold profiles on bytecode and trace fixtures.
 

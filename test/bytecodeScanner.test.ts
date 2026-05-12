@@ -49,6 +49,16 @@ describe("scanBytecode", () => {
       ]
     },
     {
+      fixture: "erc4337-entrypoint-v06-mainnet-runtime.hex",
+      expectedFindingIds: [
+        "bytecode.contract-size-near-current-limit",
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present"
+      ]
+    },
+    {
       fixture: "uniswap-v2-factory-mainnet-runtime.hex",
       expectedFindingIds: [
         "bytecode.state-account-opcode-exposure",
@@ -63,6 +73,15 @@ describe("scanBytecode", () => {
       expectedFindingIds: [
         "bytecode.state-account-opcode-exposure",
         "bytecode.calldata-copy-exposure",
+        "bytecode.log-opcodes-present"
+      ]
+    },
+    {
+      fixture: "safe-proxy-factory-v130-mainnet-runtime.hex",
+      expectedFindingIds: [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.contract-creation-opcodes",
         "bytecode.log-opcodes-present"
       ]
     },

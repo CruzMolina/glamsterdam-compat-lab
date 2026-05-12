@@ -27,12 +27,20 @@ describe("golden report snapshots", () => {
     expectBytecodeJsonSnapshot("multicall3-mainnet-runtime.hex");
   });
 
+  it("keeps ERC-4337 EntryPoint runtime bytecode JSON report structure stable", () => {
+    expectBytecodeJsonSnapshot("erc4337-entrypoint-v06-mainnet-runtime.hex");
+  });
+
   it("keeps Uniswap V2 Factory runtime bytecode JSON report structure stable", () => {
     expectBytecodeJsonSnapshot("uniswap-v2-factory-mainnet-runtime.hex");
   });
 
   it("keeps USDC proxy runtime bytecode JSON report structure stable", () => {
     expectBytecodeJsonSnapshot("usdc-proxy-mainnet-runtime.hex");
+  });
+
+  it("keeps Safe Proxy Factory runtime bytecode JSON report structure stable", () => {
+    expectBytecodeJsonSnapshot("safe-proxy-factory-v130-mainnet-runtime.hex");
   });
 
   it("keeps WETH9 runtime bytecode JSON report structure stable", () => {

@@ -134,6 +134,56 @@
       ]
     },
     {
+      "path": "fixtures/bytecode/erc4337-entrypoint-v06-mainnet-runtime.hex",
+      "kind": "bytecode",
+      "description": "Public Ethereum mainnet runtime bytecode for the ERC-4337 EntryPoint v0.6 contract.",
+      "source": {
+        "type": "public-chain",
+        "name": "ERC-4337 EntryPoint v0.6 runtime bytecode on Ethereum mainnet",
+        "url": "https://etherscan.io/address/0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789#code",
+        "license": "Public blockchain data; repository license applies to fixture packaging.",
+        "notes": [
+          "Fetched with eth_getCode at block 25075351 through a public Ethereum RPC endpoint.",
+          "Etherscan labels the verified contract as EntryPoint and lists the source license as GNU GPLv3.",
+          "The fixture stores deployed runtime bytecode only, not source code or constructor arguments."
+        ]
+      },
+      "capture": {
+        "tool": "eth_getCode via ethereum-rpc.publicnode.com",
+        "command": "eth_getCode(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789, 0x17e9e97)",
+        "mode": "runtime bytecode"
+      },
+      "network": {
+        "name": "ethereum-mainnet",
+        "chainId": 1,
+        "blockNumber": 25075351,
+        "contractAddress": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
+      },
+      "completeness": "complete",
+      "redaction": {
+        "status": "not-needed",
+        "notes": [
+          "Contract runtime bytecode and address are public Ethereum mainnet data.",
+          "No credentials, private endpoints, deployment metadata, or private transaction data are present."
+        ]
+      },
+      "expectedFindingIds": [
+        "bytecode.contract-size-near-current-limit",
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7708",
+        "EIP-7954",
+        "EIP-7976",
+        "EIP-8038"
+      ]
+    },
+    {
       "path": "fixtures/bytecode/uniswap-v2-factory-mainnet-runtime.hex",
       "kind": "bytecode",
       "description": "Public Ethereum mainnet runtime bytecode for the Uniswap V2 Factory contract.",
@@ -225,6 +275,55 @@
         "GAS-REPRICING",
         "EIP-7708",
         "EIP-7976",
+        "EIP-8038"
+      ]
+    },
+    {
+      "path": "fixtures/bytecode/safe-proxy-factory-v130-mainnet-runtime.hex",
+      "kind": "bytecode",
+      "description": "Public Ethereum mainnet runtime bytecode for the Safe Proxy Factory v1.3.0 contract.",
+      "source": {
+        "type": "public-chain",
+        "name": "Safe Proxy Factory v1.3.0 runtime bytecode on Ethereum mainnet",
+        "url": "https://etherscan.io/address/0xa6B71E26C5e0845f74c812102Ca7114b6a896AB2#code",
+        "license": "Public blockchain data; repository license applies to fixture packaging.",
+        "notes": [
+          "Fetched with eth_getCode at block 25075351 through a public Ethereum RPC endpoint.",
+          "Etherscan labels the verified contract as GnosisSafeProxyFactory and lists the source license as GNU LGPLv3.",
+          "The fixture stores deployed runtime bytecode only, not source code or constructor arguments."
+        ]
+      },
+      "capture": {
+        "tool": "eth_getCode via ethereum-rpc.publicnode.com",
+        "command": "eth_getCode(0xa6B71E26C5e0845f74c812102Ca7114b6a896AB2, 0x17e9e97)",
+        "mode": "runtime bytecode"
+      },
+      "network": {
+        "name": "ethereum-mainnet",
+        "chainId": 1,
+        "blockNumber": 25075351,
+        "contractAddress": "0xa6B71E26C5e0845f74c812102Ca7114b6a896AB2"
+      },
+      "completeness": "complete",
+      "redaction": {
+        "status": "not-needed",
+        "notes": [
+          "Contract runtime bytecode and address are public Ethereum mainnet data.",
+          "No credentials, private endpoints, deployment metadata, or private transaction data are present."
+        ]
+      },
+      "expectedFindingIds": [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.contract-creation-opcodes",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7708",
+        "EIP-7976",
+        "EIP-8037",
         "EIP-8038"
       ]
     },

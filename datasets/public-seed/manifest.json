@@ -51,6 +51,38 @@
       ]
     },
     {
+      "sourceFixture": "fixtures/bytecode/erc4337-entrypoint-v06-mainnet-runtime.hex",
+      "fixtureKind": "bytecode",
+      "thresholdProfile": "default",
+      "report": "reports/bytecode-erc4337-entrypoint-v06-mainnet-runtime--default.json",
+      "risk": "medium",
+      "findingCount": 6,
+      "findingIds": [
+        "bytecode.contract-size-near-current-limit",
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/bytecode/erc4337-entrypoint-v06-mainnet-runtime.hex",
+      "fixtureKind": "bytecode",
+      "thresholdProfile": "research",
+      "report": "reports/bytecode-erc4337-entrypoint-v06-mainnet-runtime--research.json",
+      "risk": "medium",
+      "findingCount": 6,
+      "findingIds": [
+        "bytecode.contract-size-near-current-limit",
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.storage-heavy-pattern",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ]
+    },
+    {
       "sourceFixture": "fixtures/bytecode/multicall3-mainnet-runtime.hex",
       "fixtureKind": "bytecode",
       "thresholdProfile": "default",
@@ -73,6 +105,37 @@
       "findingIds": [
         "bytecode.state-account-opcode-presence",
         "bytecode.calldata-copy-exposure",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/bytecode/safe-proxy-factory-v130-mainnet-runtime.hex",
+      "fixtureKind": "bytecode",
+      "thresholdProfile": "default",
+      "report": "reports/bytecode-safe-proxy-factory-v130-mainnet-runtime--default.json",
+      "risk": "medium",
+      "findingCount": 5,
+      "findingIds": [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.contract-creation-opcodes",
+        "bytecode.log-opcodes-present",
+        "bytecode.manual-review-required"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/bytecode/safe-proxy-factory-v130-mainnet-runtime.hex",
+      "fixtureKind": "bytecode",
+      "thresholdProfile": "research",
+      "report": "reports/bytecode-safe-proxy-factory-v130-mainnet-runtime--research.json",
+      "risk": "medium",
+      "findingCount": 6,
+      "findingIds": [
+        "bytecode.state-account-opcode-exposure",
+        "bytecode.calldata-copy-exposure",
+        "bytecode.contract-creation-opcodes",
+        "bytecode.storage-heavy-pattern",
         "bytecode.log-opcodes-present",
         "bytecode.manual-review-required"
       ]
@@ -600,6 +663,17 @@
       "unchangedCount": 4
     },
     {
+      "sourceFixture": "fixtures/bytecode/erc4337-entrypoint-v06-mainnet-runtime.hex",
+      "baselineReport": "reports/bytecode-erc4337-entrypoint-v06-mainnet-runtime--default.json",
+      "candidateReport": "reports/bytecode-erc4337-entrypoint-v06-mainnet-runtime--research.json",
+      "comparison": "comparisons/bytecode-erc4337-entrypoint-v06-mainnet-runtime--default-vs-research.json",
+      "riskChange": "medium->medium (unchanged)",
+      "addedCount": 0,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 6
+    },
+    {
       "sourceFixture": "fixtures/bytecode/multicall3-mainnet-runtime.hex",
       "baselineReport": "reports/bytecode-multicall3-mainnet-runtime--default.json",
       "candidateReport": "reports/bytecode-multicall3-mainnet-runtime--research.json",
@@ -609,6 +683,17 @@
       "removedCount": 0,
       "changedCount": 0,
       "unchangedCount": 3
+    },
+    {
+      "sourceFixture": "fixtures/bytecode/safe-proxy-factory-v130-mainnet-runtime.hex",
+      "baselineReport": "reports/bytecode-safe-proxy-factory-v130-mainnet-runtime--default.json",
+      "candidateReport": "reports/bytecode-safe-proxy-factory-v130-mainnet-runtime--research.json",
+      "comparison": "comparisons/bytecode-safe-proxy-factory-v130-mainnet-runtime--default-vs-research.json",
+      "riskChange": "medium->medium (unchanged)",
+      "addedCount": 1,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 5
     },
     {
       "sourceFixture": "fixtures/bytecode/storage-heavy.hex",

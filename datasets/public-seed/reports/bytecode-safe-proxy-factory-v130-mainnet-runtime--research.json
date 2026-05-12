@@ -1,0 +1,171 @@
+{
+  "toolVersion": "0.3.2",
+  "fork": "glamsterdam",
+  "target": {
+    "kind": "bytecode",
+    "name": "fixtures/bytecode/safe-proxy-factory-v130-mainnet-runtime.hex"
+  },
+  "summary": {
+    "risk": "medium",
+    "findingCount": 6,
+    "highCount": 0,
+    "mediumCount": 3,
+    "lowCount": 2,
+    "unknownCount": 1
+  },
+  "findings": [
+    {
+      "id": "bytecode.state-account-opcode-exposure",
+      "title": "State and account access opcodes are prominent in bytecode",
+      "severity": "medium",
+      "confidence": "medium",
+      "domain": [
+        "contracts",
+        "execution"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7904",
+        "EIP-8038",
+        "EIP-7976"
+      ],
+      "description": "This bytecode contains multiple storage, account, or hashing opcodes. Glamsterdam gas repricing candidates may change the cost profile of state-heavy execution, but static bytecode does not prove those paths are hot.",
+      "evidence": [
+        {
+          "sensitiveOpcodeCount": 11,
+          "opcodeCounts": {
+            "SLOAD": 3,
+            "SSTORE": 1,
+            "EXTCODESIZE": 1,
+            "SHA3": 6
+          }
+        }
+      ],
+      "recommendation": "Replay representative transactions and benchmark hot paths once a Glamsterdam client/devnet or local fork configuration is available."
+    },
+    {
+      "id": "bytecode.calldata-copy-exposure",
+      "title": "Calldata copy opcode is present",
+      "severity": "low",
+      "confidence": "medium",
+      "domain": [
+        "contracts",
+        "execution"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7976",
+        "EIP-7904",
+        "EIP-8038"
+      ],
+      "description": "CALLDATACOPY appears in the bytecode. Calldata-related repricing candidates should be tested if this contract processes large calldata in production.",
+      "evidence": [
+        {
+          "CALLDATACOPY": 6
+        }
+      ],
+      "recommendation": "Add large-calldata cases to benchmarks and trace replay when final Glamsterdam parameters are known."
+    },
+    {
+      "id": "bytecode.contract-creation-opcodes",
+      "title": "Contract creation opcodes are present",
+      "severity": "medium",
+      "confidence": "high",
+      "domain": [
+        "contracts",
+        "execution"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-8037"
+      ],
+      "description": "CREATE or CREATE2 appears in the bytecode. State-creation repricing candidates may affect factory, clone, deployment, or account-creation-heavy paths depending on final Glamsterdam scope.",
+      "evidence": [
+        {
+          "CREATE": 1,
+          "CREATE2": 1
+        }
+      ],
+      "recommendation": "Identify representative deployment/factory transactions and add them to fork-readiness replay tests."
+    },
+    {
+      "id": "bytecode.storage-heavy-pattern",
+      "title": "Storage-related opcodes appear frequently",
+      "severity": "medium",
+      "confidence": "medium",
+      "domain": [
+        "contracts",
+        "execution"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-8038"
+      ],
+      "description": "This bytecode contains many storage-related opcodes. Glamsterdam gas repricing candidates may change the cost profile of storage-heavy execution.",
+      "evidence": [
+        {
+          "SLOAD": 3,
+          "SSTORE": 1,
+          "storageOps": 4
+        }
+      ],
+      "recommendation": "Replay representative storage-heavy transactions against a Glamsterdam devnet or fork configuration when available."
+    },
+    {
+      "id": "bytecode.log-opcodes-present",
+      "title": "Log opcodes are present",
+      "severity": "low",
+      "confidence": "medium",
+      "domain": [
+        "contracts",
+        "indexer",
+        "monitoring"
+      ],
+      "relatedEips": [
+        "EIP-7708"
+      ],
+      "description": "The bytecode can emit logs. Indexers and monitoring systems should include representative log-emitting transactions when testing Glamsterdam-era assumptions.",
+      "evidence": [
+        {
+          "LOG0": 0,
+          "LOG1": 2,
+          "LOG2": 2,
+          "LOG3": 1,
+          "LOG4": 2
+        }
+      ],
+      "recommendation": "Include log-emitting paths in trace replay and indexer regression tests, especially where native ETH transfer visibility matters."
+    },
+    {
+      "id": "bytecode.manual-review-required",
+      "title": "Manual review is still required for runtime behavior",
+      "severity": "unknown",
+      "confidence": "low",
+      "domain": [
+        "contracts",
+        "execution"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING"
+      ],
+      "description": "The scanner found static opcode evidence, but exact fork impact depends on executed paths, calldata, storage warmness, account state, compiler output, and final Glamsterdam parameters.",
+      "evidence": [
+        {
+          "byteLength": 3774,
+          "opcodeKinds": 87
+        }
+      ],
+      "recommendation": "Use this report to choose transactions for trace replay and benchmark them under current and Glamsterdam configurations."
+    }
+  ],
+  "assumptions": [
+    "Input was interpreted as EVM bytecode after removing whitespace and an optional 0x prefix.",
+    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
+  ],
+  "limitations": [
+    "Static bytecode scanning cannot determine which branches are executed in production.",
+    "Opcode counts are not gas estimates and do not include dynamic call targets, storage keys, calldata sizes, or transaction context.",
+    "Findings are compatibility prompts, not predictions that a contract will fail."
+  ]
+}

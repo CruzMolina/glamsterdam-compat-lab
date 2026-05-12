@@ -72,7 +72,7 @@ Each scanner accepts `--registry <path>` and `--thresholds <path>` so EIP metada
 
 ## Public dataset seed
 
-Fixture provenance lives in [fixtures/provenance.json](fixtures/provenance.json). The first deterministic dataset seed lives in [datasets/public-seed](datasets/public-seed) and includes generated JSON reports, default-vs-research threshold comparisons for bytecode and trace fixtures, and a `summary.json` file with aggregate counts by fixture kind, source type, report risk, threshold profile, and finding ID.
+Fixture provenance lives in [fixtures/provenance.json](fixtures/provenance.json). The first deterministic dataset seed lives in [datasets/public-seed](datasets/public-seed) and includes generated JSON reports, default-vs-research threshold comparisons for bytecode and trace fixtures, a `summary.json` file with aggregate counts, and CSV exports (`reports.csv`, `findings.csv`, `summary.csv`) for spreadsheet and warehouse import.
 
 Regenerate it with:
 

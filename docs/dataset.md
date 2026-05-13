@@ -34,7 +34,9 @@ pnpm site:check
 
 The index page includes summary counts, generated bar charts, report risk and fixture-kind filters, threshold-profile filtering, text search across fixture paths, report paths, finding IDs, and finding titles. Filter state is stored in the URL with `risk`, `kind`, `profile`, and `q` query parameters so filtered views can be shared.
 
-The generated `reports/` pages render finding summaries, evidence, recommendations, assumptions, limitations, raw JSON report links, source fixture links, and fixture provenance links. The generated `comparisons/` pages render default-vs-research risk and finding deltas, changed finding groups, raw comparison JSON links, and links to the matching report detail pages.
+The generated `reports/` pages render finding summaries, stable finding anchors, evidence, recommendations, assumptions, limitations, raw JSON report links, source fixture links, and fixture provenance links. The generated `comparisons/` pages render default-vs-research risk and finding deltas, changed finding groups, raw comparison JSON links, and links to the matching report detail pages.
+
+The generated `findings/` pages group every report occurrence for a finding ID. They link back to the anchored report detail row, raw report JSON, source fixture, and comparison detail page when a comparison exists.
 
 ## CSV Headers
 

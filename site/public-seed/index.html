@@ -202,6 +202,11 @@
       color: var(--text);
     }
 
+    .bar-label a,
+    .finding-list a {
+      color: var(--blue);
+    }
+
     .bar-track {
       height: 10px;
       background: var(--surface-muted);
@@ -552,52 +557,52 @@
     <h3>Most common finding IDs</h3>
     <div class="bar-list">
       <div class="bar-row">
-          <span class="bar-label">trace.logs-calls-visible</span>
+          <span class="bar-label"><a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a></span>
           <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 100%"></span></span>
           <span class="bar-count">26</span>
         </div>
 <div class="bar-row">
-          <span class="bar-label">trace.calldata-heavy-execution</span>
+          <span class="bar-label"><a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a></span>
           <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 69%"></span></span>
           <span class="bar-count">18</span>
         </div>
 <div class="bar-row">
-          <span class="bar-label">bytecode.log-opcodes-present</span>
+          <span class="bar-label"><a href="findings/bytecode.log-opcodes-present.html">bytecode.log-opcodes-present</a></span>
           <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 62%"></span></span>
           <span class="bar-count">16</span>
         </div>
 <div class="bar-row">
-          <span class="bar-label">bytecode.manual-review-required</span>
+          <span class="bar-label"><a href="findings/bytecode.manual-review-required.html">bytecode.manual-review-required</a></span>
           <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 62%"></span></span>
           <span class="bar-count">16</span>
         </div>
 <div class="bar-row">
-          <span class="bar-label">trace.partial-evidence</span>
+          <span class="bar-label"><a href="findings/trace.partial-evidence.html">trace.partial-evidence</a></span>
           <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 62%"></span></span>
           <span class="bar-count">16</span>
         </div>
 <div class="bar-row">
-          <span class="bar-label">bytecode.state-account-opcode-exposure</span>
+          <span class="bar-label"><a href="findings/bytecode.state-account-opcode-exposure.html">bytecode.state-account-opcode-exposure</a></span>
           <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 54%"></span></span>
           <span class="bar-count">14</span>
         </div>
 <div class="bar-row">
-          <span class="bar-label">bytecode.calldata-copy-exposure</span>
+          <span class="bar-label"><a href="findings/bytecode.calldata-copy-exposure.html">bytecode.calldata-copy-exposure</a></span>
           <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 46%"></span></span>
           <span class="bar-count">12</span>
         </div>
 <div class="bar-row">
-          <span class="bar-label">bytecode.storage-heavy-pattern</span>
+          <span class="bar-label"><a href="findings/bytecode.storage-heavy-pattern.html">bytecode.storage-heavy-pattern</a></span>
           <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 46%"></span></span>
           <span class="bar-count">12</span>
         </div>
 <div class="bar-row">
-          <span class="bar-label">trace.contract-creation-executed</span>
+          <span class="bar-label"><a href="findings/trace.contract-creation-executed.html">trace.contract-creation-executed</a></span>
           <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 38%"></span></span>
           <span class="bar-count">10</span>
         </div>
 <div class="bar-row">
-          <span class="bar-label">trace.state-heavy-execution-medium</span>
+          <span class="bar-label"><a href="findings/trace.state-heavy-execution-medium.html">trace.state-heavy-execution-medium</a></span>
           <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 35%"></span></span>
           <span class="bar-count">9</span>
         </div>
@@ -668,7 +673,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>4</strong>
-      <div class="finding-list">bytecode.state-account-opcode-exposure, bytecode.storage-heavy-pattern, bytecode.log-opcodes-present, bytecode.manual-review-required</div>
+      <div class="finding-list"><a href="findings/bytecode.state-account-opcode-exposure.html">bytecode.state-account-opcode-exposure</a>, <a href="findings/bytecode.storage-heavy-pattern.html">bytecode.storage-heavy-pattern</a>, <a href="findings/bytecode.log-opcodes-present.html">bytecode.log-opcodes-present</a>, <a href="findings/bytecode.manual-review-required.html">bytecode.manual-review-required</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -695,7 +700,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>4</strong>
-      <div class="finding-list">bytecode.state-account-opcode-exposure, bytecode.storage-heavy-pattern, bytecode.log-opcodes-present, bytecode.manual-review-required</div>
+      <div class="finding-list"><a href="findings/bytecode.state-account-opcode-exposure.html">bytecode.state-account-opcode-exposure</a>, <a href="findings/bytecode.storage-heavy-pattern.html">bytecode.storage-heavy-pattern</a>, <a href="findings/bytecode.log-opcodes-present.html">bytecode.log-opcodes-present</a>, <a href="findings/bytecode.manual-review-required.html">bytecode.manual-review-required</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -722,7 +727,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>6</strong>
-      <div class="finding-list">bytecode.contract-size-near-current-limit, bytecode.state-account-opcode-exposure, bytecode.calldata-copy-exposure, bytecode.storage-heavy-pattern, bytecode.log-opcodes-present, bytecode.manual-review-required</div>
+      <div class="finding-list"><a href="findings/bytecode.contract-size-near-current-limit.html">bytecode.contract-size-near-current-limit</a>, <a href="findings/bytecode.state-account-opcode-exposure.html">bytecode.state-account-opcode-exposure</a>, <a href="findings/bytecode.calldata-copy-exposure.html">bytecode.calldata-copy-exposure</a>, <a href="findings/bytecode.storage-heavy-pattern.html">bytecode.storage-heavy-pattern</a>, <a href="findings/bytecode.log-opcodes-present.html">bytecode.log-opcodes-present</a>, <a href="findings/bytecode.manual-review-required.html">bytecode.manual-review-required</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -749,7 +754,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>6</strong>
-      <div class="finding-list">bytecode.contract-size-near-current-limit, bytecode.state-account-opcode-exposure, bytecode.calldata-copy-exposure, bytecode.storage-heavy-pattern, bytecode.log-opcodes-present, bytecode.manual-review-required</div>
+      <div class="finding-list"><a href="findings/bytecode.contract-size-near-current-limit.html">bytecode.contract-size-near-current-limit</a>, <a href="findings/bytecode.state-account-opcode-exposure.html">bytecode.state-account-opcode-exposure</a>, <a href="findings/bytecode.calldata-copy-exposure.html">bytecode.calldata-copy-exposure</a>, <a href="findings/bytecode.storage-heavy-pattern.html">bytecode.storage-heavy-pattern</a>, <a href="findings/bytecode.log-opcodes-present.html">bytecode.log-opcodes-present</a>, <a href="findings/bytecode.manual-review-required.html">bytecode.manual-review-required</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -776,7 +781,7 @@
     <td><span class="badge risk-low">low</span></td>
     <td>
       <strong>3</strong>
-      <div class="finding-list">bytecode.calldata-copy-exposure, bytecode.log-opcodes-present, bytecode.manual-review-required</div>
+      <div class="finding-list"><a href="findings/bytecode.calldata-copy-exposure.html">bytecode.calldata-copy-exposure</a>, <a href="findings/bytecode.log-opcodes-present.html">bytecode.log-opcodes-present</a>, <a href="findings/bytecode.manual-review-required.html">bytecode.manual-review-required</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -803,7 +808,7 @@
     <td><span class="badge risk-low">low</span></td>
     <td>
       <strong>4</strong>
-      <div class="finding-list">bytecode.state-account-opcode-presence, bytecode.calldata-copy-exposure, bytecode.log-opcodes-present, bytecode.manual-review-required</div>
+      <div class="finding-list"><a href="findings/bytecode.state-account-opcode-presence.html">bytecode.state-account-opcode-presence</a>, <a href="findings/bytecode.calldata-copy-exposure.html">bytecode.calldata-copy-exposure</a>, <a href="findings/bytecode.log-opcodes-present.html">bytecode.log-opcodes-present</a>, <a href="findings/bytecode.manual-review-required.html">bytecode.manual-review-required</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -830,7 +835,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>5</strong>
-      <div class="finding-list">bytecode.state-account-opcode-exposure, bytecode.calldata-copy-exposure, bytecode.contract-creation-opcodes, bytecode.log-opcodes-present, bytecode.manual-review-required</div>
+      <div class="finding-list"><a href="findings/bytecode.state-account-opcode-exposure.html">bytecode.state-account-opcode-exposure</a>, <a href="findings/bytecode.calldata-copy-exposure.html">bytecode.calldata-copy-exposure</a>, <a href="findings/bytecode.contract-creation-opcodes.html">bytecode.contract-creation-opcodes</a>, <a href="findings/bytecode.log-opcodes-present.html">bytecode.log-opcodes-present</a>, <a href="findings/bytecode.manual-review-required.html">bytecode.manual-review-required</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -857,7 +862,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>6</strong>
-      <div class="finding-list">bytecode.state-account-opcode-exposure, bytecode.calldata-copy-exposure, bytecode.contract-creation-opcodes, bytecode.storage-heavy-pattern, bytecode.log-opcodes-present, bytecode.manual-review-required</div>
+      <div class="finding-list"><a href="findings/bytecode.state-account-opcode-exposure.html">bytecode.state-account-opcode-exposure</a>, <a href="findings/bytecode.calldata-copy-exposure.html">bytecode.calldata-copy-exposure</a>, <a href="findings/bytecode.contract-creation-opcodes.html">bytecode.contract-creation-opcodes</a>, <a href="findings/bytecode.storage-heavy-pattern.html">bytecode.storage-heavy-pattern</a>, <a href="findings/bytecode.log-opcodes-present.html">bytecode.log-opcodes-present</a>, <a href="findings/bytecode.manual-review-required.html">bytecode.manual-review-required</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -884,7 +889,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>6</strong>
-      <div class="finding-list">bytecode.state-account-opcode-exposure, bytecode.calldata-copy-exposure, bytecode.contract-creation-opcodes, bytecode.storage-heavy-pattern, bytecode.log-opcodes-present, bytecode.manual-review-required</div>
+      <div class="finding-list"><a href="findings/bytecode.state-account-opcode-exposure.html">bytecode.state-account-opcode-exposure</a>, <a href="findings/bytecode.calldata-copy-exposure.html">bytecode.calldata-copy-exposure</a>, <a href="findings/bytecode.contract-creation-opcodes.html">bytecode.contract-creation-opcodes</a>, <a href="findings/bytecode.storage-heavy-pattern.html">bytecode.storage-heavy-pattern</a>, <a href="findings/bytecode.log-opcodes-present.html">bytecode.log-opcodes-present</a>, <a href="findings/bytecode.manual-review-required.html">bytecode.manual-review-required</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -911,7 +916,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>6</strong>
-      <div class="finding-list">bytecode.state-account-opcode-exposure, bytecode.calldata-copy-exposure, bytecode.contract-creation-opcodes, bytecode.storage-heavy-pattern, bytecode.log-opcodes-present, bytecode.manual-review-required</div>
+      <div class="finding-list"><a href="findings/bytecode.state-account-opcode-exposure.html">bytecode.state-account-opcode-exposure</a>, <a href="findings/bytecode.calldata-copy-exposure.html">bytecode.calldata-copy-exposure</a>, <a href="findings/bytecode.contract-creation-opcodes.html">bytecode.contract-creation-opcodes</a>, <a href="findings/bytecode.storage-heavy-pattern.html">bytecode.storage-heavy-pattern</a>, <a href="findings/bytecode.log-opcodes-present.html">bytecode.log-opcodes-present</a>, <a href="findings/bytecode.manual-review-required.html">bytecode.manual-review-required</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -938,7 +943,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>6</strong>
-      <div class="finding-list">bytecode.state-account-opcode-exposure, bytecode.calldata-copy-exposure, bytecode.contract-creation-opcodes, bytecode.storage-heavy-pattern, bytecode.log-opcodes-present, bytecode.manual-review-required</div>
+      <div class="finding-list"><a href="findings/bytecode.state-account-opcode-exposure.html">bytecode.state-account-opcode-exposure</a>, <a href="findings/bytecode.calldata-copy-exposure.html">bytecode.calldata-copy-exposure</a>, <a href="findings/bytecode.contract-creation-opcodes.html">bytecode.contract-creation-opcodes</a>, <a href="findings/bytecode.storage-heavy-pattern.html">bytecode.storage-heavy-pattern</a>, <a href="findings/bytecode.log-opcodes-present.html">bytecode.log-opcodes-present</a>, <a href="findings/bytecode.manual-review-required.html">bytecode.manual-review-required</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -965,7 +970,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>6</strong>
-      <div class="finding-list">bytecode.state-account-opcode-exposure, bytecode.calldata-copy-exposure, bytecode.contract-creation-opcodes, bytecode.storage-heavy-pattern, bytecode.log-opcodes-present, bytecode.manual-review-required</div>
+      <div class="finding-list"><a href="findings/bytecode.state-account-opcode-exposure.html">bytecode.state-account-opcode-exposure</a>, <a href="findings/bytecode.calldata-copy-exposure.html">bytecode.calldata-copy-exposure</a>, <a href="findings/bytecode.contract-creation-opcodes.html">bytecode.contract-creation-opcodes</a>, <a href="findings/bytecode.storage-heavy-pattern.html">bytecode.storage-heavy-pattern</a>, <a href="findings/bytecode.log-opcodes-present.html">bytecode.log-opcodes-present</a>, <a href="findings/bytecode.manual-review-required.html">bytecode.manual-review-required</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -992,7 +997,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>4</strong>
-      <div class="finding-list">bytecode.state-account-opcode-exposure, bytecode.calldata-copy-exposure, bytecode.log-opcodes-present, bytecode.manual-review-required</div>
+      <div class="finding-list"><a href="findings/bytecode.state-account-opcode-exposure.html">bytecode.state-account-opcode-exposure</a>, <a href="findings/bytecode.calldata-copy-exposure.html">bytecode.calldata-copy-exposure</a>, <a href="findings/bytecode.log-opcodes-present.html">bytecode.log-opcodes-present</a>, <a href="findings/bytecode.manual-review-required.html">bytecode.manual-review-required</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1019,7 +1024,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>5</strong>
-      <div class="finding-list">bytecode.state-account-opcode-exposure, bytecode.calldata-copy-exposure, bytecode.storage-heavy-pattern, bytecode.log-opcodes-present, bytecode.manual-review-required</div>
+      <div class="finding-list"><a href="findings/bytecode.state-account-opcode-exposure.html">bytecode.state-account-opcode-exposure</a>, <a href="findings/bytecode.calldata-copy-exposure.html">bytecode.calldata-copy-exposure</a>, <a href="findings/bytecode.storage-heavy-pattern.html">bytecode.storage-heavy-pattern</a>, <a href="findings/bytecode.log-opcodes-present.html">bytecode.log-opcodes-present</a>, <a href="findings/bytecode.manual-review-required.html">bytecode.manual-review-required</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1046,7 +1051,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>4</strong>
-      <div class="finding-list">bytecode.state-account-opcode-exposure, bytecode.storage-heavy-pattern, bytecode.log-opcodes-present, bytecode.manual-review-required</div>
+      <div class="finding-list"><a href="findings/bytecode.state-account-opcode-exposure.html">bytecode.state-account-opcode-exposure</a>, <a href="findings/bytecode.storage-heavy-pattern.html">bytecode.storage-heavy-pattern</a>, <a href="findings/bytecode.log-opcodes-present.html">bytecode.log-opcodes-present</a>, <a href="findings/bytecode.manual-review-required.html">bytecode.manual-review-required</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1073,7 +1078,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>4</strong>
-      <div class="finding-list">bytecode.state-account-opcode-exposure, bytecode.storage-heavy-pattern, bytecode.log-opcodes-present, bytecode.manual-review-required</div>
+      <div class="finding-list"><a href="findings/bytecode.state-account-opcode-exposure.html">bytecode.state-account-opcode-exposure</a>, <a href="findings/bytecode.storage-heavy-pattern.html">bytecode.storage-heavy-pattern</a>, <a href="findings/bytecode.log-opcodes-present.html">bytecode.log-opcodes-present</a>, <a href="findings/bytecode.manual-review-required.html">bytecode.manual-review-required</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1100,7 +1105,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>2</strong>
-      <div class="finding-list">indexer.balance-diff-native-transfer-assumption, indexer.missing-bal-readiness-metadata</div>
+      <div class="finding-list"><a href="findings/indexer.balance-diff-native-transfer-assumption.html">indexer.balance-diff-native-transfer-assumption</a>, <a href="findings/indexer.missing-bal-readiness-metadata.html">indexer.missing-bal-readiness-metadata</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1127,7 +1132,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>1</strong>
-      <div class="finding-list">indexer.balance-diff-native-transfer-assumption</div>
+      <div class="finding-list"><a href="findings/indexer.balance-diff-native-transfer-assumption.html">indexer.balance-diff-native-transfer-assumption</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1154,7 +1159,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>5</strong>
-      <div class="finding-list">indexer.event-only-assumption, indexer.native-eth-transfer-review-missing, indexer.missing-bal-readiness-metadata, indexer.missing-fork-compatibility-metadata, indexer.missing-replay-plan</div>
+      <div class="finding-list"><a href="findings/indexer.event-only-assumption.html">indexer.event-only-assumption</a>, <a href="findings/indexer.native-eth-transfer-review-missing.html">indexer.native-eth-transfer-review-missing</a>, <a href="findings/indexer.missing-bal-readiness-metadata.html">indexer.missing-bal-readiness-metadata</a>, <a href="findings/indexer.missing-fork-compatibility-metadata.html">indexer.missing-fork-compatibility-metadata</a>, <a href="findings/indexer.missing-replay-plan.html">indexer.missing-replay-plan</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1181,7 +1186,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>5</strong>
-      <div class="finding-list">indexer.event-only-assumption, indexer.native-eth-transfer-review-missing, indexer.missing-bal-readiness-metadata, indexer.missing-fork-compatibility-metadata, indexer.missing-replay-plan</div>
+      <div class="finding-list"><a href="findings/indexer.event-only-assumption.html">indexer.event-only-assumption</a>, <a href="findings/indexer.native-eth-transfer-review-missing.html">indexer.native-eth-transfer-review-missing</a>, <a href="findings/indexer.missing-bal-readiness-metadata.html">indexer.missing-bal-readiness-metadata</a>, <a href="findings/indexer.missing-fork-compatibility-metadata.html">indexer.missing-fork-compatibility-metadata</a>, <a href="findings/indexer.missing-replay-plan.html">indexer.missing-replay-plan</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1208,7 +1213,7 @@
     <td><span class="badge risk-low">low</span></td>
     <td>
       <strong>1</strong>
-      <div class="finding-list">trace.logs-calls-visible</div>
+      <div class="finding-list"><a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1235,7 +1240,7 @@
     <td><span class="badge risk-low">low</span></td>
     <td>
       <strong>1</strong>
-      <div class="finding-list">trace.logs-calls-visible</div>
+      <div class="finding-list"><a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1262,7 +1267,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>4</strong>
-      <div class="finding-list">trace.state-heavy-execution-medium, trace.calldata-heavy-execution, trace.logs-calls-visible, trace.partial-evidence</div>
+      <div class="finding-list"><a href="findings/trace.state-heavy-execution-medium.html">trace.state-heavy-execution-medium</a>, <a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a>, <a href="findings/trace.partial-evidence.html">trace.partial-evidence</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1289,7 +1294,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>4</strong>
-      <div class="finding-list">trace.state-heavy-execution-medium, trace.calldata-heavy-execution, trace.logs-calls-visible, trace.partial-evidence</div>
+      <div class="finding-list"><a href="findings/trace.state-heavy-execution-medium.html">trace.state-heavy-execution-medium</a>, <a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a>, <a href="findings/trace.partial-evidence.html">trace.partial-evidence</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1316,7 +1321,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>3</strong>
-      <div class="finding-list">trace.contract-creation-executed, trace.logs-calls-visible, trace.partial-evidence</div>
+      <div class="finding-list"><a href="findings/trace.contract-creation-executed.html">trace.contract-creation-executed</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a>, <a href="findings/trace.partial-evidence.html">trace.partial-evidence</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1343,7 +1348,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>3</strong>
-      <div class="finding-list">trace.contract-creation-executed, trace.logs-calls-visible, trace.partial-evidence</div>
+      <div class="finding-list"><a href="findings/trace.contract-creation-executed.html">trace.contract-creation-executed</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a>, <a href="findings/trace.partial-evidence.html">trace.partial-evidence</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1370,7 +1375,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>3</strong>
-      <div class="finding-list">trace.calldata-heavy-execution, trace.logs-calls-visible, trace.partial-evidence</div>
+      <div class="finding-list"><a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a>, <a href="findings/trace.partial-evidence.html">trace.partial-evidence</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1397,7 +1402,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>3</strong>
-      <div class="finding-list">trace.calldata-heavy-execution, trace.logs-calls-visible, trace.partial-evidence</div>
+      <div class="finding-list"><a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a>, <a href="findings/trace.partial-evidence.html">trace.partial-evidence</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1424,7 +1429,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>3</strong>
-      <div class="finding-list">trace.contract-creation-executed, trace.logs-calls-visible, trace.partial-evidence</div>
+      <div class="finding-list"><a href="findings/trace.contract-creation-executed.html">trace.contract-creation-executed</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a>, <a href="findings/trace.partial-evidence.html">trace.partial-evidence</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1451,7 +1456,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>3</strong>
-      <div class="finding-list">trace.contract-creation-executed, trace.logs-calls-visible, trace.partial-evidence</div>
+      <div class="finding-list"><a href="findings/trace.contract-creation-executed.html">trace.contract-creation-executed</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a>, <a href="findings/trace.partial-evidence.html">trace.partial-evidence</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1478,7 +1483,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>2</strong>
-      <div class="finding-list">trace.contract-creation-executed, trace.logs-calls-visible</div>
+      <div class="finding-list"><a href="findings/trace.contract-creation-executed.html">trace.contract-creation-executed</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1505,7 +1510,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>3</strong>
-      <div class="finding-list">trace.state-heavy-execution-medium, trace.contract-creation-executed, trace.logs-calls-visible</div>
+      <div class="finding-list"><a href="findings/trace.state-heavy-execution-medium.html">trace.state-heavy-execution-medium</a>, <a href="findings/trace.contract-creation-executed.html">trace.contract-creation-executed</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1532,7 +1537,7 @@
     <td><span class="badge risk-low">low</span></td>
     <td>
       <strong>2</strong>
-      <div class="finding-list">trace.calldata-heavy-execution, trace.logs-calls-visible</div>
+      <div class="finding-list"><a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1559,7 +1564,7 @@
     <td><span class="badge risk-low">low</span></td>
     <td>
       <strong>2</strong>
-      <div class="finding-list">trace.calldata-heavy-execution, trace.logs-calls-visible</div>
+      <div class="finding-list"><a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1586,7 +1591,7 @@
     <td><span class="badge risk-low">low</span></td>
     <td>
       <strong>3</strong>
-      <div class="finding-list">trace.calldata-heavy-execution, trace.logs-calls-visible, trace.partial-evidence</div>
+      <div class="finding-list"><a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a>, <a href="findings/trace.partial-evidence.html">trace.partial-evidence</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1613,7 +1618,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>4</strong>
-      <div class="finding-list">trace.state-heavy-execution-medium, trace.calldata-heavy-execution, trace.logs-calls-visible, trace.partial-evidence</div>
+      <div class="finding-list"><a href="findings/trace.state-heavy-execution-medium.html">trace.state-heavy-execution-medium</a>, <a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a>, <a href="findings/trace.partial-evidence.html">trace.partial-evidence</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1640,7 +1645,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>2</strong>
-      <div class="finding-list">trace.calldata-heavy-execution, trace.logs-calls-visible</div>
+      <div class="finding-list"><a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1667,7 +1672,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>2</strong>
-      <div class="finding-list">trace.calldata-heavy-execution, trace.logs-calls-visible</div>
+      <div class="finding-list"><a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1694,7 +1699,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>3</strong>
-      <div class="finding-list">trace.calldata-heavy-execution, trace.contract-creation-executed, trace.logs-calls-visible</div>
+      <div class="finding-list"><a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a>, <a href="findings/trace.contract-creation-executed.html">trace.contract-creation-executed</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1721,7 +1726,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>3</strong>
-      <div class="finding-list">trace.calldata-heavy-execution, trace.contract-creation-executed, trace.logs-calls-visible</div>
+      <div class="finding-list"><a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a>, <a href="findings/trace.contract-creation-executed.html">trace.contract-creation-executed</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1748,7 +1753,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>4</strong>
-      <div class="finding-list">trace.state-heavy-execution-medium, trace.calldata-heavy-execution, trace.logs-calls-visible, trace.partial-evidence</div>
+      <div class="finding-list"><a href="findings/trace.state-heavy-execution-medium.html">trace.state-heavy-execution-medium</a>, <a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a>, <a href="findings/trace.partial-evidence.html">trace.partial-evidence</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1775,7 +1780,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>4</strong>
-      <div class="finding-list">trace.state-heavy-execution-medium, trace.calldata-heavy-execution, trace.logs-calls-visible, trace.partial-evidence</div>
+      <div class="finding-list"><a href="findings/trace.state-heavy-execution-medium.html">trace.state-heavy-execution-medium</a>, <a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a>, <a href="findings/trace.partial-evidence.html">trace.partial-evidence</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1802,7 +1807,7 @@
     <td><span class="badge risk-low">low</span></td>
     <td>
       <strong>3</strong>
-      <div class="finding-list">trace.calldata-heavy-execution, trace.logs-calls-visible, trace.partial-evidence</div>
+      <div class="finding-list"><a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a>, <a href="findings/trace.partial-evidence.html">trace.partial-evidence</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1829,7 +1834,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>4</strong>
-      <div class="finding-list">trace.state-heavy-execution-medium, trace.calldata-heavy-execution, trace.logs-calls-visible, trace.partial-evidence</div>
+      <div class="finding-list"><a href="findings/trace.state-heavy-execution-medium.html">trace.state-heavy-execution-medium</a>, <a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a>, <a href="findings/trace.partial-evidence.html">trace.partial-evidence</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1856,7 +1861,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>5</strong>
-      <div class="finding-list">trace.state-heavy-execution-medium, trace.calldata-heavy-execution, trace.contract-creation-executed, trace.logs-calls-visible, trace.partial-evidence</div>
+      <div class="finding-list"><a href="findings/trace.state-heavy-execution-medium.html">trace.state-heavy-execution-medium</a>, <a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a>, <a href="findings/trace.contract-creation-executed.html">trace.contract-creation-executed</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a>, <a href="findings/trace.partial-evidence.html">trace.partial-evidence</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1883,7 +1888,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>5</strong>
-      <div class="finding-list">trace.state-heavy-execution-medium, trace.calldata-heavy-execution, trace.contract-creation-executed, trace.logs-calls-visible, trace.partial-evidence</div>
+      <div class="finding-list"><a href="findings/trace.state-heavy-execution-medium.html">trace.state-heavy-execution-medium</a>, <a href="findings/trace.calldata-heavy-execution.html">trace.calldata-heavy-execution</a>, <a href="findings/trace.contract-creation-executed.html">trace.contract-creation-executed</a>, <a href="findings/trace.logs-calls-visible.html">trace.logs-calls-visible</a>, <a href="findings/trace.partial-evidence.html">trace.partial-evidence</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1910,7 +1915,7 @@
     <td><span class="badge risk-unknown">unknown</span></td>
     <td>
       <strong>2</strong>
-      <div class="finding-list">validator.execution-client-status-partial, validator.consensus-client-status-partial</div>
+      <div class="finding-list"><a href="findings/validator.execution-client-status-partial.html">validator.execution-client-status-partial</a>, <a href="findings/validator.consensus-client-status-partial.html">validator.consensus-client-status-partial</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1937,7 +1942,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>3</strong>
-      <div class="finding-list">validator.builder-enabled-without-endpoint, validator.missing-monitoring-endpoints, validator.missing-testnet-participation</div>
+      <div class="finding-list"><a href="findings/validator.builder-enabled-without-endpoint.html">validator.builder-enabled-without-endpoint</a>, <a href="findings/validator.missing-monitoring-endpoints.html">validator.missing-monitoring-endpoints</a>, <a href="findings/validator.missing-testnet-participation.html">validator.missing-testnet-participation</a></div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1964,7 +1969,7 @@
     <td><span class="badge risk-low">low</span></td>
     <td>
       <strong>0</strong>
-      <div class="finding-list"></div>
+      <div class="finding-list">none</div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1991,7 +1996,7 @@
     <td><span class="badge risk-medium">medium</span></td>
     <td>
       <strong>6</strong>
-      <div class="finding-list">validator.unknown-execution-client-compatibility, validator.unknown-consensus-client-compatibility, validator.missing-validator-client-version, validator.builder-enabled-without-endpoint, validator.missing-monitoring-endpoints, validator.missing-testnet-participation</div>
+      <div class="finding-list"><a href="findings/validator.unknown-execution-client-compatibility.html">validator.unknown-execution-client-compatibility</a>, <a href="findings/validator.unknown-consensus-client-compatibility.html">validator.unknown-consensus-client-compatibility</a>, <a href="findings/validator.missing-validator-client-version.html">validator.missing-validator-client-version</a>, <a href="findings/validator.builder-enabled-without-endpoint.html">validator.builder-enabled-without-endpoint</a>, <a href="findings/validator.missing-monitoring-endpoints.html">validator.missing-monitoring-endpoints</a>, <a href="findings/validator.missing-testnet-participation.html">validator.missing-testnet-participation</a></div>
     </td>
     <td>
       <div class="cell-actions">

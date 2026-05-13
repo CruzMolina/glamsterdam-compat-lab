@@ -84,7 +84,7 @@ const reportsDir = resolve(datasetDir, "reports");
 const comparisonsDir = resolve(datasetDir, "comparisons");
 const defaultThresholdsPath = resolve(rootDir, "data/detectors/thresholds.json");
 const researchThresholdsPath = resolve(rootDir, "data/detectors/thresholds.research.json");
-const datasetLastUpdated = "2026-05-12";
+const datasetLastUpdated = "2026-05-13";
 const csvExports = {
   reports: "reports.csv",
   findings: "findings.csv",

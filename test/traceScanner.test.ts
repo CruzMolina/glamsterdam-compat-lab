@@ -105,6 +105,18 @@ describe("scanTraceFile", () => {
     expect(report.assumptions.some((assumption) => assumption.includes("JSON-RPC result wrapper"))).toBe(true);
   });
 
+  it("scans a real public geth structLogs fixture from Tracoor", () => {
+    const fixture = resolve(rootDir, "fixtures/traces/geth-mainnet-tracoor-debug-structlogs.json");
+    const report = scanTraceFile(fixture);
+    const findingIds = report.findings.map((finding) => finding.id);
+
+    expect(findingIds).toEqual([
+      "trace.calldata-heavy-execution",
+      "trace.logs-calls-visible",
+      "trace.partial-evidence"
+    ]);
+  });
+
   it("scans Erigon-style action trace fixtures", () => {
     const fixture = resolve(rootDir, "fixtures/traces/erigon-action-trace.json");
     const report = scanTraceFile(fixture);
@@ -160,6 +172,18 @@ describe("scanTraceFile", () => {
     expect(report.findings.some((finding) => finding.id === "trace.state-heavy-execution-medium")).toBe(true);
     expect(report.findings.some((finding) => finding.id === "trace.calldata-heavy-execution")).toBe(true);
     expect(report.findings.some((finding) => finding.id === "trace.logs-calls-visible")).toBe(true);
+  });
+
+  it("scans a real public reth structLogs fixture from Tracoor", () => {
+    const fixture = resolve(rootDir, "fixtures/traces/reth-mainnet-tracoor-debug-structlogs.json");
+    const report = scanTraceFile(fixture);
+    const findingIds = report.findings.map((finding) => finding.id);
+
+    expect(findingIds).toEqual([
+      "trace.calldata-heavy-execution",
+      "trace.logs-calls-visible",
+      "trace.partial-evidence"
+    ]);
   });
 
   it("scans a real public dRPC callTracer fixture captured with scan-tx", () => {

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastUpdated": "2026-05-12",
+  "lastUpdated": "2026-05-13",
   "notes": [
     "This manifest records fixture provenance, redaction posture, and expected scanner signals. It is intentionally separate from scanner output so fixture submissions can be reviewed before report snapshots change.",
     "Synthetic fixtures are small examples shaped after common tool outputs. They are useful for parser coverage but are not evidence of client behavior.",
@@ -819,6 +819,51 @@
       ]
     },
     {
+      "path": "fixtures/traces/geth-mainnet-tracoor-debug-structlogs.json",
+      "kind": "trace",
+      "description": "Public Ethereum mainnet transaction structLogs result extracted from a Tracoor execution block trace captured by geth.",
+      "source": {
+        "type": "public-chain",
+        "name": "Tracoor mainnet execution block trace captured from geth",
+        "url": "https://tracoor.mainnet.ethpandaops.io/download/execution_block_trace/fb612dac-e3d5-4289-a1c5-7bb9e532d8aa",
+        "license": "Public blockchain data; repository license applies to fixture packaging.",
+        "notes": [
+          "The source artifact is a public Tracoor execution block trace export for block 25087684.",
+          "This fixture keeps one transaction trace from the larger block export so the repository does not commit the full multi-megabyte source artifact."
+        ]
+      },
+      "capture": {
+        "tool": "ethPandaOps Tracoor",
+        "version": "Geth/v1.17.2-stable-be4dc0c4/linux-amd64/go1.26.1",
+        "command": "Downloaded /download/execution_block_trace/fb612dac-e3d5-4289-a1c5-7bb9e532d8aa and extracted txHash 0x8b868277d939a1f2d6e8883fdf4399065ce34cc719c51a1f02da6ddeb9caee33.",
+        "mode": "execution block trace export with per-transaction structLogs"
+      },
+      "network": {
+        "name": "ethereum-mainnet",
+        "chainId": 1,
+        "blockNumber": 25087684,
+        "transactionHash": "0x8b868277d939a1f2d6e8883fdf4399065ce34cc719c51a1f02da6ddeb9caee33"
+      },
+      "completeness": "partial",
+      "redaction": {
+        "status": "not-needed",
+        "notes": [
+          "The trace contains public-chain transaction data from a public Tracoor export.",
+          "No RPC credentials, private endpoints, internal hostnames, keys, or private transaction data are present."
+        ]
+      },
+      "expectedFindingIds": [
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7708",
+        "EIP-7976"
+      ]
+    },
+    {
       "path": "fixtures/traces/hardhat-debug-trace.json",
       "kind": "trace",
       "description": "Synthetic Hardhat-style debug trace with calldata and log evidence.",
@@ -928,6 +973,51 @@
         "EIP-7708",
         "EIP-7976",
         "EIP-8038"
+      ]
+    },
+    {
+      "path": "fixtures/traces/reth-mainnet-tracoor-debug-structlogs.json",
+      "kind": "trace",
+      "description": "Public Ethereum mainnet transaction structLogs result extracted from a Tracoor execution block trace captured by reth.",
+      "source": {
+        "type": "public-chain",
+        "name": "Tracoor mainnet execution block trace captured from reth",
+        "url": "https://tracoor.mainnet.ethpandaops.io/download/execution_block_trace/18fcaefe-5415-4ef4-a635-a6eec8d5987a",
+        "license": "Public blockchain data; repository license applies to fixture packaging.",
+        "notes": [
+          "The source artifact is a public Tracoor execution block trace export for block 25087684.",
+          "This fixture keeps one transaction trace from the larger block export so the repository does not commit the full multi-megabyte source artifact."
+        ]
+      },
+      "capture": {
+        "tool": "ethPandaOps Tracoor",
+        "version": "reth/v1.9.3-27a8c0f/x86_64-unknown-linux-gnu",
+        "command": "Downloaded /download/execution_block_trace/18fcaefe-5415-4ef4-a635-a6eec8d5987a and extracted txHash 0x8b868277d939a1f2d6e8883fdf4399065ce34cc719c51a1f02da6ddeb9caee33.",
+        "mode": "execution block trace export with per-transaction structLogs"
+      },
+      "network": {
+        "name": "ethereum-mainnet",
+        "chainId": 1,
+        "blockNumber": 25087684,
+        "transactionHash": "0x8b868277d939a1f2d6e8883fdf4399065ce34cc719c51a1f02da6ddeb9caee33"
+      },
+      "completeness": "partial",
+      "redaction": {
+        "status": "not-needed",
+        "notes": [
+          "The trace contains public-chain transaction data from a public Tracoor export.",
+          "No RPC credentials, private endpoints, internal hostnames, keys, or private transaction data are present."
+        ]
+      },
+      "expectedFindingIds": [
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ],
+      "relatedEips": [
+        "GAS-REPRICING",
+        "EIP-7708",
+        "EIP-7976"
       ]
     },
     {

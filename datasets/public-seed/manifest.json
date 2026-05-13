@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "public-seed",
-  "lastUpdated": "2026-05-12",
+  "lastUpdated": "2026-05-13",
   "description": "Deterministic seed dataset generated from safe-to-publish fixture inputs and threshold-profile comparisons.",
   "toolVersion": "0.3.2",
   "sourceManifest": "fixtures/provenance.json",
@@ -492,6 +492,33 @@
       ]
     },
     {
+      "sourceFixture": "fixtures/traces/geth-mainnet-tracoor-debug-structlogs.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "default",
+      "report": "reports/traces-geth-mainnet-tracoor-debug-structlogs--default.json",
+      "risk": "low",
+      "findingCount": 3,
+      "findingIds": [
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/geth-mainnet-tracoor-debug-structlogs.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "research",
+      "report": "reports/traces-geth-mainnet-tracoor-debug-structlogs--research.json",
+      "risk": "medium",
+      "findingCount": 4,
+      "findingIds": [
+        "trace.state-heavy-execution-medium",
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ]
+    },
+    {
       "sourceFixture": "fixtures/traces/hardhat-debug-trace.json",
       "fixtureKind": "trace",
       "thresholdProfile": "default",
@@ -560,6 +587,33 @@
       "fixtureKind": "trace",
       "thresholdProfile": "research",
       "report": "reports/traces-nethermind-mainnet-tracoor-debug-structlogs--research.json",
+      "risk": "medium",
+      "findingCount": 4,
+      "findingIds": [
+        "trace.state-heavy-execution-medium",
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/reth-mainnet-tracoor-debug-structlogs.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "default",
+      "report": "reports/traces-reth-mainnet-tracoor-debug-structlogs--default.json",
+      "risk": "low",
+      "findingCount": 3,
+      "findingIds": [
+        "trace.calldata-heavy-execution",
+        "trace.logs-calls-visible",
+        "trace.partial-evidence"
+      ]
+    },
+    {
+      "sourceFixture": "fixtures/traces/reth-mainnet-tracoor-debug-structlogs.json",
+      "fixtureKind": "trace",
+      "thresholdProfile": "research",
+      "report": "reports/traces-reth-mainnet-tracoor-debug-structlogs--research.json",
       "risk": "medium",
       "findingCount": 4,
       "findingIds": [
@@ -817,6 +871,17 @@
       "unchangedCount": 2
     },
     {
+      "sourceFixture": "fixtures/traces/geth-mainnet-tracoor-debug-structlogs.json",
+      "baselineReport": "reports/traces-geth-mainnet-tracoor-debug-structlogs--default.json",
+      "candidateReport": "reports/traces-geth-mainnet-tracoor-debug-structlogs--research.json",
+      "comparison": "comparisons/traces-geth-mainnet-tracoor-debug-structlogs--default-vs-research.json",
+      "riskChange": "low->medium (increased)",
+      "addedCount": 1,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 3
+    },
+    {
       "sourceFixture": "fixtures/traces/hardhat-debug-trace.json",
       "baselineReport": "reports/traces-hardhat-debug-trace--default.json",
       "candidateReport": "reports/traces-hardhat-debug-trace--research.json",
@@ -848,6 +913,17 @@
       "removedCount": 0,
       "changedCount": 0,
       "unchangedCount": 4
+    },
+    {
+      "sourceFixture": "fixtures/traces/reth-mainnet-tracoor-debug-structlogs.json",
+      "baselineReport": "reports/traces-reth-mainnet-tracoor-debug-structlogs--default.json",
+      "candidateReport": "reports/traces-reth-mainnet-tracoor-debug-structlogs--research.json",
+      "comparison": "comparisons/traces-reth-mainnet-tracoor-debug-structlogs--default-vs-research.json",
+      "riskChange": "low->medium (increased)",
+      "addedCount": 1,
+      "removedCount": 0,
+      "changedCount": 0,
+      "unchangedCount": 3
     },
     {
       "sourceFixture": "fixtures/traces/storage-heavy-trace.json",

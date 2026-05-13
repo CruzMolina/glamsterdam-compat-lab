@@ -1,5 +1,5 @@
 export { loadEipRegistry, defaultRegistryPath } from "./registry/eipRegistry.js";
-export type { EipEntry, EipRegistry, EipStatus, EipDomain } from "./registry/schemas.js";
+export type { EipEntry, EipRegistry, EipRegistrySource, EipStatus, EipDomain } from "./registry/schemas.js";
 export {
   defaultFixtureProvenancePath,
   fixtureProvenanceEntrySchema,

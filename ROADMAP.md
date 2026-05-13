@@ -66,11 +66,14 @@ Goal: publish reproducible compatibility research.
 
 ## Phase 3: Devnet Integration
 
+Status: started after `v0.3.3` with sourced readiness exports and static readiness pages.
+
 Goal: track moving client and spec readiness without hardcoding guesses.
 
 - Ingest public devnet and client compatibility metadata
 - Track spec/client changes against registry entries
 - Expand validator/operator compatibility matrix workflows
+- Export source freshness, EIP status groupings, devnet participants, and matrix rows through the public dataset and static site
 
 ## Phase 4: Dashboard
 

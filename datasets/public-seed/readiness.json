@@ -1,0 +1,1437 @@
+{
+  "schemaVersion": 1,
+  "name": "public-seed-readiness",
+  "lastUpdated": "2026-05-13",
+  "toolVersion": "0.3.3",
+  "fork": "glamsterdam",
+  "eipRegistry": {
+    "lastUpdated": "2026-05-13",
+    "sourceCount": 5,
+    "countsByStatus": [
+      {
+        "key": "considered",
+        "count": 14
+      },
+      {
+        "key": "declined",
+        "count": 38
+      },
+      {
+        "key": "proposed",
+        "count": 3
+      },
+      {
+        "key": "scheduled",
+        "count": 10
+      }
+    ],
+    "sources": [
+      {
+        "area": "eip-registry",
+        "label": "sources[0]",
+        "type": "meta-eip",
+        "url": "https://eips.ethereum.org/EIPS/eip-7773",
+        "sourceDate": "2024-09-26",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 594,
+        "claim": "EIP-7773 lists the EIPs formally scheduled, considered, declined, and proposed for inclusion in the Glamsterdam network upgrade; activation rows are not yet filled.",
+        "notes": "Treat this as the canonical status grouping for this local registry until the meta EIP changes. The sourceDate is the EIP creation date; use retrievedAt for current status grouping freshness."
+      },
+      {
+        "area": "eip-registry",
+        "label": "sources[1]",
+        "type": "ethereum-roadmap",
+        "url": "https://ethereum.org/roadmap/glamsterdam/",
+        "sourceDate": "2026-04-13",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 30,
+        "claim": "ethereum.org describes Glamsterdam as an upcoming H1 2026 upgrade centered on ePBS, block-level access lists, scaling, and network sustainability, and points readers to Forkcast for latest status updates."
+      },
+      {
+        "area": "eip-registry",
+        "label": "sources[2]",
+        "type": "forkcast",
+        "url": "https://forkcast.org/upgrade/glamsterdam/",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "claim": "Forkcast is the status surface linked from ethereum.org and EF Checkpoint #9 for Glamsterdam feature summaries and status updates."
+      },
+      {
+        "area": "eip-registry",
+        "label": "sources[3]",
+        "type": "protocol-blog",
+        "url": "https://blog.ethereum.org/2026/04/10/checkpoint-9",
+        "sourceDate": "2026-04-10",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 33,
+        "claim": "EF Checkpoint #9 says scheduled features should almost certainly be in the upgrade, while considered features are likely but still depend on implementation complexity and progress of scheduled features."
+      },
+      {
+        "area": "eip-registry",
+        "label": "sources[4]",
+        "type": "protocol-blog",
+        "url": "https://blog.ethereum.org/2026/05/02/soldogn-interop-recap",
+        "sourceDate": "2026-05-02",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 11,
+        "claim": "The Soldogn interop recap reports a stable multi-client Glamsterdam devnet with ePBS, repricing, and block access list work, plus nearly all clients running together on glamsterdam-devnet-2 by Friday.",
+        "notes": "Interop/devnet progress is not a production client compatibility claim."
+      }
+    ],
+    "eips": [
+      {
+        "id": "EIP-7708",
+        "name": "ETH transfers emit a log",
+        "status": "scheduled",
+        "domain": [
+          "execution",
+          "indexer",
+          "monitoring"
+        ],
+        "detectors": [
+          "nativeEthTransferLogDetectors"
+        ],
+        "notes": "Used for native ETH transfer visibility checks. Status refreshed from EIP-7773."
+      },
+      {
+        "id": "EIP-7732",
+        "name": "Enshrined Proposer-Builder Separation",
+        "status": "scheduled",
+        "domain": [
+          "consensus",
+          "validator",
+          "builder"
+        ],
+        "detectors": [
+          "epbsDetectors"
+        ],
+        "notes": "Used for validator and operator readiness checks around builder/API metadata."
+      },
+      {
+        "id": "EIP-7778",
+        "name": "Block Gas Accounting without Refunds",
+        "status": "scheduled",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Scheduled by EIP-7773. No detector currently claims exact refund or gas accounting behavior."
+      },
+      {
+        "id": "EIP-7843",
+        "name": "SLOTNUM opcode",
+        "status": "scheduled",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Scheduled by EIP-7773. No detector currently inspects SLOTNUM-specific bytecode behavior."
+      },
+      {
+        "id": "EIP-7928",
+        "name": "Block-Level Access Lists",
+        "status": "scheduled",
+        "domain": [
+          "execution",
+          "indexer",
+          "monitoring"
+        ],
+        "detectors": [
+          "balDetectors"
+        ],
+        "notes": "Used for BAL-related indexer and monitoring readiness checks. Do not hardcode final behavior in detector code."
+      },
+      {
+        "id": "EIP-7954",
+        "name": "Increase Maximum Contract Size",
+        "status": "scheduled",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [
+          "contractSizeDetectors"
+        ],
+        "notes": "Used only to flag contract-size review areas. Final limits may change."
+      },
+      {
+        "id": "EIP-7976",
+        "name": "Increase Calldata Floor Cost",
+        "status": "scheduled",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [
+          "gasRepricingDetectors"
+        ],
+        "notes": "Used for calldata-heavy trace and bytecode review prompts when calldata evidence is visible."
+      },
+      {
+        "id": "EIP-7981",
+        "name": "Increase Access List Cost",
+        "status": "scheduled",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Scheduled by EIP-7773. No detector currently infers exact access-list cost impact."
+      },
+      {
+        "id": "EIP-8024",
+        "name": "Backward compatible SWAPN, DUPN, EXCHANGE",
+        "status": "scheduled",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Scheduled by EIP-7773. No detector currently scans for these opcodes."
+      },
+      {
+        "id": "EIP-8037",
+        "name": "State Creation Gas Cost Increase",
+        "status": "scheduled",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [
+          "stateCreationDetectors"
+        ],
+        "notes": "Used for CREATE and CREATE2 review prompts. Do not infer exact cost changes."
+      },
+      {
+        "id": "EIP-2780",
+        "name": "Reduce intrinsic transaction gas",
+        "status": "considered",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Considered by EIP-7773. No detector currently infers native transfer fee changes."
+      },
+      {
+        "id": "EIP-7688",
+        "name": "Forward compatible consensus data structures",
+        "status": "considered",
+        "domain": [
+          "consensus",
+          "validator"
+        ],
+        "detectors": [],
+        "notes": "Considered by EIP-7773. Tracked for operator awareness only."
+      },
+      {
+        "id": "EIP-7904",
+        "name": "General Repricing",
+        "status": "considered",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [
+          "gasRepricingDetectors"
+        ],
+        "notes": "Broad repricing candidate. Exact gas deltas must come from data, not hardcoded detector logic."
+      },
+      {
+        "id": "EIP-7997",
+        "name": "Deterministic Factory Predeploy",
+        "status": "considered",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Considered by EIP-7773. No detector currently infers app behavior from deterministic factory assumptions."
+      },
+      {
+        "id": "EIP-8038",
+        "name": "State-access gas cost increase",
+        "status": "considered",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [
+          "gasRepricingDetectors"
+        ],
+        "notes": "Used for storage/account access review prompts. Do not infer exact cost changes."
+      },
+      {
+        "id": "EIP-8045",
+        "name": "Exclude slashed validators from proposing",
+        "status": "considered",
+        "domain": [
+          "consensus",
+          "validator"
+        ],
+        "detectors": [],
+        "notes": "Considered by EIP-7773. Tracked for validator/operator readiness context."
+      },
+      {
+        "id": "EIP-8061",
+        "name": "Increase exit and consolidation churn",
+        "status": "considered",
+        "domain": [
+          "consensus",
+          "validator"
+        ],
+        "detectors": [],
+        "notes": "Considered by EIP-7773 and present in the glamsterdam-devnet-2 spec as a new EIP."
+      },
+      {
+        "id": "EIP-8080",
+        "name": "Let exits use the consolidation queue",
+        "status": "considered",
+        "domain": [
+          "consensus",
+          "validator"
+        ],
+        "detectors": [],
+        "notes": "Considered by EIP-7773. EF Soldogn recap says CL teams discussed and narrowed smaller Glamsterdam EIPs."
+      },
+      {
+        "id": "EIP-8246",
+        "name": "Remove SELFDESTRUCT Burn",
+        "status": "considered",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Considered by EIP-7773. No detector currently scans SELFDESTRUCT burn semantics."
+      },
+      {
+        "id": "EIP-7975",
+        "name": "eth/70 - partial block receipt lists",
+        "status": "considered",
+        "domain": [
+          "networking",
+          "indexer"
+        ],
+        "detectors": [],
+        "notes": "Networking EIP considered by EIP-7773. Tracked for indexer and sync-tool awareness."
+      },
+      {
+        "id": "EIP-8070",
+        "name": "eth/72 - Sparse Blobpool",
+        "status": "considered",
+        "domain": [
+          "networking"
+        ],
+        "detectors": [],
+        "notes": "Networking EIP considered by EIP-7773."
+      },
+      {
+        "id": "EIP-8136",
+        "name": "Cell-Level Deltas for Data Column Broadcast",
+        "status": "considered",
+        "domain": [
+          "networking"
+        ],
+        "detectors": [],
+        "notes": "Networking EIP considered by EIP-7773."
+      },
+      {
+        "id": "EIP-8159",
+        "name": "eth/71 - Block Access List Exchange",
+        "status": "considered",
+        "domain": [
+          "networking",
+          "indexer",
+          "monitoring"
+        ],
+        "detectors": [],
+        "notes": "Networking companion to EIP-7928. Tracked for tooling that retrieves BALs from peers."
+      },
+      {
+        "id": "EIP-2926",
+        "name": "Chunk-based code merkelization",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-5920",
+        "name": "PAY opcode",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-6404",
+        "name": "SSZ transactions",
+        "status": "declined",
+        "domain": [
+          "execution"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-6466",
+        "name": "SSZ receipts",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "indexer"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7619",
+        "name": "Precompile Falcon512 generic verifier",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7668",
+        "name": "Remove bloom filters",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "indexer"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7686",
+        "name": "Linear EVM memory limits",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7692",
+        "name": "EVM Object Format (EOFv1) Meta",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7745",
+        "name": "Trustless log index",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "indexer"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7782",
+        "name": "Reduce Block Latency",
+        "status": "declined",
+        "domain": [
+          "consensus",
+          "validator"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7791",
+        "name": "GAS2ETH opcode",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7793",
+        "name": "Conditional Transactions",
+        "status": "declined",
+        "domain": [
+          "execution"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7805",
+        "name": "Fork-choice enforced Inclusion Lists (FOCIL)",
+        "status": "declined",
+        "domain": [
+          "consensus",
+          "validator"
+        ],
+        "detectors": [],
+        "notes": "Declined for Glamsterdam by EIP-7773."
+      },
+      {
+        "id": "EIP-7819",
+        "name": "SETDELEGATE instruction",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7872",
+        "name": "Max blob flag for local builders",
+        "status": "declined",
+        "domain": [
+          "builder",
+          "consensus"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7886",
+        "name": "Delayed execution",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "consensus"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7903",
+        "name": "Remove Initcode Size Limit",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7907",
+        "name": "Meter Contract Code Size And Increase Limit",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7919",
+        "name": "Pureth Meta",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "consensus"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7923",
+        "name": "Linear, Page-Based Memory Costing",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7932",
+        "name": "Secondary Signature Algorithms",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7937",
+        "name": "EVM64 - 64-bit mode EVM opcodes",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7942",
+        "name": "Available Attestation",
+        "status": "declined",
+        "domain": [
+          "consensus",
+          "validator"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7949",
+        "name": "Schema for genesis.json files",
+        "status": "declined",
+        "domain": [
+          "tooling"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7971",
+        "name": "Hard Limits for Transient Storage",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7973",
+        "name": "Warm Account Write Metering",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7979",
+        "name": "Call and Return Opcodes for the EVM",
+        "status": "proposed",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Listed as proposed for inclusion by EIP-7773, despite also appearing in the declined section."
+      },
+      {
+        "id": "EIP-8011",
+        "name": "Multidimensional Gas Metering",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-8013",
+        "name": "Static relative jumps and calls for the EVM",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-8030",
+        "name": "P256 transaction support",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-8032",
+        "name": "Size-Based Storage Gas Pricing",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-8051",
+        "name": "Precompile for ML-DSA signature verification",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-8053",
+        "name": "Milli-gas for High-precision Gas Metering",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-8057",
+        "name": "Inter-Block Temporal Locality Gas Discounts",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-8058",
+        "name": "Contract Bytecode Deduplication Discount",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-8059",
+        "name": "Gas Units Rebase for High-precision Metering",
+        "status": "declined",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-8062",
+        "name": "Add sweep withdrawal fee for 0x01 validators",
+        "status": "declined",
+        "domain": [
+          "consensus",
+          "validator"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-8068",
+        "name": "Neutral effective balance design",
+        "status": "declined",
+        "domain": [
+          "consensus",
+          "validator"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-8071",
+        "name": "Prevent using consolidations as withdrawals",
+        "status": "declined",
+        "domain": [
+          "consensus",
+          "validator"
+        ],
+        "detectors": [],
+        "notes": "Declined for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-7610",
+        "name": "Revert creation in case of non-empty storage",
+        "status": "proposed",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Proposed for inclusion by EIP-7773."
+      },
+      {
+        "id": "EIP-8163",
+        "name": "Reserve EXTENSION (0xae) opcode",
+        "status": "proposed",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [],
+        "notes": "Proposed for inclusion by EIP-7773."
+      },
+      {
+        "id": "GAS-REPRICING",
+        "name": "Glamsterdam gas repricing candidates",
+        "status": "considered",
+        "domain": [
+          "execution",
+          "contracts"
+        ],
+        "detectors": [
+          "gasRepricingDetectors",
+          "stateCreationDetectors"
+        ],
+        "notes": "Umbrella entry for broad heuristics until exact final parameters are confirmed."
+      }
+    ]
+  },
+  "clientMatrix": {
+    "lastUpdated": "2026-05-13",
+    "sourceCount": 27,
+    "countsByStatus": [
+      {
+        "key": "compatible",
+        "count": 3
+      },
+      {
+        "key": "incompatible",
+        "count": 3
+      },
+      {
+        "key": "partial",
+        "count": 10
+      },
+      {
+        "key": "unknown",
+        "count": 3
+      }
+    ],
+    "countsByRole": [
+      {
+        "key": "consensus",
+        "count": 10
+      },
+      {
+        "key": "execution",
+        "count": 5
+      },
+      {
+        "key": "validator",
+        "count": 4
+      }
+    ],
+    "check": {
+      "ok": true,
+      "warnings": []
+    },
+    "sources": [
+      {
+        "area": "client-matrix",
+        "label": "sources[0]",
+        "type": "public-interop-recap",
+        "url": "https://blog.ethereum.org/2026/05/02/soldogn-interop-recap",
+        "sourceDate": "2026-05-02",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "sourceAgeDays": 11,
+        "claim": "The Ethereum Foundation Soldogn recap says the week ended with a stable multi-client Glamsterdam devnet running the latest ePBS, repricing, and block access list specs, and that nearly all clients were running together on glamsterdam-devnet-2 with the external builders pipeline tested end-to-end.",
+        "notes": "This source supports devnet/interoperability context, not production release compatibility."
+      },
+      {
+        "area": "client-matrix",
+        "label": "sources[1]",
+        "type": "public-devnet-spec",
+        "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "claim": "The EthPandaOps glamsterdam-devnet-2 spec lists a Kurtosis participants matrix with geth as the execution client image and prysm, lodestar, lighthouse, teku, nimbus, and grandine as consensus client images.",
+        "notes": "This source supports devnet participant examples. It does not claim mainnet-ready client releases."
+      },
+      {
+        "area": "client-matrix",
+        "label": "sources[2]",
+        "type": "public-spec-release",
+        "url": "https://github.com/ethereum/consensus-specs/releases/tag/v1.7.0-alpha.7",
+        "sourceDate": "2026-04-29",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "sourceAgeDays": 14,
+        "claim": "The consensus-specs v1.7.0-alpha.7 release is a pre-release containing Gloas changes used by the glamsterdam-devnet-2 spec.",
+        "notes": "Spec release metadata is useful provenance for devnet test entries, but is not a client release."
+      },
+      {
+        "area": "client-matrix",
+        "label": "sources[3]",
+        "type": "public-spec-release",
+        "url": "https://github.com/ethereum/execution-spec-tests/releases/tag/bal%40v5.6.1",
+        "sourceDate": "2026-04-02",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "sourceAgeDays": 41,
+        "claim": "The execution-spec-tests bal@v5.6.1 pre-release is labeled for bal-devnet-3 v7 and includes BAL/state-gas test updates referenced by the glamsterdam-devnet-2 spec.",
+        "notes": "Spec-test release metadata is useful provenance for devnet test entries, but is not a client release."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.execution.example-execution-client.0.0.0-example.source",
+        "type": "synthetic-example",
+        "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "claim": "Synthetic unknown status used to exercise matrix behavior when no sourced compatibility statement exists."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.execution.example-execution-client.1.0.0-compatible.source",
+        "type": "synthetic-example",
+        "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "claim": "Synthetic compatible status used by safe fixture variants to exercise clean scanner paths."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.execution.example-execution-client.1.1.0-partial.source",
+        "type": "synthetic-example",
+        "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "claim": "Synthetic partial status used to exercise scanner behavior for incomplete readiness."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.execution.example-execution-client.2.0.0-incompatible.source",
+        "type": "synthetic-example",
+        "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "claim": "Synthetic incompatible status used to exercise scanner behavior for blocking readiness findings."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.consensus.example-consensus-client.0.0.0-example.source",
+        "type": "synthetic-example",
+        "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "claim": "Synthetic unknown status used to exercise matrix behavior when no sourced compatibility statement exists."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.consensus.example-consensus-client.1.0.0-compatible.source",
+        "type": "synthetic-example",
+        "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "claim": "Synthetic compatible status used by safe fixture variants to exercise clean scanner paths."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.consensus.example-consensus-client.1.1.0-partial.source",
+        "type": "synthetic-example",
+        "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "claim": "Synthetic partial status used to exercise scanner behavior for incomplete readiness."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.consensus.example-consensus-client.2.0.0-incompatible.source",
+        "type": "synthetic-example",
+        "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "claim": "Synthetic incompatible status used to exercise scanner behavior for blocking readiness findings."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.validator.example-validator-client.0.0.0-example.source",
+        "type": "synthetic-example",
+        "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "claim": "Synthetic unknown status used to exercise matrix behavior when no sourced compatibility statement exists."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.validator.example-validator-client.1.0.0-compatible.source",
+        "type": "synthetic-example",
+        "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "claim": "Synthetic compatible status used by safe fixture variants to exercise clean scanner paths."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.validator.example-validator-client.1.1.0-partial.source",
+        "type": "synthetic-example",
+        "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "claim": "Synthetic partial status used to exercise scanner behavior for incomplete readiness."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.validator.example-validator-client.2.0.0-incompatible.source",
+        "type": "synthetic-example",
+        "url": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "claim": "Synthetic incompatible status used to exercise scanner behavior for blocking readiness findings."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.execution.geth.ethpandaops/geth:bal-devnet-6.source",
+        "type": "public-devnet-spec",
+        "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "claim": "The glamsterdam-devnet-2 Kurtosis example lists geth with image ethpandaops/geth:bal-devnet-6 as the execution-layer participant."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.consensus.lighthouse.ethpandaops/lighthouse:glamsterdam-devnet-3.source",
+        "type": "public-devnet-spec",
+        "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "claim": "The glamsterdam-devnet-2 Kurtosis example lists lighthouse with image ethpandaops/lighthouse:glamsterdam-devnet-3 as a consensus-layer participant."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.consensus.lodestar.ethpandaops/lodestar:glamsterdam-devnet-2.source",
+        "type": "public-devnet-spec",
+        "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "claim": "The glamsterdam-devnet-2 Kurtosis example lists lodestar with image ethpandaops/lodestar:glamsterdam-devnet-2 as a consensus-layer participant."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.consensus.prysm.ethpandaops/prysm-beacon-chain:glamsterdam-devnet-3-minimal.source",
+        "type": "public-devnet-spec",
+        "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "claim": "The glamsterdam-devnet-2 Kurtosis example lists prysm with image ethpandaops/prysm-beacon-chain:glamsterdam-devnet-3-minimal as a consensus-layer participant."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.consensus.teku.ethpandaops/teku:glamsterdam-devnet-2.source",
+        "type": "public-devnet-spec",
+        "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "claim": "The glamsterdam-devnet-2 Kurtosis example lists teku with image ethpandaops/teku:glamsterdam-devnet-2 as a consensus-layer participant."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.consensus.nimbus.ethpandaops/nimbus-eth2:glamsterdam-devnet-2-minimal.source",
+        "type": "public-devnet-spec",
+        "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "claim": "The glamsterdam-devnet-2 Kurtosis example lists nimbus with image ethpandaops/nimbus-eth2:glamsterdam-devnet-2-minimal as a consensus-layer participant."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.consensus.grandine.ethpandaops/grandine:glamsterdam-devnet-2-minimal.source",
+        "type": "public-devnet-spec",
+        "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "claim": "The glamsterdam-devnet-2 Kurtosis example lists grandine with image ethpandaops/grandine:glamsterdam-devnet-2-minimal as a consensus-layer participant."
+      },
+      {
+        "area": "client-matrix",
+        "label": "devnets.glamsterdam-devnet-2.source",
+        "type": "public-devnet-spec",
+        "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "claim": "The glamsterdam-devnet-2 spec targets launch on 2026-04-30 and includes a Kurtosis participants matrix with specific EL and CL devnet images."
+      },
+      {
+        "area": "client-matrix",
+        "label": "devnets.glamsterdam-devnet-2.specVersions.consensus-specs.v1.7.0-alpha.7.source",
+        "type": "public-spec-release",
+        "url": "https://github.com/ethereum/consensus-specs/releases/tag/v1.7.0-alpha.7",
+        "sourceDate": "2026-04-29",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "sourceAgeDays": 14,
+        "claim": "The consensus-specs v1.7.0-alpha.7 release is a pre-release containing Gloas changes used by the glamsterdam-devnet-2 spec."
+      },
+      {
+        "area": "client-matrix",
+        "label": "devnets.glamsterdam-devnet-2.specVersions.execution-spec-tests.bal@v5.6.1.source",
+        "type": "public-spec-release",
+        "url": "https://github.com/ethereum/execution-spec-tests/releases/tag/bal%40v5.6.1",
+        "sourceDate": "2026-04-02",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "sourceAgeDays": 41,
+        "claim": "The execution-spec-tests bal@v5.6.1 pre-release is labeled for bal-devnet-3 v7 and includes BAL/state-gas test updates referenced by the glamsterdam-devnet-2 spec."
+      },
+      {
+        "area": "client-matrix",
+        "label": "devnets.soldogn-interop.source",
+        "type": "public-interop-recap",
+        "url": "https://blog.ethereum.org/2026/05/02/soldogn-interop-recap",
+        "sourceDate": "2026-05-02",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "sourceAgeDays": 11,
+        "claim": "The Ethereum Foundation Soldogn recap reports a stable multi-client Glamsterdam devnet running the latest ePBS, repricing, and block access list specs, with nearly all clients running together on glamsterdam-devnet-2 by Friday."
+      }
+    ],
+    "clients": [
+      {
+        "role": "consensus",
+        "name": "example-consensus-client",
+        "version": "0.0.0-example",
+        "status": "unknown",
+        "sourceType": "synthetic-example",
+        "sourceUrl": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "notes": "Placeholder only. Replace with a sourced compatibility statement before relying on this matrix."
+      },
+      {
+        "role": "consensus",
+        "name": "example-consensus-client",
+        "version": "1.0.0-compatible",
+        "status": "compatible",
+        "sourceType": "synthetic-example",
+        "sourceUrl": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "notes": "Synthetic compatible status used by safe fixture variants; do not treat as a real client release."
+      },
+      {
+        "role": "consensus",
+        "name": "example-consensus-client",
+        "version": "1.1.0-partial",
+        "status": "partial",
+        "sourceType": "synthetic-example",
+        "sourceUrl": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "notes": "Synthetic partial status for tests and examples only."
+      },
+      {
+        "role": "consensus",
+        "name": "example-consensus-client",
+        "version": "2.0.0-incompatible",
+        "status": "incompatible",
+        "sourceType": "synthetic-example",
+        "sourceUrl": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "notes": "Synthetic incompatible status for tests and examples only."
+      },
+      {
+        "role": "consensus",
+        "name": "grandine",
+        "version": "ethpandaops/grandine:glamsterdam-devnet-2-minimal",
+        "status": "partial",
+        "sourceType": "public-devnet-spec",
+        "sourceUrl": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "notes": "Devnet image only. This is not a production Grandine release compatibility claim."
+      },
+      {
+        "role": "consensus",
+        "name": "lighthouse",
+        "version": "ethpandaops/lighthouse:glamsterdam-devnet-3",
+        "status": "partial",
+        "sourceType": "public-devnet-spec",
+        "sourceUrl": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "notes": "Devnet image only. This is not a production Lighthouse release compatibility claim."
+      },
+      {
+        "role": "consensus",
+        "name": "lodestar",
+        "version": "ethpandaops/lodestar:glamsterdam-devnet-2",
+        "status": "partial",
+        "sourceType": "public-devnet-spec",
+        "sourceUrl": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "notes": "Devnet image only. This is not a production Lodestar release compatibility claim."
+      },
+      {
+        "role": "consensus",
+        "name": "nimbus",
+        "version": "ethpandaops/nimbus-eth2:glamsterdam-devnet-2-minimal",
+        "status": "partial",
+        "sourceType": "public-devnet-spec",
+        "sourceUrl": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "notes": "Devnet image only. This is not a production Nimbus release compatibility claim."
+      },
+      {
+        "role": "consensus",
+        "name": "prysm",
+        "version": "ethpandaops/prysm-beacon-chain:glamsterdam-devnet-3-minimal",
+        "status": "partial",
+        "sourceType": "public-devnet-spec",
+        "sourceUrl": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "notes": "Devnet image only. This is not a production Prysm release compatibility claim."
+      },
+      {
+        "role": "consensus",
+        "name": "teku",
+        "version": "ethpandaops/teku:glamsterdam-devnet-2",
+        "status": "partial",
+        "sourceType": "public-devnet-spec",
+        "sourceUrl": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "notes": "Devnet image only. This is not a production Teku release compatibility claim."
+      },
+      {
+        "role": "execution",
+        "name": "example-execution-client",
+        "version": "0.0.0-example",
+        "status": "unknown",
+        "sourceType": "synthetic-example",
+        "sourceUrl": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "notes": "Placeholder only. Replace with a sourced compatibility statement before relying on this matrix."
+      },
+      {
+        "role": "execution",
+        "name": "example-execution-client",
+        "version": "1.0.0-compatible",
+        "status": "compatible",
+        "sourceType": "synthetic-example",
+        "sourceUrl": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "notes": "Synthetic compatible status used by safe fixture variants; do not treat as a real client release."
+      },
+      {
+        "role": "execution",
+        "name": "example-execution-client",
+        "version": "1.1.0-partial",
+        "status": "partial",
+        "sourceType": "synthetic-example",
+        "sourceUrl": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "notes": "Synthetic partial status for tests and examples only."
+      },
+      {
+        "role": "execution",
+        "name": "example-execution-client",
+        "version": "2.0.0-incompatible",
+        "status": "incompatible",
+        "sourceType": "synthetic-example",
+        "sourceUrl": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "notes": "Synthetic incompatible status for tests and examples only."
+      },
+      {
+        "role": "execution",
+        "name": "geth",
+        "version": "ethpandaops/geth:bal-devnet-6",
+        "status": "partial",
+        "sourceType": "public-devnet-spec",
+        "sourceUrl": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "notes": "Devnet image only. This is not a production Geth release compatibility claim."
+      },
+      {
+        "role": "validator",
+        "name": "example-validator-client",
+        "version": "0.0.0-example",
+        "status": "unknown",
+        "sourceType": "synthetic-example",
+        "sourceUrl": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "notes": "Placeholder only. Replace with a sourced compatibility statement before relying on this matrix."
+      },
+      {
+        "role": "validator",
+        "name": "example-validator-client",
+        "version": "1.0.0-compatible",
+        "status": "compatible",
+        "sourceType": "synthetic-example",
+        "sourceUrl": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "notes": "Synthetic compatible status used by safe fixture variants; do not treat as a real client release."
+      },
+      {
+        "role": "validator",
+        "name": "example-validator-client",
+        "version": "1.1.0-partial",
+        "status": "partial",
+        "sourceType": "synthetic-example",
+        "sourceUrl": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "notes": "Synthetic partial status for tests and examples only."
+      },
+      {
+        "role": "validator",
+        "name": "example-validator-client",
+        "version": "2.0.0-incompatible",
+        "status": "incompatible",
+        "sourceType": "synthetic-example",
+        "sourceUrl": "https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json",
+        "retrievedAt": "2026-05-12",
+        "retrievedDaysAgo": 1,
+        "notes": "Synthetic incompatible status for tests and examples only."
+      }
+    ],
+    "devnets": [
+      {
+        "name": "glamsterdam-devnet-2",
+        "status": "partial",
+        "sourceUrl": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+        "retrievedAt": "2026-05-12",
+        "participants": [
+          {
+            "devnet": "glamsterdam-devnet-2",
+            "devnetStatus": "partial",
+            "role": "execution",
+            "name": "geth",
+            "image": "ethpandaops/geth:bal-devnet-6",
+            "status": "partial",
+            "notes": "Listed as the execution-layer participant image in the public devnet spec."
+          },
+          {
+            "devnet": "glamsterdam-devnet-2",
+            "devnetStatus": "partial",
+            "role": "consensus",
+            "name": "prysm",
+            "image": "ethpandaops/prysm-beacon-chain:glamsterdam-devnet-3-minimal",
+            "status": "partial",
+            "notes": "Listed as a consensus-layer participant image in the public devnet spec."
+          },
+          {
+            "devnet": "glamsterdam-devnet-2",
+            "devnetStatus": "partial",
+            "role": "consensus",
+            "name": "lodestar",
+            "image": "ethpandaops/lodestar:glamsterdam-devnet-2",
+            "status": "partial",
+            "notes": "Listed as a consensus-layer participant image in the public devnet spec."
+          },
+          {
+            "devnet": "glamsterdam-devnet-2",
+            "devnetStatus": "partial",
+            "role": "consensus",
+            "name": "lighthouse",
+            "image": "ethpandaops/lighthouse:glamsterdam-devnet-3",
+            "status": "partial",
+            "notes": "Listed as a consensus-layer participant image in the public devnet spec."
+          },
+          {
+            "devnet": "glamsterdam-devnet-2",
+            "devnetStatus": "partial",
+            "role": "consensus",
+            "name": "teku",
+            "image": "ethpandaops/teku:glamsterdam-devnet-2",
+            "status": "partial",
+            "notes": "Listed as a consensus-layer participant image in the public devnet spec."
+          },
+          {
+            "devnet": "glamsterdam-devnet-2",
+            "devnetStatus": "partial",
+            "role": "consensus",
+            "name": "nimbus",
+            "image": "ethpandaops/nimbus-eth2:glamsterdam-devnet-2-minimal",
+            "status": "partial",
+            "notes": "Listed as a consensus-layer participant image in the public devnet spec."
+          },
+          {
+            "devnet": "glamsterdam-devnet-2",
+            "devnetStatus": "partial",
+            "role": "consensus",
+            "name": "grandine",
+            "image": "ethpandaops/grandine:glamsterdam-devnet-2-minimal",
+            "status": "partial",
+            "notes": "Listed as a consensus-layer participant image in the public devnet spec."
+          }
+        ],
+        "specVersions": [
+          {
+            "devnet": "glamsterdam-devnet-2",
+            "name": "consensus-specs",
+            "version": "v1.7.0-alpha.7",
+            "sourceUrl": "https://github.com/ethereum/consensus-specs/releases/tag/v1.7.0-alpha.7",
+            "retrievedAt": "2026-05-12"
+          },
+          {
+            "devnet": "glamsterdam-devnet-2",
+            "name": "execution-spec-tests",
+            "version": "bal@v5.6.1",
+            "sourceUrl": "https://github.com/ethereum/execution-spec-tests/releases/tag/bal%40v5.6.1",
+            "retrievedAt": "2026-05-12"
+          }
+        ],
+        "notes": "Devnet participation is tracked as partial readiness. Production release compatibility must come from client release notes or other explicit public statements."
+      },
+      {
+        "name": "soldogn-interop",
+        "status": "stable-multi-client-devnet-reported",
+        "sourceUrl": "https://blog.ethereum.org/2026/05/02/soldogn-interop-recap",
+        "retrievedAt": "2026-05-12",
+        "participants": [],
+        "specVersions": [],
+        "notes": "Interop recap is useful context for the matrix, but this entry intentionally avoids per-client production compatibility claims."
+      }
+    ]
+  },
+  "limitations": [
+    "Readiness exports are sourced status records, not aggregate mainnet readiness measurements.",
+    "Devnet and interop sources remain partial or unknown unless a client release or operator-maintained source explicitly claims production compatibility.",
+    "EIP status groupings follow the local registry and must be refreshed when EIP-7773, Forkcast, or primary client/spec sources change."
+  ]
+}

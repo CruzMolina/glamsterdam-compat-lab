@@ -139,7 +139,7 @@
   ],
   "assumptions": [
     "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [

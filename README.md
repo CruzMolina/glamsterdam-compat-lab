@@ -8,7 +8,7 @@ This is community open-source tooling. It is not official Ethereum Foundation to
 
 ## Why this exists
 
-The Ethereum Foundation Ecosystem Support Program has a Glamsterdam-focused wishlist that calls out developer tooling, impact analysis, explorer/indexer support, validator tooling, monitoring tooling, and data-driven research. Glamsterdam planning currently includes scheduled work around Block-Level Access Lists and ePBS, plus considered work around gas repricing, native ETH transfer logs, contract-size changes, state creation costs, calldata costs, and related areas.
+The Ethereum Foundation Ecosystem Support Program has a Glamsterdam-focused wishlist that calls out developer tooling, impact analysis, explorer/indexer support, validator tooling, monitoring tooling, and data-driven research. Glamsterdam planning currently includes scheduled work around Block-Level Access Lists, ePBS, native ETH transfer logs, contract-size changes, calldata floor costs, access-list costs, state-creation gas, and related EVM changes, plus considered and proposed work tracked through the local EIP registry.
 
 The final Glamsterdam scope and exact parameters may change. This project keeps assumptions in a versioned EIP registry so detector behavior can be updated without rewriting every scanner.
 
@@ -72,9 +72,9 @@ Each scanner accepts `--registry <path>` and `--thresholds <path>` so EIP metada
 
 ## Public dataset seed
 
-Fixture provenance lives in [fixtures/provenance.json](fixtures/provenance.json). The first deterministic dataset seed lives in [datasets/public-seed](datasets/public-seed) and includes generated JSON reports, default-vs-research threshold comparisons for bytecode and trace fixtures, a `summary.json` file with aggregate counts, and CSV exports (`reports.csv`, `findings.csv`, `summary.csv`) for spreadsheet and warehouse import.
+Fixture provenance lives in [fixtures/provenance.json](fixtures/provenance.json). The first deterministic dataset seed lives in [datasets/public-seed](datasets/public-seed) and includes generated JSON reports, default-vs-research threshold comparisons for bytecode and trace fixtures, a `summary.json` file with aggregate counts, `readiness.json` sourced from the EIP registry and client matrix, and CSV exports for spreadsheet and warehouse import.
 
-The static dataset browser lives at [site/public-seed/index.html](site/public-seed/index.html). It is generated entirely from committed dataset files and can be opened directly in a browser for summary charts, report filters, text search, per-report, per-comparison, and per-finding detail pages, raw JSON links, and fixture/provenance links. Index filters are reflected in the URL so filtered views can be shared.
+The static dataset browser lives at [site/public-seed/index.html](site/public-seed/index.html). It is generated entirely from committed dataset files and can be opened directly in a browser for summary charts, report filters, text search, per-report, per-comparison, per-finding, and readiness source detail pages, raw JSON links, and fixture/provenance links. Index filters are reflected in the URL so filtered views can be shared.
 
 See [docs/dataset.md](docs/dataset.md) for the dataset file contract and [examples/public-seed-analysis.md](examples/public-seed-analysis.md) for lightweight analysis snippets.
 

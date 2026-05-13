@@ -61,6 +61,95 @@ interface DatasetSummary {
   };
 }
 
+interface DatasetReadinessSource {
+  area: "eip-registry" | "client-matrix";
+  label: string;
+  type: string;
+  url: string;
+  sourceDate?: string;
+  retrievedAt: string;
+  retrievedDaysAgo: number;
+  sourceAgeDays?: number;
+  claim: string;
+  notes?: string;
+}
+
+interface DatasetReadinessEip {
+  id: string;
+  name: string;
+  status: string;
+  domain: string[];
+  detectors: string[];
+  notes?: string;
+}
+
+interface DatasetReadinessClient {
+  role: string;
+  name: string;
+  version: string;
+  status: string;
+  sourceType: string;
+  sourceUrl: string;
+  retrievedAt: string;
+  retrievedDaysAgo: number;
+  notes?: string;
+}
+
+interface DatasetReadinessDevnetParticipant {
+  devnet: string;
+  devnetStatus: string;
+  role: string;
+  name: string;
+  image?: string;
+  status: string;
+  notes?: string;
+}
+
+interface DatasetReadinessSpecVersion {
+  devnet: string;
+  name: string;
+  version: string;
+  sourceUrl?: string;
+  retrievedAt?: string;
+}
+
+interface DatasetReadiness {
+  schemaVersion: 1;
+  name: "public-seed-readiness";
+  lastUpdated: string;
+  toolVersion: string;
+  fork: string;
+  eipRegistry: {
+    lastUpdated: string;
+    sourceCount: number;
+    countsByStatus: DatasetSummaryCount[];
+    sources: DatasetReadinessSource[];
+    eips: DatasetReadinessEip[];
+  };
+  clientMatrix: {
+    lastUpdated: string;
+    sourceCount: number;
+    countsByStatus: DatasetSummaryCount[];
+    countsByRole: DatasetSummaryCount[];
+    check: {
+      ok: boolean;
+      warnings: string[];
+    };
+    sources: DatasetReadinessSource[];
+    clients: DatasetReadinessClient[];
+    devnets: Array<{
+      name: string;
+      status: string;
+      sourceUrl: string;
+      retrievedAt: string;
+      participants: DatasetReadinessDevnetParticipant[];
+      specVersions: DatasetReadinessSpecVersion[];
+      notes?: string;
+    }>;
+  };
+  limitations: string[];
+}
+
 interface PublicSeedManifest {
   schemaVersion: 1;
   name: "public-seed";
@@ -69,10 +158,15 @@ interface PublicSeedManifest {
   toolVersion: string;
   sourceManifest: "fixtures/provenance.json";
   summary: "summary.json";
+  readiness: "readiness.json";
   csvExports: {
     reports: "reports.csv";
     findings: "findings.csv";
     summary: "summary.csv";
+    readinessClients: "readiness-clients.csv";
+    readinessDevnets: "readiness-devnets.csv";
+    readinessEips: "readiness-eips.csv";
+    readinessSources: "readiness-sources.csv";
   };
   reports: DatasetReportEntry[];
   comparisons: DatasetComparisonEntry[];
@@ -130,6 +224,7 @@ interface SiteData {
   generatedAt: string;
   manifest: Pick<PublicSeedManifest, "lastUpdated" | "toolVersion" | "limitations">;
   summary: DatasetSummary;
+  readiness: DatasetReadiness;
   reports: SiteReportRow[];
   comparisons: SiteComparisonRow[];
   findings: SiteFindingPage[];
@@ -156,6 +251,7 @@ export function generatePublicSite(options: GeneratePublicSiteOptions = {}): Gen
   const outputDir = options.outputDir ? resolve(options.outputDir) : defaultSiteDir;
   const manifest = readJsonFile<PublicSeedManifest>(resolve(defaultDatasetDir, "manifest.json"));
   const summary = readJsonFile<DatasetSummary>(resolve(defaultDatasetDir, manifest.summary));
+  const readiness = readJsonFile<DatasetReadiness>(resolve(defaultDatasetDir, manifest.readiness));
   const fixtureManifest = loadFixtureProvenance(resolve(rootDir, manifest.sourceManifest));
   const fixturesByPath = new Map(fixtureManifest.fixtures.map((fixture) => [fixture.path, fixture]));
   const comparisonsByFixture = new Map(
@@ -253,6 +349,7 @@ export function generatePublicSite(options: GeneratePublicSiteOptions = {}): Gen
       limitations: manifest.limitations
     },
     summary,
+    readiness,
     reports,
     comparisons,
     findings
@@ -261,6 +358,7 @@ export function generatePublicSite(options: GeneratePublicSiteOptions = {}): Gen
   rmSync(outputDir, { recursive: true, force: true });
   mkdirSync(outputDir, { recursive: true });
   writeSiteFile(outputDir, "index.html", renderSite(siteData));
+  writeSiteFile(outputDir, "readiness.html", renderReadinessPage(siteData));
   for (const report of reports) {
     writeSiteFile(outputDir, report.detailPath, renderReportDetailPage(siteData, report));
   }
@@ -838,6 +936,8 @@ function renderSite(data: SiteData): string {
         <a href="${datasetUrl("reports.csv")}">reports.csv</a>
         <a href="${datasetUrl("findings.csv")}">findings.csv</a>
         <a href="${datasetUrl("summary.csv")}">summary.csv</a>
+        <a href="readiness.html">readiness</a>
+        <a href="${datasetUrl("readiness.json")}">readiness.json</a>
         <a href="${repoUrl("fixtures/provenance.json")}">fixture provenance</a>
       </div>
     </section>
@@ -849,6 +949,8 @@ function renderSite(data: SiteData): string {
         ${chart("Reports by fixture kind", sortCounts(data.summary.counts.reportsByFixtureKind))}
         ${chart("Reports by threshold", sortCounts(data.summary.counts.reportsByThresholdProfile))}
         ${chart("Fixtures by source", sortCounts(data.summary.counts.fixturesBySourceType))}
+        ${chart("EIPs by status", sortCounts(data.readiness.eipRegistry.countsByStatus))}
+        ${chart("Clients by status", sortCounts(data.readiness.clientMatrix.countsByStatus))}
         ${chart("Most common finding IDs", topFindings, " chart-wide", (findingId) => findingPageUrl(findingId))}
       </div>
     </section>
@@ -1279,10 +1381,143 @@ function renderFindingDetailPage(data: SiteData, finding: SiteFindingPage): stri
   });
 }
 
+function renderReadinessPage(data: SiteData): string {
+  const readiness = data.readiness;
+  const body = `
+    <section aria-labelledby="summary-heading">
+      <h2 id="summary-heading">Summary</h2>
+      <div class="stats">
+        ${stat("EIPs", readiness.eipRegistry.eips.length)}
+        ${stat("Client versions", readiness.clientMatrix.clients.length)}
+        ${stat("Devnets", readiness.clientMatrix.devnets.length)}
+        ${stat("Sources", readiness.eipRegistry.sourceCount + readiness.clientMatrix.sourceCount)}
+      </div>
+      ${detailLinkRow([
+        ["readiness json", datasetUrl("readiness.json")],
+        ["client csv", datasetUrl("readiness-clients.csv")],
+        ["devnet csv", datasetUrl("readiness-devnets.csv")],
+        ["eip csv", datasetUrl("readiness-eips.csv")],
+        ["source csv", datasetUrl("readiness-sources.csv")],
+        ["EIP registry", repoUrl("data/eips/glamsterdam.json")],
+        ["client matrix", repoUrl("data/client-compat/clients.example.json")]
+      ])}
+    </section>
+
+    <section aria-labelledby="source-heading">
+      <h2 id="source-heading">Source Freshness</h2>
+      <div class="detail-grid">
+        ${detailPanel("EIP registry", [
+          ["Last updated", readiness.eipRegistry.lastUpdated],
+          ["Sources", String(readiness.eipRegistry.sourceCount)],
+          ["Status counts", countsText(readiness.eipRegistry.countsByStatus)]
+        ])}
+        ${detailPanel("Client matrix", [
+          ["Last updated", readiness.clientMatrix.lastUpdated],
+          ["Sources", String(readiness.clientMatrix.sourceCount)],
+          ["Matrix check", readiness.clientMatrix.check.ok ? "ok" : "failed"],
+          ["Status counts", countsText(readiness.clientMatrix.countsByStatus)]
+        ])}
+      </div>
+      ${readiness.clientMatrix.check.warnings.length > 0 ? detailTextSection("Matrix Warnings", readiness.clientMatrix.check.warnings) : ""}
+    </section>
+
+    <section aria-labelledby="eips-heading">
+      <h2 id="eips-heading">EIP Status</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">EIP</th>
+              <th scope="col">Status</th>
+              <th scope="col">Domain</th>
+              <th scope="col">Detectors</th>
+              <th scope="col">Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${readiness.eipRegistry.eips.map(readinessEipRow).join("\n")}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section aria-labelledby="clients-heading">
+      <h2 id="clients-heading">Client Matrix</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Client</th>
+              <th scope="col">Version</th>
+              <th scope="col">Status</th>
+              <th scope="col">Source</th>
+              <th scope="col">Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${readiness.clientMatrix.clients.map(readinessClientRow).join("\n")}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section aria-labelledby="devnets-heading">
+      <h2 id="devnets-heading">Devnets</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Devnet</th>
+              <th scope="col">Status</th>
+              <th scope="col">Participants</th>
+              <th scope="col">Spec versions</th>
+              <th scope="col">Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${readiness.clientMatrix.devnets.map(readinessDevnetRow).join("\n")}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section aria-labelledby="sources-heading">
+      <h2 id="sources-heading">Source Register</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Area</th>
+              <th scope="col">Label</th>
+              <th scope="col">Source</th>
+              <th scope="col">Dates</th>
+              <th scope="col">Claim</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${[...readiness.eipRegistry.sources, ...readiness.clientMatrix.sources].map(readinessSourceRow).join("\n")}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    ${detailTextSection("Limitations", readiness.limitations)}
+  `;
+
+  return renderDetailShell({
+    title: "Readiness Sources",
+    subtitle: "Sourced EIP status, devnet context, and conservative client matrix visibility",
+    data,
+    indexHref: "index.html",
+    body
+  });
+}
+
 function renderDetailShell(input: {
   title: string;
   subtitle: string;
   data: SiteData;
+  indexHref?: string;
   body: string;
 }): string {
   return `<!doctype html>
@@ -1300,7 +1535,7 @@ function renderDetailShell(input: {
     <header>
       <div>
         <div class="nav-row">
-          <a href="../index.html">Index</a>
+          <a href="${escapeAttr(input.indexHref ?? "../index.html")}">Index</a>
         </div>
         <h1>${escapeHtml(input.title)}</h1>
         <p class="subtle">${escapeHtml(input.subtitle)}</p>
@@ -1746,6 +1981,93 @@ function findingOccurrenceRow(occurrence: SiteFindingOccurrence): string {
       </div>
     </td>
   </tr>`;
+}
+
+function readinessEipRow(entry: DatasetReadinessEip): string {
+  return `<tr>
+    <td><strong>${escapeHtml(entry.id)}</strong><div class="subtle">${escapeHtml(entry.name)}</div></td>
+    <td>${statusBadge(entry.status)}</td>
+    <td>${escapeHtml(entry.domain.join(", "))}</td>
+    <td>${escapeHtml(entry.detectors.length > 0 ? entry.detectors.join(", ") : "none")}</td>
+    <td>${escapeHtml(entry.notes ?? "")}</td>
+  </tr>`;
+}
+
+function readinessClientRow(client: DatasetReadinessClient): string {
+  return `<tr>
+    <td><strong>${escapeHtml(client.name)}</strong><div class="subtle">${escapeHtml(client.role)}</div></td>
+    <td><div class="path">${escapeHtml(client.version)}</div></td>
+    <td>${statusBadge(client.status)}</td>
+    <td>
+      <a href="${escapeAttr(client.sourceUrl)}" rel="noopener">${escapeHtml(client.sourceType)}</a>
+      <div class="subtle">retrieved ${escapeHtml(client.retrievedAt)} / ${client.retrievedDaysAgo.toLocaleString("en-US")}d old</div>
+    </td>
+    <td>${escapeHtml(client.notes ?? "")}</td>
+  </tr>`;
+}
+
+function readinessDevnetRow(devnet: DatasetReadiness["clientMatrix"]["devnets"][number]): string {
+  const participants = devnet.participants.length === 0
+    ? "none recorded"
+    : devnet.participants.map((participant) =>
+      `<div><strong>${escapeHtml(participant.role)}:${escapeHtml(participant.name)}</strong>${participant.image ? ` <code>${escapeHtml(participant.image)}</code>` : ""} ${statusBadge(participant.status)}</div>`
+    ).join("");
+  const specVersions = devnet.specVersions.length === 0
+    ? "none recorded"
+    : devnet.specVersions.map((specVersion) => {
+      const label = `${specVersion.name} ${specVersion.version}`;
+      return specVersion.sourceUrl
+        ? `<a href="${escapeAttr(specVersion.sourceUrl)}" rel="noopener">${escapeHtml(label)}</a>`
+        : escapeHtml(label);
+    }).join("<br>");
+
+  return `<tr>
+    <td><strong>${escapeHtml(devnet.name)}</strong>${devnet.notes ? `<div class="subtle">${escapeHtml(devnet.notes)}</div>` : ""}</td>
+    <td>${statusBadge(devnet.status)}</td>
+    <td>${participants}</td>
+    <td>${specVersions}</td>
+    <td>
+      <a href="${escapeAttr(devnet.sourceUrl)}" rel="noopener">source</a>
+      <div class="subtle">retrieved ${escapeHtml(devnet.retrievedAt)}</div>
+    </td>
+  </tr>`;
+}
+
+function readinessSourceRow(source: DatasetReadinessSource): string {
+  return `<tr>
+    <td>${escapeHtml(source.area)}</td>
+    <td><div class="path">${escapeHtml(source.label)}</div></td>
+    <td>
+      <a href="${escapeAttr(source.url)}" rel="noopener">${escapeHtml(source.type)}</a>
+      ${source.notes ? `<div class="subtle">${escapeHtml(source.notes)}</div>` : ""}
+    </td>
+    <td>
+      <div>retrieved ${escapeHtml(source.retrievedAt)} (${source.retrievedDaysAgo.toLocaleString("en-US")}d)</div>
+      ${source.sourceDate ? `<div class="subtle">source ${escapeHtml(source.sourceDate)} (${(source.sourceAgeDays ?? 0).toLocaleString("en-US")}d)</div>` : ""}
+    </td>
+    <td>${escapeHtml(source.claim)}</td>
+  </tr>`;
+}
+
+function statusBadge(status: string): string {
+  return `<span class="badge ${statusClass(status)}">${escapeHtml(status)}</span>`;
+}
+
+function statusClass(status: string): string {
+  if (status === "compatible" || status === "scheduled" || status === "ok") {
+    return "risk-low";
+  }
+  if (status === "incompatible" || status === "declined" || status === "failed") {
+    return "risk-high";
+  }
+  if (status === "partial" || status === "considered" || status === "proposed") {
+    return "risk-medium";
+  }
+  return "risk-unknown";
+}
+
+function countsText(counts: DatasetSummaryCount[]): string {
+  return counts.map((count) => `${count.key}: ${count.count}`).join(", ");
 }
 
 function comparisonSection(title: string, rows: ComparisonReport["changes"]["added"]): string {

@@ -461,6 +461,8 @@
         <a href="../../datasets/public-seed/reports.csv">reports.csv</a>
         <a href="../../datasets/public-seed/findings.csv">findings.csv</a>
         <a href="../../datasets/public-seed/summary.csv">summary.csv</a>
+        <a href="readiness.html">readiness</a>
+        <a href="../../datasets/public-seed/readiness.json">readiness.json</a>
         <a href="../../fixtures/provenance.json">fixture provenance</a>
       </div>
     </section>
@@ -550,6 +552,56 @@
           <span class="bar-label">public-repo</span>
           <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 7%"></span></span>
           <span class="bar-count">1</span>
+        </div>
+    </div>
+  </div>
+        <div class="chart">
+    <h3>EIPs by status</h3>
+    <div class="bar-list">
+      <div class="bar-row">
+          <span class="bar-label">declined</span>
+          <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 100%"></span></span>
+          <span class="bar-count">38</span>
+        </div>
+<div class="bar-row">
+          <span class="bar-label">considered</span>
+          <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 37%"></span></span>
+          <span class="bar-count">14</span>
+        </div>
+<div class="bar-row">
+          <span class="bar-label">scheduled</span>
+          <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 26%"></span></span>
+          <span class="bar-count">10</span>
+        </div>
+<div class="bar-row">
+          <span class="bar-label">proposed</span>
+          <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 8%"></span></span>
+          <span class="bar-count">3</span>
+        </div>
+    </div>
+  </div>
+        <div class="chart">
+    <h3>Clients by status</h3>
+    <div class="bar-list">
+      <div class="bar-row">
+          <span class="bar-label">partial</span>
+          <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 100%"></span></span>
+          <span class="bar-count">10</span>
+        </div>
+<div class="bar-row">
+          <span class="bar-label">compatible</span>
+          <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 30%"></span></span>
+          <span class="bar-count">3</span>
+        </div>
+<div class="bar-row">
+          <span class="bar-label">incompatible</span>
+          <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 30%"></span></span>
+          <span class="bar-count">3</span>
+        </div>
+<div class="bar-row">
+          <span class="bar-label">unknown</span>
+          <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: 30%"></span></span>
+          <span class="bar-count">3</span>
         </div>
     </div>
   </div>
@@ -2399,6 +2451,7 @@
         <li>This seed dataset is fixture-based and intentionally small; it is not an aggregate measurement of public-chain Glamsterdam readiness.</li>
 <li>Synthetic fixtures provide parser and detector coverage but do not prove real client behavior.</li>
 <li>Threshold-profile comparisons are structural report differences, not final fork gas deltas.</li>
+<li>Client and devnet readiness entries are source records only; devnet participation is not production compatibility.</li>
       </ul>
     </section>
   </main>

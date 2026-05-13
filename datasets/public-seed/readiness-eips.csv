@@ -1,0 +1,66 @@
+id,name,status,domain,detectors,notes
+EIP-7708,ETH transfers emit a log,scheduled,execution|indexer|monitoring,nativeEthTransferLogDetectors,Used for native ETH transfer visibility checks. Status refreshed from EIP-7773.
+EIP-7732,Enshrined Proposer-Builder Separation,scheduled,consensus|validator|builder,epbsDetectors,Used for validator and operator readiness checks around builder/API metadata.
+EIP-7778,Block Gas Accounting without Refunds,scheduled,execution|contracts,,Scheduled by EIP-7773. No detector currently claims exact refund or gas accounting behavior.
+EIP-7843,SLOTNUM opcode,scheduled,execution|contracts,,Scheduled by EIP-7773. No detector currently inspects SLOTNUM-specific bytecode behavior.
+EIP-7928,Block-Level Access Lists,scheduled,execution|indexer|monitoring,balDetectors,Used for BAL-related indexer and monitoring readiness checks. Do not hardcode final behavior in detector code.
+EIP-7954,Increase Maximum Contract Size,scheduled,execution|contracts,contractSizeDetectors,Used only to flag contract-size review areas. Final limits may change.
+EIP-7976,Increase Calldata Floor Cost,scheduled,execution|contracts,gasRepricingDetectors,Used for calldata-heavy trace and bytecode review prompts when calldata evidence is visible.
+EIP-7981,Increase Access List Cost,scheduled,execution|contracts,,Scheduled by EIP-7773. No detector currently infers exact access-list cost impact.
+EIP-8024,"Backward compatible SWAPN, DUPN, EXCHANGE",scheduled,execution|contracts,,Scheduled by EIP-7773. No detector currently scans for these opcodes.
+EIP-8037,State Creation Gas Cost Increase,scheduled,execution|contracts,stateCreationDetectors,Used for CREATE and CREATE2 review prompts. Do not infer exact cost changes.
+EIP-2780,Reduce intrinsic transaction gas,considered,execution|contracts,,Considered by EIP-7773. No detector currently infers native transfer fee changes.
+EIP-7688,Forward compatible consensus data structures,considered,consensus|validator,,Considered by EIP-7773. Tracked for operator awareness only.
+EIP-7904,General Repricing,considered,execution|contracts,gasRepricingDetectors,"Broad repricing candidate. Exact gas deltas must come from data, not hardcoded detector logic."
+EIP-7997,Deterministic Factory Predeploy,considered,execution|contracts,,Considered by EIP-7773. No detector currently infers app behavior from deterministic factory assumptions.
+EIP-8038,State-access gas cost increase,considered,execution|contracts,gasRepricingDetectors,Used for storage/account access review prompts. Do not infer exact cost changes.
+EIP-8045,Exclude slashed validators from proposing,considered,consensus|validator,,Considered by EIP-7773. Tracked for validator/operator readiness context.
+EIP-8061,Increase exit and consolidation churn,considered,consensus|validator,,Considered by EIP-7773 and present in the glamsterdam-devnet-2 spec as a new EIP.
+EIP-8080,Let exits use the consolidation queue,considered,consensus|validator,,Considered by EIP-7773. EF Soldogn recap says CL teams discussed and narrowed smaller Glamsterdam EIPs.
+EIP-8246,Remove SELFDESTRUCT Burn,considered,execution|contracts,,Considered by EIP-7773. No detector currently scans SELFDESTRUCT burn semantics.
+EIP-7975,eth/70 - partial block receipt lists,considered,networking|indexer,,Networking EIP considered by EIP-7773. Tracked for indexer and sync-tool awareness.
+EIP-8070,eth/72 - Sparse Blobpool,considered,networking,,Networking EIP considered by EIP-7773.
+EIP-8136,Cell-Level Deltas for Data Column Broadcast,considered,networking,,Networking EIP considered by EIP-7773.
+EIP-8159,eth/71 - Block Access List Exchange,considered,networking|indexer|monitoring,,Networking companion to EIP-7928. Tracked for tooling that retrieves BALs from peers.
+EIP-2926,Chunk-based code merkelization,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-5920,PAY opcode,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-6404,SSZ transactions,declined,execution,,Declined for inclusion by EIP-7773.
+EIP-6466,SSZ receipts,declined,execution|indexer,,Declined for inclusion by EIP-7773.
+EIP-7619,Precompile Falcon512 generic verifier,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-7668,Remove bloom filters,declined,execution|indexer,,Declined for inclusion by EIP-7773.
+EIP-7686,Linear EVM memory limits,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-7692,EVM Object Format (EOFv1) Meta,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-7745,Trustless log index,declined,execution|indexer,,Declined for inclusion by EIP-7773.
+EIP-7782,Reduce Block Latency,declined,consensus|validator,,Declined for inclusion by EIP-7773.
+EIP-7791,GAS2ETH opcode,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-7793,Conditional Transactions,declined,execution,,Declined for inclusion by EIP-7773.
+EIP-7805,Fork-choice enforced Inclusion Lists (FOCIL),declined,consensus|validator,,Declined for Glamsterdam by EIP-7773.
+EIP-7819,SETDELEGATE instruction,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-7872,Max blob flag for local builders,declined,builder|consensus,,Declined for inclusion by EIP-7773.
+EIP-7886,Delayed execution,declined,execution|consensus,,Declined for inclusion by EIP-7773.
+EIP-7903,Remove Initcode Size Limit,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-7907,Meter Contract Code Size And Increase Limit,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-7919,Pureth Meta,declined,execution|consensus,,Declined for inclusion by EIP-7773.
+EIP-7923,"Linear, Page-Based Memory Costing",declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-7932,Secondary Signature Algorithms,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-7937,EVM64 - 64-bit mode EVM opcodes,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-7942,Available Attestation,declined,consensus|validator,,Declined for inclusion by EIP-7773.
+EIP-7949,Schema for genesis.json files,declined,tooling,,Declined for inclusion by EIP-7773.
+EIP-7971,Hard Limits for Transient Storage,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-7973,Warm Account Write Metering,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-7979,Call and Return Opcodes for the EVM,proposed,execution|contracts,,"Listed as proposed for inclusion by EIP-7773, despite also appearing in the declined section."
+EIP-8011,Multidimensional Gas Metering,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-8013,Static relative jumps and calls for the EVM,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-8030,P256 transaction support,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-8032,Size-Based Storage Gas Pricing,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-8051,Precompile for ML-DSA signature verification,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-8053,Milli-gas for High-precision Gas Metering,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-8057,Inter-Block Temporal Locality Gas Discounts,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-8058,Contract Bytecode Deduplication Discount,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-8059,Gas Units Rebase for High-precision Metering,declined,execution|contracts,,Declined for inclusion by EIP-7773.
+EIP-8062,Add sweep withdrawal fee for 0x01 validators,declined,consensus|validator,,Declined for inclusion by EIP-7773.
+EIP-8068,Neutral effective balance design,declined,consensus|validator,,Declined for inclusion by EIP-7773.
+EIP-8071,Prevent using consolidations as withdrawals,declined,consensus|validator,,Declined for inclusion by EIP-7773.
+EIP-7610,Revert creation in case of non-empty storage,proposed,execution|contracts,,Proposed for inclusion by EIP-7773.
+EIP-8163,Reserve EXTENSION (0xae) opcode,proposed,execution|contracts,,Proposed for inclusion by EIP-7773.
+GAS-REPRICING,Glamsterdam gas repricing candidates,considered,execution|contracts,gasRepricingDetectors|stateCreationDetectors,Umbrella entry for broad heuristics until exact final parameters are confirmed.

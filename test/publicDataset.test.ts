@@ -4,6 +4,9 @@ import { fileURLToPath } from "node:url";
 import { z } from "zod";
 import { describe, expect, it } from "vitest";
 import {
+  checkClientMatrix,
+  loadClientMatrix,
+  loadEipRegistry,
   loadFixtureProvenance,
   validateCompatibilityReport,
   validateComparisonReport
@@ -41,10 +44,15 @@ const publicSeedManifestSchema = z.object({
   toolVersion: z.string().min(1),
   sourceManifest: z.literal("fixtures/provenance.json"),
   summary: z.literal("summary.json"),
+  readiness: z.literal("readiness.json"),
   csvExports: z.object({
     reports: z.literal("reports.csv"),
     findings: z.literal("findings.csv"),
-    summary: z.literal("summary.csv")
+    summary: z.literal("summary.csv"),
+    readinessClients: z.literal("readiness-clients.csv"),
+    readinessDevnets: z.literal("readiness-devnets.csv"),
+    readinessEips: z.literal("readiness-eips.csv"),
+    readinessSources: z.literal("readiness-sources.csv")
   }),
   thresholdProfiles: z.array(z.object({
     name: z.enum(["default", "research"]),
@@ -79,16 +87,114 @@ const publicSeedSummarySchema = z.object({
   })
 });
 
+const readinessSourceSchema = z.object({
+  area: z.enum(["eip-registry", "client-matrix"]),
+  label: z.string().min(1),
+  type: z.string().min(1),
+  url: z.string().url(),
+  sourceDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  retrievedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  retrievedDaysAgo: z.number().int().nonnegative(),
+  sourceAgeDays: z.number().int().nonnegative().optional(),
+  claim: z.string().min(1),
+  notes: z.string().optional()
+});
+
+const publicSeedReadinessSchema = z.object({
+  schemaVersion: z.literal(1),
+  name: z.literal("public-seed-readiness"),
+  lastUpdated: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  toolVersion: z.string().min(1),
+  fork: z.literal("glamsterdam"),
+  eipRegistry: z.object({
+    lastUpdated: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    sourceCount: z.number().int().nonnegative(),
+    countsByStatus: z.array(datasetSummaryCountSchema),
+    sources: z.array(readinessSourceSchema).min(1),
+    eips: z.array(z.object({
+      id: z.string().min(1),
+      name: z.string().min(1),
+      status: z.enum(["scheduled", "considered", "proposed", "declined", "superseded", "unknown"]),
+      domain: z.array(z.string().min(1)).min(1),
+      detectors: z.array(z.string()),
+      notes: z.string().optional()
+    })).min(1)
+  }),
+  clientMatrix: z.object({
+    lastUpdated: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    sourceCount: z.number().int().nonnegative(),
+    countsByStatus: z.array(datasetSummaryCountSchema),
+    countsByRole: z.array(datasetSummaryCountSchema),
+    check: z.object({
+      ok: z.literal(true),
+      warnings: z.array(z.string())
+    }),
+    sources: z.array(readinessSourceSchema).min(1),
+    clients: z.array(z.object({
+      role: z.string().min(1),
+      name: z.string().min(1),
+      version: z.string().min(1),
+      status: z.enum(["compatible", "incompatible", "partial", "unknown"]),
+      sourceType: z.string().min(1),
+      sourceUrl: z.string().url(),
+      retrievedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+      retrievedDaysAgo: z.number().int().nonnegative(),
+      notes: z.string().optional()
+    })).min(1),
+    devnets: z.array(z.object({
+      name: z.string().min(1),
+      status: z.string().min(1),
+      sourceUrl: z.string().url(),
+      retrievedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+      participants: z.array(z.object({
+        devnet: z.string().min(1),
+        devnetStatus: z.string().min(1),
+        role: z.string().min(1),
+        name: z.string().min(1),
+        image: z.string().min(1).optional(),
+        status: z.string().min(1),
+        notes: z.string().optional()
+      })),
+      specVersions: z.array(z.object({
+        devnet: z.string().min(1),
+        name: z.string().min(1),
+        version: z.string().min(1),
+        sourceUrl: z.string().url().optional(),
+        retrievedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional()
+      })),
+      notes: z.string().optional()
+    })).min(1)
+  }),
+  limitations: z.array(z.string().min(1)).min(1)
+});
+
 const datasetManifest = publicSeedManifestSchema.parse(
   JSON.parse(readFileSync(resolve(rootDir, "datasets/public-seed/manifest.json"), "utf8"))
 );
 const datasetSummary = publicSeedSummarySchema.parse(
   JSON.parse(readFileSync(resolve(rootDir, "datasets/public-seed/summary.json"), "utf8"))
 );
+const datasetReadiness = publicSeedReadinessSchema.parse(
+  JSON.parse(readFileSync(resolve(rootDir, "datasets/public-seed/readiness.json"), "utf8"))
+);
 const fixtureManifest = loadFixtureProvenance(resolve(rootDir, "fixtures/provenance.json"));
+const eipRegistry = loadEipRegistry(resolve(rootDir, "data/eips/glamsterdam.json"));
+const clientMatrix = loadClientMatrix(resolve(rootDir, "data/client-compat/clients.example.json"));
 const reportCsvRows = parseCsvFile(resolve(rootDir, "datasets/public-seed", datasetManifest.csvExports.reports));
 const findingCsvRows = parseCsvFile(resolve(rootDir, "datasets/public-seed", datasetManifest.csvExports.findings));
 const summaryCsvRows = parseCsvFile(resolve(rootDir, "datasets/public-seed", datasetManifest.csvExports.summary));
+const readinessClientCsvRows = parseCsvFile(
+  resolve(rootDir, "datasets/public-seed", datasetManifest.csvExports.readinessClients)
+);
+const readinessDevnetCsvRows = parseCsvFile(
+  resolve(rootDir, "datasets/public-seed", datasetManifest.csvExports.readinessDevnets)
+);
+const readinessEipCsvRows = parseCsvFile(
+  resolve(rootDir, "datasets/public-seed", datasetManifest.csvExports.readinessEips)
+);
+const readinessSourceCsvRows = parseCsvFile(
+  resolve(rootDir, "datasets/public-seed", datasetManifest.csvExports.readinessSources)
+);
 
 describe("public seed dataset", () => {
   it("has default reports for every scannable fixture", () => {
@@ -217,6 +323,97 @@ describe("public seed dataset", () => {
       ...summaryCountRows("findingsById", datasetSummary.counts.findingsById)
     ]);
   });
+
+  it("exports sourced readiness JSON aligned with the registry and client matrix", () => {
+    const matrixCheck = checkClientMatrix(clientMatrix);
+    const expectedClients = clientMatrix.clients.flatMap((client) =>
+      client.versions.map((version) => ({
+        role: client.role,
+        name: client.name,
+        version: version.version,
+        status: version.status,
+        sourceType: version.source.type,
+        sourceUrl: version.source.url,
+        retrievedAt: version.source.retrievedAt,
+        retrievedDaysAgo: daysBetween(datasetReadiness.lastUpdated, version.source.retrievedAt),
+        ...(version.notes ? { notes: version.notes } : {})
+      }))
+    ).sort((left, right) =>
+      left.role.localeCompare(right.role)
+        || left.name.localeCompare(right.name)
+        || left.version.localeCompare(right.version)
+    );
+
+    expect(existsSync(resolve(rootDir, "datasets/public-seed", datasetManifest.readiness))).toBe(true);
+    expect(datasetReadiness.eipRegistry.lastUpdated).toBe(eipRegistry.lastUpdated);
+    expect(datasetReadiness.eipRegistry.sourceCount).toBe(eipRegistry.sources.length);
+    expect(datasetReadiness.eipRegistry.countsByStatus).toEqual(countBy(eipRegistry.eips.map((entry) => entry.status)));
+    expect(datasetReadiness.eipRegistry.eips).toEqual(
+      eipRegistry.eips.map((entry) => ({
+        id: entry.id,
+        name: entry.name,
+        status: entry.status,
+        domain: entry.domain,
+        detectors: entry.detectors,
+        notes: entry.notes
+      }))
+    );
+    expect(datasetReadiness.eipRegistry.eips.some((entry) => entry.status === "proposed")).toBe(true);
+    expect(datasetReadiness.clientMatrix.check).toEqual({ ok: matrixCheck.ok, warnings: matrixCheck.warnings });
+    expect(datasetReadiness.clientMatrix.clients).toEqual(expectedClients);
+    expect(datasetReadiness.clientMatrix.countsByStatus).toEqual(
+      countBy(expectedClients.map((entry) => entry.status))
+    );
+    expect(datasetReadiness.clientMatrix.countsByRole).toEqual(
+      countBy(expectedClients.map((entry) => entry.role))
+    );
+    expect(datasetReadiness.clientMatrix.clients.every((entry) =>
+      !(entry.status === "compatible" && entry.sourceType.startsWith("public-"))
+    )).toBe(true);
+  });
+
+  it("exports readiness CSV rows aligned with readiness JSON", () => {
+    expect(readinessClientCsvRows).toEqual(
+      datasetReadiness.clientMatrix.clients.map((client) => ({
+        role: client.role,
+        name: client.name,
+        version: client.version,
+        status: client.status,
+        sourceType: client.sourceType,
+        sourceUrl: client.sourceUrl,
+        retrievedAt: client.retrievedAt,
+        retrievedDaysAgo: String(client.retrievedDaysAgo),
+        notes: client.notes ?? ""
+      }))
+    );
+    expect(readinessEipCsvRows).toEqual(
+      datasetReadiness.eipRegistry.eips.map((entry) => ({
+        id: entry.id,
+        name: entry.name,
+        status: entry.status,
+        domain: entry.domain.join("|"),
+        detectors: entry.detectors.join("|"),
+        notes: entry.notes ?? ""
+      }))
+    );
+    expect(readinessSourceCsvRows).toEqual(
+      [...datasetReadiness.eipRegistry.sources, ...datasetReadiness.clientMatrix.sources].map((source) => ({
+        area: source.area,
+        label: source.label,
+        type: source.type,
+        url: source.url,
+        sourceDate: source.sourceDate ?? "",
+        retrievedAt: source.retrievedAt,
+        retrievedDaysAgo: String(source.retrievedDaysAgo),
+        sourceAgeDays: source.sourceAgeDays === undefined ? "" : String(source.sourceAgeDays),
+        claim: source.claim,
+        notes: source.notes ?? ""
+      }))
+    );
+    expect(readinessDevnetCsvRows.some((row) =>
+      row.devnet === "glamsterdam-devnet-2" && row.image === "ethpandaops/geth:bal-devnet-6"
+    )).toBe(true);
+  });
 });
 
 function countBy(values: string[]): Array<{ key: string; count: number }> {
@@ -239,6 +436,12 @@ function summaryCountRows(
     key: count.key,
     count: String(count.count)
   }));
+}
+
+function daysBetween(latest: string, earlier: string): number {
+  const end = Date.parse(`${latest}T00:00:00Z`);
+  const start = Date.parse(`${earlier}T00:00:00Z`);
+  return Math.max(0, Math.round((end - start) / 86_400_000));
 }
 
 function parseCsvFile(path: string): Array<Record<string, string>> {

@@ -45,7 +45,7 @@ exports[`golden report snapshots > keeps Besu-style trace JSON report structure 
   ],
   "assumptions": [
     "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -176,7 +176,7 @@ exports[`golden report snapshots > keeps ENS Registry runtime bytecode JSON repo
   ],
   "assumptions": [
     "Input was interpreted as EVM bytecode after removing whitespace and an optional 0x prefix.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -350,7 +350,7 @@ exports[`golden report snapshots > keeps ERC-4337 EntryPoint runtime bytecode JS
   ],
   "assumptions": [
     "Input was interpreted as EVM bytecode after removing whitespace and an optional 0x prefix.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -429,7 +429,7 @@ exports[`golden report snapshots > keeps Foundry trace JSON report structure sta
   ],
   "assumptions": [
     "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -511,7 +511,7 @@ exports[`golden report snapshots > keeps Hardhat trace JSON report structure sta
   ],
   "assumptions": [
     "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -613,7 +613,7 @@ exports[`golden report snapshots > keeps Multicall3 runtime bytecode JSON report
   ],
   "assumptions": [
     "Input was interpreted as EVM bytecode after removing whitespace and an optional 0x prefix.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -716,7 +716,7 @@ exports[`golden report snapshots > keeps Nethermind-style trace JSON report stru
   ],
   "assumptions": [
     "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -869,7 +869,7 @@ exports[`golden report snapshots > keeps Safe Proxy Factory runtime bytecode JSO
   ],
   "assumptions": [
     "Input was interpreted as EVM bytecode after removing whitespace and an optional 0x prefix.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -1000,7 +1000,7 @@ exports[`golden report snapshots > keeps USDC proxy runtime bytecode JSON report
   ],
   "assumptions": [
     "Input was interpreted as EVM bytecode after removing whitespace and an optional 0x prefix.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -1176,7 +1176,7 @@ exports[`golden report snapshots > keeps Uniswap V2 Factory runtime bytecode JSO
   ],
   "assumptions": [
     "Input was interpreted as EVM bytecode after removing whitespace and an optional 0x prefix.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -1307,7 +1307,7 @@ exports[`golden report snapshots > keeps WETH9 runtime bytecode JSON report stru
   ],
   "assumptions": [
     "Input was interpreted as EVM bytecode after removing whitespace and an optional 0x prefix.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -1420,7 +1420,7 @@ Recommendation: Use this report to choose transactions for trace replay and benc
 ## Assumptions
 
 - Input was interpreted as EVM bytecode after removing whitespace and an optional 0x prefix.
-- The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.
+- The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.
 - Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters.
 
 ## Limitations
@@ -1522,7 +1522,7 @@ exports[`golden report snapshots > keeps call-tracer tree JSON report structure 
   ],
   "assumptions": [
     "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -1555,7 +1555,7 @@ exports[`golden report snapshots > keeps complete validator config JSON report s
   "assumptions": [
     "Validator/operator readiness was checked from a local JSON/YAML config only.",
     "Client compatibility was compared against data/client-compat/clients.example.json. Unknown entries are reported without guessing.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change."
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change."
   ],
   "limitations": [
     "This scanner does not verify live node state, command-line flags, environment variables, firewall rules, or remote service health.",
@@ -1635,7 +1635,7 @@ exports[`golden report snapshots > keeps geth structLogs JSON report structure s
   ],
   "assumptions": [
     "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -1686,7 +1686,7 @@ exports[`golden report snapshots > keeps mixed explorer indexer JSON report stru
   ],
   "assumptions": [
     "JSON and YAML configs were parsed statically; subgraph-style handler fields were summarized when present.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change."
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change."
   ],
   "limitations": [
     "Static indexer configuration cannot prove runtime indexing behavior.",
@@ -1782,7 +1782,7 @@ exports[`golden report snapshots > keeps public devnet validator config JSON rep
   "assumptions": [
     "Validator/operator readiness was checked from a local JSON/YAML config only.",
     "Client compatibility was compared against data/client-compat/clients.example.json. Unknown entries are reported without guessing.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change."
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change."
   ],
   "limitations": [
     "This scanner does not verify live node state, command-line flags, environment variables, firewall rules, or remote service health.",
@@ -1915,7 +1915,7 @@ exports[`golden report snapshots > keeps real Besu Tracoor trace JSON report str
   ],
   "assumptions": [
     "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -2050,7 +2050,7 @@ exports[`golden report snapshots > keeps real Nethermind Tracoor trace JSON repo
   ],
   "assumptions": [
     "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -2157,7 +2157,7 @@ exports[`golden report snapshots > keeps real dRPC call-tracer JSON report struc
   ],
   "assumptions": [
     "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -2264,7 +2264,7 @@ exports[`golden report snapshots > keeps real geth Tracoor trace JSON report str
   ],
   "assumptions": [
     "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -2371,7 +2371,7 @@ exports[`golden report snapshots > keeps real reth Tracoor trace JSON report str
   ],
   "assumptions": [
     "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -2500,7 +2500,7 @@ exports[`golden report snapshots > keeps reduced public subgraph indexer JSON re
   ],
   "assumptions": [
     "JSON and YAML configs were parsed statically; subgraph-style handler fields were summarized when present.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change."
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change."
   ],
   "limitations": [
     "Static indexer configuration cannot prove runtime indexing behavior.",
@@ -2653,7 +2653,7 @@ exports[`golden report snapshots > keeps trace JSON report structure stable 1`] 
   ],
   "assumptions": [
     "Trace input was normalized from an array of steps, a JSON-RPC result wrapper, a structLogs object, this project's normalized format, an action trace array, or a call-tracer-like calls tree.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [
@@ -2750,7 +2750,7 @@ exports[`golden report snapshots > keeps validator builder-gap JSON report struc
   "assumptions": [
     "Validator/operator readiness was checked from a local JSON/YAML config only.",
     "Client compatibility was compared against data/client-compat/clients.example.json. Unknown entries are reported without guessing.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change."
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change."
   ],
   "limitations": [
     "This scanner does not verify live node state, command-line flags, environment variables, firewall rules, or remote service health.",

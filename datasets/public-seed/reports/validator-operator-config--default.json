@@ -144,7 +144,7 @@
   "assumptions": [
     "Validator/operator readiness was checked from a local JSON/YAML config only.",
     "Client compatibility was compared against data/client-compat/clients.example.json. Unknown entries are reported without guessing.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change."
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change."
   ],
   "limitations": [
     "This scanner does not verify live node state, command-line flags, environment variables, firewall rules, or remote service health.",

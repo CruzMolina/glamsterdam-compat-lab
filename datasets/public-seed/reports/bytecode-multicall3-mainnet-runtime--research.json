@@ -113,7 +113,7 @@
   ],
   "assumptions": [
     "Input was interpreted as EVM bytecode after removing whitespace and an optional 0x prefix.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change.",
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change.",
     "Detector thresholds are dated 2026-05-09 and are MVP heuristics, not protocol gas parameters."
   ],
   "limitations": [

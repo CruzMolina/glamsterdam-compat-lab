@@ -15,6 +15,7 @@ describe("public seed site", () => {
       const html = readFileSync(htmlPath, "utf8");
       const manifest = JSON.parse(readFileSync(resolve(rootDir, "datasets/public-seed/manifest.json"), "utf8"));
       const summary = JSON.parse(readFileSync(resolve(rootDir, "datasets/public-seed/summary.json"), "utf8"));
+      const readiness = JSON.parse(readFileSync(resolve(rootDir, "datasets/public-seed/readiness.json"), "utf8"));
       const reportEntry = manifest.reports.find((entry: { sourceFixture: string; thresholdProfile: string }) =>
         entry.sourceFixture === "fixtures/bytecode/storage-heavy.hex" && entry.thresholdProfile === "default"
       ) ?? manifest.reports[0];
@@ -28,8 +29,10 @@ describe("public seed site", () => {
       const reportDetailHtml = readFileSync(resolve(outputDir, reportDetailPath), "utf8");
       const comparisonDetailHtml = readFileSync(resolve(outputDir, comparisonDetailPath), "utf8");
       const findingDetailHtml = readFileSync(resolve(outputDir, findingDetailPath), "utf8");
+      const readinessHtml = readFileSync(resolve(outputDir, "readiness.html"), "utf8");
 
       expect(existsSync(htmlPath)).toBe(true);
+      expect(existsSync(resolve(outputDir, "readiness.html"))).toBe(true);
       expect(result.reportCount).toBe(manifest.reports.length);
       expect(result.comparisonCount).toBe(manifest.comparisons.length);
       expect(result.findingCount).toBe(summary.counts.findingsById.length);
@@ -54,6 +57,8 @@ describe("public seed site", () => {
       expect(html).toContain(reportDetailPath);
       expect(html).toContain(comparisonDetailPath);
       expect(html).toContain(findingDetailPath);
+      expect(html).toContain("readiness.html");
+      expect(html).toContain("../../datasets/public-seed/readiness.json");
       expect(html).toContain("../../datasets/public-seed/comparisons/");
       expect(html).toContain("../../fixtures/provenance.json");
       expect(html).not.toMatch(/<script\b[^>]*\bsrc=/i);
@@ -85,6 +90,20 @@ describe("public seed site", () => {
       expect(findingDetailHtml).toContain("../comparisons/");
       expect(findingDetailHtml).not.toMatch(/<script\b[^>]*\bsrc=/i);
       expect(findingDetailHtml).not.toMatch(/<link\b[^>]*\bhref=/i);
+
+      expect(readinessHtml).toContain("Readiness Sources");
+      expect(readinessHtml).toContain("Source Freshness");
+      expect(readinessHtml).toContain("EIP Status");
+      expect(readinessHtml).toContain("Client Matrix");
+      expect(readinessHtml).toContain("Devnets");
+      expect(readinessHtml).toContain("Source Register");
+      expect(readinessHtml).toContain("EIP-7773");
+      expect(readinessHtml).toContain("glamsterdam-devnet-2");
+      expect(readinessHtml).toContain("ethpandaops/geth:bal-devnet-6");
+      expect(readinessHtml).toContain(readiness.eipRegistry.lastUpdated);
+      expect(readinessHtml).toContain("../../datasets/public-seed/readiness-clients.csv");
+      expect(readinessHtml).not.toMatch(/<script\b[^>]*\bsrc=/i);
+      expect(readinessHtml).not.toMatch(/<link\b[^>]*\bhref=/i);
 
       expectSiteInternalLinksToResolve(outputDir);
     });

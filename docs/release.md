@@ -43,6 +43,10 @@ npm Trusted Publishing uses GitHub Actions OIDC instead of a long-lived npm toke
 
 The workflow is intentionally tokenless. Keep repository-level and `npm-publish` environment `NPM_TOKEN` secrets absent. Dependency install, tests, build, and package checks run in a read-only `preflight` job without `id-token: write`; only the isolated `publish` job has `id-token: write`, and that job only downloads the preflight tarball and invokes npm publish.
 
+Keep both release jobs on Node 24 and keep artifact transfer on Node 24-ready action majors: `actions/upload-artifact@v7` or newer for the preflight tarball upload, and `actions/download-artifact@v8` or newer for the isolated publish job. The readiness helper enforces these minimums so future workflow edits do not reintroduce the GitHub Actions Node 20 deprecation warning path.
+
+As of the latest dry-run verification, `actions/download-artifact@v8` may still emit an upstream Node `Buffer()` deprecation warning internally. Treat that as distinct from the GitHub Actions Node 20 deprecation annotation; keep watching upstream action releases, but do not downgrade artifact actions to suppress it.
+
 The package is configured on npm with:
 
 - Provider: GitHub Actions

@@ -7,6 +7,8 @@ The dataset lives under `datasets/public-seed/` and is regenerated and checked w
 ```sh
 pnpm dataset:generate
 pnpm dataset:check
+pnpm site:generate
+pnpm site:check
 pnpm test
 pnpm build
 ```
@@ -22,6 +24,15 @@ Treat the dataset as reproducibility scaffolding. It is not an aggregate measure
 - `summary.csv`: flattened count rows from `summary.json`.
 - `reports/`: generated JSON compatibility reports.
 - `comparisons/`: generated JSON default-vs-research comparison reports for bytecode and trace fixtures.
+
+The static dataset browser lives under `site/public-seed/`. It is generated from the committed dataset files, does not fetch remote scripts or styles, and can be opened directly from `site/public-seed/index.html`.
+
+```sh
+pnpm site:generate
+pnpm site:check
+```
+
+The first page includes summary counts, generated bar charts, report risk and fixture-kind filters, threshold-profile filtering, text search across fixture paths, report paths, finding IDs, and finding titles, plus links to JSON reports, comparison files, source fixtures, and fixture provenance.
 
 ## CSV Headers
 
@@ -91,6 +102,8 @@ Use `summary.csv` as a denormalized view of `summary.json`. For example, `catego
 ## Stability
 
 Run `pnpm dataset:check` before opening a PR that changes fixtures, scanners, thresholds, registry data, or the client compatibility matrix. The check regenerates the dataset into a temporary directory and compares it with `datasets/public-seed/`. If it reports stale, missing, or extra committed files, run `pnpm dataset:generate` and review the generated artifact changes.
+
+Run `pnpm site:check` before opening a PR that changes committed dataset artifacts or the site generator. The check regenerates the static site into a temporary directory and compares it with `site/public-seed/`. If it reports stale, missing, or extra committed files, run `pnpm site:generate` and review the generated site changes.
 
 These fields are intended to be stable enough for downstream scripts:
 

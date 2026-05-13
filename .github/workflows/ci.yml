@@ -40,6 +40,9 @@ jobs:
       - name: Check public seed dataset
         run: pnpm dataset:check
 
+      - name: Check public seed site
+        run: pnpm site:check
+
       - name: Build
         run: pnpm build
 

@@ -76,10 +76,11 @@ Fixture provenance lives in [fixtures/provenance.json](fixtures/provenance.json)
 
 See [docs/dataset.md](docs/dataset.md) for the dataset file contract and [examples/public-seed-analysis.md](examples/public-seed-analysis.md) for lightweight analysis snippets.
 
-Regenerate it with:
+Regenerate and verify it with:
 
 ```sh
 pnpm dataset:generate
+pnpm dataset:check
 ```
 
 ## What the scanners can detect

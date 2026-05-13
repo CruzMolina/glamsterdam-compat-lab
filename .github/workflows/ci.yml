@@ -37,6 +37,9 @@ jobs:
       - name: Check client compatibility matrix
         run: pnpm client-matrix:check
 
+      - name: Check public seed dataset
+        run: pnpm dataset:check
+
       - name: Build
         run: pnpm build
 

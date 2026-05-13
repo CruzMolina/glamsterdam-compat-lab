@@ -20,6 +20,12 @@ The seed is intentionally small. It is meant to prove the dataset workflow, not 
 pnpm dataset:generate
 ```
 
+Check committed artifacts are fresh with:
+
+```sh
+pnpm dataset:check
+```
+
 Then run:
 
 ```sh

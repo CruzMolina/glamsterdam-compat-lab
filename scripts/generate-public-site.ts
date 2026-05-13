@@ -111,12 +111,28 @@ interface SiteComparisonRow extends DatasetComparisonEntry {
   comparisonReport: ComparisonReport;
 }
 
+interface SiteFindingOccurrence {
+  report: SiteReportRow;
+  finding: CompatibilityReport["findings"][number];
+  findingIndex: number;
+  anchorId: string;
+}
+
+interface SiteFindingPage {
+  findingId: string;
+  detailPath: string;
+  detailUrl: string;
+  title: string;
+  occurrences: SiteFindingOccurrence[];
+}
+
 interface SiteData {
   generatedAt: string;
   manifest: Pick<PublicSeedManifest, "lastUpdated" | "toolVersion" | "limitations">;
   summary: DatasetSummary;
   reports: SiteReportRow[];
   comparisons: SiteComparisonRow[];
+  findings: SiteFindingPage[];
 }
 
 export interface GeneratePublicSiteOptions {
@@ -128,6 +144,7 @@ export interface GeneratePublicSiteResult {
   outputDir: string;
   reportCount: number;
   comparisonCount: number;
+  findingCount: number;
 }
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -226,6 +243,7 @@ export function generatePublicSite(options: GeneratePublicSiteOptions = {}): Gen
       comparisonReport
     };
   });
+  const findings = buildFindingPages(reports);
 
   const siteData: SiteData = {
     generatedAt,
@@ -236,7 +254,8 @@ export function generatePublicSite(options: GeneratePublicSiteOptions = {}): Gen
     },
     summary,
     reports,
-    comparisons
+    comparisons,
+    findings
   };
 
   rmSync(outputDir, { recursive: true, force: true });
@@ -248,16 +267,57 @@ export function generatePublicSite(options: GeneratePublicSiteOptions = {}): Gen
   for (const comparison of comparisons) {
     writeSiteFile(outputDir, comparison.detailPath, renderComparisonDetailPage(siteData, comparison));
   }
+  for (const finding of findings) {
+    writeSiteFile(outputDir, finding.detailPath, renderFindingDetailPage(siteData, finding));
+  }
 
   if (!options.quiet) {
-    process.stdout.write(`Generated public seed site with ${reports.length} reports and ${comparisons.length} comparisons.\n`);
+    process.stdout.write(
+      `Generated public seed site with ${reports.length} reports, ${comparisons.length} comparisons, and ${findings.length} finding pages.\n`
+    );
   }
 
   return {
     outputDir,
     reportCount: reports.length,
-    comparisonCount: comparisons.length
+    comparisonCount: comparisons.length,
+    findingCount: findings.length
   };
+}
+
+function buildFindingPages(reports: SiteReportRow[]): SiteFindingPage[] {
+  const findingsById = new Map<string, SiteFindingPage>();
+
+  for (const report of reports) {
+    report.compatibilityReport.findings.forEach((finding, index) => {
+      const existing = findingsById.get(finding.id);
+      const page = existing ?? {
+        findingId: finding.id,
+        detailPath: findingPathForId(finding.id),
+        detailUrl: siteUrl(findingPathForId(finding.id)),
+        title: finding.title,
+        occurrences: []
+      };
+
+      page.occurrences.push({
+        report,
+        finding,
+        findingIndex: index + 1,
+        anchorId: findingAnchorId(finding.id)
+      });
+      findingsById.set(finding.id, page);
+    });
+  }
+
+  return [...findingsById.values()]
+    .map((finding) => ({
+      ...finding,
+      occurrences: [...finding.occurrences].sort((left, right) =>
+        left.report.sourceFixture.localeCompare(right.report.sourceFixture)
+          || left.report.thresholdProfile.localeCompare(right.report.thresholdProfile)
+      )
+    }))
+    .sort((left, right) => left.findingId.localeCompare(right.findingId));
 }
 
 function readJsonFile<T>(path: string): T {
@@ -292,6 +352,21 @@ function siteUrl(path: string): string {
 
 function htmlPathForDatasetPath(path: string): string {
   return path.replace(/\.json$/, ".html");
+}
+
+function findingPathForId(findingId: string): string {
+  return `findings/${slugPathSegment(findingId)}.html`;
+}
+
+function findingAnchorId(findingId: string): string {
+  return `finding-${slugPathSegment(findingId)}`;
+}
+
+function slugPathSegment(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9.-]+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 function renderSite(data: SiteData): string {
@@ -502,6 +577,11 @@ function renderSite(data: SiteData): string {
       min-width: 0;
       overflow-wrap: anywhere;
       color: var(--text);
+    }
+
+    .bar-label a,
+    .finding-list a {
+      color: var(--blue);
     }
 
     .bar-track {
@@ -769,7 +849,7 @@ function renderSite(data: SiteData): string {
         ${chart("Reports by fixture kind", sortCounts(data.summary.counts.reportsByFixtureKind))}
         ${chart("Reports by threshold", sortCounts(data.summary.counts.reportsByThresholdProfile))}
         ${chart("Fixtures by source", sortCounts(data.summary.counts.fixturesBySourceType))}
-        ${chart("Most common finding IDs", topFindings, " chart-wide")}
+        ${chart("Most common finding IDs", topFindings, " chart-wide", (findingId) => findingPageUrl(findingId))}
       </div>
     </section>
 
@@ -951,15 +1031,23 @@ function stat(label: string, value: string | number): string {
   return `<div class="stat"><span class="stat-value">${escapeHtml(displayValue)}</span><span class="stat-label">${escapeHtml(label)}</span></div>`;
 }
 
-function chart(title: string, counts: DatasetSummaryCount[], className = ""): string {
+function chart(
+  title: string,
+  counts: DatasetSummaryCount[],
+  className = "",
+  linkForKey?: (key: string) => string
+): string {
   const max = Math.max(...counts.map((count) => count.count), 1);
   return `<div class="chart${className}">
     <h3>${escapeHtml(title)}</h3>
     <div class="bar-list">
       ${counts.map((count) => {
         const width = Math.max(3, Math.round((count.count / max) * 100));
+        const label = linkForKey
+          ? `<a href="${escapeAttr(linkForKey(count.key))}">${escapeHtml(count.key)}</a>`
+          : escapeHtml(count.key);
         return `<div class="bar-row">
-          <span class="bar-label">${escapeHtml(count.key)}</span>
+          <span class="bar-label">${label}</span>
           <span class="bar-track" aria-hidden="true"><span class="bar" style="--bar-width: ${width}%"></span></span>
           <span class="bar-count">${count.count.toLocaleString("en-US")}</span>
         </div>`;
@@ -992,7 +1080,7 @@ function reportRow(report: SiteReportRow): string {
     <td><span class="badge risk-${escapeAttr(report.risk)}">${escapeHtml(report.risk)}</span></td>
     <td>
       <strong>${report.findingCount.toLocaleString("en-US")}</strong>
-      <div class="finding-list">${escapeHtml(report.findingIds.join(", "))}</div>
+      <div class="finding-list">${findingIdLinks(report.findingIds, "index")}</div>
     </td>
     <td>
       <div class="cell-actions">
@@ -1136,6 +1224,56 @@ function renderComparisonDetailPage(data: SiteData, comparison: SiteComparisonRo
   return renderDetailShell({
     title: `Comparison: ${comparison.sourceFixture}`,
     subtitle: "default vs research threshold profiles",
+    data,
+    body
+  });
+}
+
+function renderFindingDetailPage(data: SiteData, finding: SiteFindingPage): string {
+  const fixtures = new Set(finding.occurrences.map((occurrence) => occurrence.report.sourceFixture));
+  const profiles = new Set(finding.occurrences.map((occurrence) => occurrence.report.thresholdProfile));
+  const fixtureKinds = new Set(finding.occurrences.map((occurrence) => occurrence.report.fixtureKind));
+  const body = `
+    <section aria-labelledby="summary-heading">
+      <h2 id="summary-heading">Summary</h2>
+      <div class="stats">
+        ${stat("Reports", finding.occurrences.length)}
+        ${stat("Fixtures", fixtures.size)}
+        ${stat("Kinds", fixtureKinds.size)}
+        ${stat("Profiles", profiles.size)}
+      </div>
+      ${detailLinkRow([
+        ["filtered index", findingIndexUrl(finding.findingId)],
+        ["findings csv", detailDatasetUrl("findings.csv")],
+        ["summary json", detailDatasetUrl("summary.json")]
+      ])}
+    </section>
+
+    <section aria-labelledby="reports-heading">
+      <h2 id="reports-heading">Matching Reports</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Fixture</th>
+              <th scope="col">Kind</th>
+              <th scope="col">Profile</th>
+              <th scope="col">Report risk</th>
+              <th scope="col">Finding</th>
+              <th scope="col">Links</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${finding.occurrences.map(findingOccurrenceRow).join("\n")}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  `;
+
+  return renderDetailShell({
+    title: `Finding: ${finding.findingId}`,
+    subtitle: `${finding.occurrences.length} report occurrence${finding.occurrences.length === 1 ? "" : "s"} / ${finding.title}`,
     data,
     body
   });
@@ -1557,11 +1695,11 @@ function detailPanel(title: string, rows: Array<[string, string]>): string {
 }
 
 function reportFindingBlock(finding: CompatibilityReport["findings"][number], index: number): string {
-  return `<article class="finding">
+  return `<article class="finding" id="${escapeAttr(findingAnchorId(finding.id))}">
     <div class="finding-head">
       <div class="finding-title">
         <h3>${index + 1}. ${escapeHtml(finding.title)}</h3>
-        <div class="path">${escapeHtml(finding.id)}</div>
+        <div class="path">${findingIdLink(finding.id, "detail")}</div>
       </div>
       <div class="cell-actions">
         <span class="badge risk-${escapeAttr(finding.severity)}">${escapeHtml(finding.severity)}</span>
@@ -1580,6 +1718,34 @@ function findingMetadata(finding: CompatibilityReport["findings"][number]): stri
     <dt>Related EIPs</dt><dd>${escapeHtml(finding.relatedEips.length > 0 ? finding.relatedEips.join(", ") : "none")}</dd>
     <dt>Recommendation</dt><dd>${escapeHtml(finding.recommendation)}</dd>
   </dl>`;
+}
+
+function findingOccurrenceRow(occurrence: SiteFindingOccurrence): string {
+  const report = occurrence.report;
+  const finding = occurrence.finding;
+
+  return `<tr>
+    <td><div class="path">${escapeHtml(report.sourceFixture)}</div></td>
+    <td>${escapeHtml(report.fixtureKind)}</td>
+    <td>${escapeHtml(report.thresholdProfile)}</td>
+    <td><span class="badge risk-${escapeAttr(report.risk)}">${escapeHtml(report.risk)}</span></td>
+    <td>
+      <strong>${escapeHtml(finding.title)}</strong>
+      <div class="path">${escapeHtml(finding.id)}</div>
+      <div class="cell-actions">
+        <span class="badge risk-${escapeAttr(finding.severity)}">${escapeHtml(finding.severity)}</span>
+        <span class="badge risk-${escapeAttr(finding.confidence)}">${escapeHtml(finding.confidence)} confidence</span>
+      </div>
+    </td>
+    <td>
+      <div class="cell-actions">
+        <a href="${escapeAttr(findingReportUrl(occurrence))}">report</a>
+        <a href="${escapeAttr(detailDatasetUrl(report.report))}">json</a>
+        <a href="${escapeAttr(detailRepoUrl(report.sourceFixture))}">fixture</a>
+        ${report.comparisonDetailUrl ? `<a href="${escapeAttr(detailSiteUrl(report.comparisonDetailUrl))}">comparison</a>` : ""}
+      </div>
+    </td>
+  </tr>`;
 }
 
 function comparisonSection(title: string, rows: ComparisonReport["changes"]["added"]): string {
@@ -1604,7 +1770,7 @@ function changedComparisonSection(rows: ComparisonReport["changes"]["changed"]):
         </thead>
         <tbody>
           ${rows.map((row) => `<tr>
-            <td><strong>${escapeHtml(row.candidate.title)}</strong><div class="path">${escapeHtml(row.id)}</div></td>
+            <td><strong>${escapeHtml(row.candidate.title)}</strong><div class="path">${findingIdLink(row.id, "detail")}</div></td>
             <td>${escapeHtml(row.changedFields.join(", "))}</td>
             <td>${row.severityChange ? escapeHtml(`${row.severityChange.from} -> ${row.severityChange.to}`) : "unchanged"}</td>
             <td>${row.confidenceChange ? escapeHtml(`${row.confidenceChange.from} -> ${row.confidenceChange.to}`) : "unchanged"}</td>
@@ -1629,7 +1795,7 @@ function comparisonFindingsTable(rows: ComparisonReport["changes"]["added"]): st
       </thead>
       <tbody>
         ${rows.map((row) => `<tr>
-          <td><strong>${escapeHtml(row.title)}</strong><div class="path">${escapeHtml(row.id)}</div></td>
+          <td><strong>${escapeHtml(row.title)}</strong><div class="path">${findingIdLink(row.id, "detail")}</div></td>
           <td><span class="badge risk-${escapeAttr(row.severity)}">${escapeHtml(row.severity)}</span></td>
           <td>${escapeHtml(row.confidence)}</td>
           <td>${escapeHtml(row.domain.join(", "))}</td>
@@ -1653,6 +1819,35 @@ function detailTextSection(title: string, rows: string[]): string {
 
 function detailSiteUrl(path: string): string {
   return `../${siteUrl(path)}`;
+}
+
+function findingPageUrl(findingId: string): string {
+  return siteUrl(findingPathForId(findingId));
+}
+
+function detailFindingPageUrl(findingId: string): string {
+  return detailSiteUrl(findingPathForId(findingId));
+}
+
+function findingIdLinks(findingIds: string[], from: "index" | "detail"): string {
+  if (findingIds.length === 0) {
+    return "none";
+  }
+
+  return findingIds.map((findingId) => findingIdLink(findingId, from)).join(", ");
+}
+
+function findingIdLink(findingId: string, from: "index" | "detail"): string {
+  const href = from === "index" ? findingPageUrl(findingId) : detailFindingPageUrl(findingId);
+  return `<a href="${escapeAttr(href)}">${escapeHtml(findingId)}</a>`;
+}
+
+function findingReportUrl(occurrence: SiteFindingOccurrence): string {
+  return `${detailSiteUrl(occurrence.report.detailUrl)}#${encodeURIComponent(occurrence.anchorId)}`;
+}
+
+function findingIndexUrl(findingId: string): string {
+  return `../index.html?q=${encodeURIComponent(findingId)}`;
 }
 
 function filteredIndexUrl(report: SiteReportRow): string {

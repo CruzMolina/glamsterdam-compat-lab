@@ -52,7 +52,7 @@ Goal: compare compatibility reports across profiles and, later, across current-c
 
 ## Phase 2: Public Dataset
 
-Status: seeded after `v0.3.0`; expanded with public-safe trace, indexer, and validator fixture coverage in `v0.3.1`; packaged CSV exports added in `v0.3.2`; additional public Geth and Reth trace fixtures added in `v0.3.3`.
+Status: seeded after `v0.3.0`; expanded with public-safe trace, indexer, and validator fixture coverage in `v0.3.1`; packaged CSV exports added in `v0.3.2`; additional public Geth and Reth trace fixture coverage added in `v0.3.3`; the static public-seed browser, detail/finding pages, and readiness exports are released in `v0.3.4`.
 
 Goal: publish reproducible compatibility research.
 
@@ -66,7 +66,7 @@ Goal: publish reproducible compatibility research.
 
 ## Phase 3: Devnet Integration
 
-Status: started after `v0.3.3` with sourced readiness exports and static readiness pages.
+Status: started in `v0.3.4` with sourced readiness exports and static readiness pages.
 
 Goal: track moving client and spec readiness without hardcoding guesses.
 

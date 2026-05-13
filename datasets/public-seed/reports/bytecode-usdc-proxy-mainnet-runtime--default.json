@@ -1,5 +1,5 @@
 {
-  "toolVersion": "0.3.3",
+  "toolVersion": "0.3.4",
   "fork": "glamsterdam",
   "target": {
     "kind": "bytecode",

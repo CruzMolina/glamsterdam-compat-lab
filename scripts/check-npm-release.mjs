@@ -2,12 +2,28 @@
 
 import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
 import { parse as parseYaml } from "yaml";
 
 const registry = "https://registry.npmjs.org/";
 const repo = "CruzMolina/glamsterdam-compat-lab";
 const environment = "npm-publish";
 const workflowFile = ".github/workflows/npm-publish.yml";
+const releaseNodeMajor = 24;
+const requiredArtifactActions = [
+  {
+    action: "actions/upload-artifact",
+    minimumMajor: 7,
+    missing: "preflight job does not upload the package artifact",
+    label: "preflight package artifact upload"
+  },
+  {
+    action: "actions/download-artifact",
+    minimumMajor: 8,
+    missing: "publish job does not download the package artifact",
+    label: "publish package artifact download"
+  }
+];
 const packageJson = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
 const packageName = packageJson.name;
 const expectedVersion = packageJson.version;
@@ -102,26 +118,89 @@ function hasEnvToken(name) {
   return Boolean(process.env[name]?.trim());
 }
 
-function checkWorkflowShape() {
+export function parseActionReference(uses) {
+  const text = String(uses ?? "").trim();
+  const atIndex = text.indexOf("@");
+
+  if (atIndex <= 0 || atIndex === text.length - 1) {
+    return null;
+  }
+
+  const action = text.slice(0, atIndex).trim().toLowerCase();
+  const ref = text.slice(atIndex + 1).trim();
+  const majorMatch = /^v(\d+)(?:$|[.-].*)$/i.exec(ref);
+
+  return {
+    action,
+    ref,
+    major: majorMatch ? Number(majorMatch[1]) : null
+  };
+}
+
+export function actionMinimumProblem(uses, expectedAction, minimumMajor) {
+  const reference = parseActionReference(uses);
+  const expected = expectedAction.toLowerCase();
+
+  if (!reference) {
+    return `expected ${expectedAction}@v${minimumMajor} or newer, found no parseable action reference`;
+  }
+  if (reference.action !== expected) {
+    return `expected ${expectedAction}@v${minimumMajor} or newer, found ${reference.action}@${reference.ref}`;
+  }
+  if (reference.major === null) {
+    return `${expectedAction}@${reference.ref} is not pinned to a v-prefixed major version; expected ${expectedAction}@v${minimumMajor} or newer`;
+  }
+  if (reference.major < minimumMajor) {
+    return `${expectedAction}@${reference.ref} is older than ${expectedAction}@v${minimumMajor}`;
+  }
+
+  return "";
+}
+
+function findActionStep(steps, action) {
+  const expected = action.toLowerCase();
+  return steps.find((step) => parseActionReference(step?.uses)?.action === expected);
+}
+
+function nodeMajorVersion(version) {
+  const match = /^(\d+)(?:$|[.\-x].*)$/i.exec(String(version ?? "").trim());
+  return match ? Number(match[1]) : null;
+}
+
+function setupNodeVersionProblem(step, label) {
+  const major = nodeMajorVersion(step?.with?.["node-version"]);
+
+  if (major !== releaseNodeMajor) {
+    return `${label} does not use Node.js ${releaseNodeMajor}`;
+  }
+
+  return "";
+}
+
+export function checkWorkflowShape(workflowSource) {
   let workflow;
+  let workflowText = workflowSource;
+
   try {
-    workflow = parseYaml(readFileSync(new URL(`../${workflowFile}`, import.meta.url), "utf8"));
+    workflowText ??= readFileSync(new URL(`../${workflowFile}`, import.meta.url), "utf8");
+    workflow = parseYaml(workflowText);
   } catch (error) {
     return {
       ok: false,
-      detail: `failed to read ${workflowFile}: ${error instanceof Error ? error.message : String(error)}`
+      detail: `failed to read or parse ${workflowFile}: ${error instanceof Error ? error.message : String(error)}`
     };
   }
 
-  const workflowText = readFileSync(new URL(`../${workflowFile}`, import.meta.url), "utf8");
   const preflightJob = workflow?.jobs?.preflight;
   const publishJob = workflow?.jobs?.publish;
   const preflightSteps = preflightJob?.steps ?? [];
   const publishSteps = publishJob?.steps ?? [];
   const preflightSetupNodeStep = preflightSteps.find((step) => String(step?.uses ?? "").startsWith("actions/setup-node@"));
   const publishSetupNodeStep = publishSteps.find((step) => String(step?.uses ?? "").startsWith("actions/setup-node@"));
-  const uploadArtifactStep = preflightSteps.find((step) => String(step?.uses ?? "").startsWith("actions/upload-artifact@"));
-  const downloadArtifactStep = publishSteps.find((step) => String(step?.uses ?? "").startsWith("actions/download-artifact@"));
+  const artifactSteps = {
+    "actions/upload-artifact": findActionStep(preflightSteps, "actions/upload-artifact"),
+    "actions/download-artifact": findActionStep(publishSteps, "actions/download-artifact")
+  };
   const publishStep = publishJob?.steps?.find((step) => step?.name === "Publish");
   const dryRunStep = publishJob?.steps?.find((step) => step?.name === "Dry-run publish");
   const dryRunPackageVersionStep = preflightJob?.steps?.find((step) => step?.name === "Check dry-run package version");
@@ -155,9 +234,19 @@ function checkWorkflowShape() {
   }
   if (!preflightSetupNodeStep) {
     problems.push("preflight job does not set up Node.js");
+  } else {
+    const problem = setupNodeVersionProblem(preflightSetupNodeStep, "preflight job");
+    if (problem) {
+      problems.push(problem);
+    }
   }
   if (!publishSetupNodeStep) {
     problems.push("publish job does not set up Node.js");
+  } else {
+    const problem = setupNodeVersionProblem(publishSetupNodeStep, "publish job");
+    if (problem) {
+      problems.push(problem);
+    }
   }
   if (!preflightRuns.includes("pnpm install --frozen-lockfile")) {
     problems.push("preflight job does not install dependencies");
@@ -171,11 +260,18 @@ function checkWorkflowShape() {
   if (!preflightRuns.includes("npm pack")) {
     problems.push("preflight job does not pack the npm artifact");
   }
-  if (!uploadArtifactStep) {
-    problems.push("preflight job does not upload the package artifact");
-  }
-  if (!downloadArtifactStep) {
-    problems.push("publish job does not download the package artifact");
+  for (const requiredAction of requiredArtifactActions) {
+    const step = artifactSteps[requiredAction.action];
+
+    if (!step) {
+      problems.push(requiredAction.missing);
+      continue;
+    }
+
+    const problem = actionMinimumProblem(step.uses, requiredAction.action, requiredAction.minimumMajor);
+    if (problem) {
+      problems.push(`${requiredAction.label} ${problem}`);
+    }
   }
   if (publishRuns.includes("pnpm install") || publishRuns.includes("pnpm test") || publishRuns.includes("pnpm build")) {
     problems.push("publish job runs dependency install, tests, or build");
@@ -202,81 +298,89 @@ function checkWorkflowShape() {
   };
 }
 
-const published = npmViewExpectedVersion();
-const distTags = npmViewDistTags();
-const whoami = npmWhoami();
-const repoSecrets = ghSecrets([]);
-const envSecrets = ghSecrets(["--env", environment]);
-const localNpmToken = hasEnvToken("NPM_TOKEN");
-const localNodeAuthToken = hasEnvToken("NODE_AUTH_TOKEN");
-const workflowShape = checkWorkflowShape();
-const isExpectedVersion = published.ok && published.version === expectedVersion;
-const isExpectedLatest = distTags.ok && distTags.latest === expectedVersion;
-const tokenHygieneOk = !localNpmToken && !localNodeAuthToken && !repoSecrets.hasToken && !envSecrets.hasToken;
+function main() {
+  const published = npmViewExpectedVersion();
+  const distTags = npmViewDistTags();
+  const whoami = npmWhoami();
+  const repoSecrets = ghSecrets([]);
+  const envSecrets = ghSecrets(["--env", environment]);
+  const localNpmToken = hasEnvToken("NPM_TOKEN");
+  const localNodeAuthToken = hasEnvToken("NODE_AUTH_TOKEN");
+  const workflowShape = checkWorkflowShape();
+  const isExpectedVersion = published.ok && published.version === expectedVersion;
+  const isExpectedLatest = distTags.ok && distTags.latest === expectedVersion;
+  const tokenHygieneOk = !localNpmToken && !localNodeAuthToken && !repoSecrets.hasToken && !envSecrets.hasToken;
 
-console.log(`npm release readiness for ${packageName}@${expectedVersion}`);
-console.log("");
-console.log(`${statusIcon(isExpectedVersion)} npm registry version: ${published.version ?? "not published"}`);
-if (published.detail) {
-  console.log(`   ${published.detail}`);
-}
-console.log(`${statusIcon(isExpectedLatest)} npm latest dist-tag: ${distTags.latest ?? "not visible"}`);
-if (distTags.detail) {
-  console.log(`   ${distTags.detail}`);
-}
-console.log(`ok local npm session: ${whoami.user ?? "not logged in (not required for workflow publish)"}`);
-if (whoami.detail) {
-  console.log(`   ${whoami.detail}`);
-}
-console.log(`${absenceIcon(!localNpmToken)} local NPM_TOKEN env: ${localNpmToken ? "present" : "absent"}`);
-console.log(`${absenceIcon(!localNodeAuthToken)} local NODE_AUTH_TOKEN env: ${localNodeAuthToken ? "present" : "absent"}`);
-console.log(`${absenceIcon(!repoSecrets.hasToken)} repo NPM_TOKEN secret: ${repoSecrets.hasToken ? "present" : "absent"}`);
-if (repoSecrets.detail) {
-  console.log(`   ${repoSecrets.detail}`);
-}
-console.log(`${absenceIcon(!envSecrets.hasToken)} ${environment} NPM_TOKEN secret: ${envSecrets.hasToken ? "present" : "absent"}`);
-if (envSecrets.detail) {
-  console.log(`   ${envSecrets.detail}`);
-}
-console.log(`${statusIcon(workflowShape.ok)} publish workflow OIDC shape: ${workflowShape.ok ? "ready" : "needs attention"}`);
-if (workflowShape.detail) {
-  console.log(`   ${workflowShape.detail}`);
-}
-console.log("");
+  console.log(`npm release readiness for ${packageName}@${expectedVersion}`);
+  console.log("");
+  console.log(`${statusIcon(isExpectedVersion)} npm registry version: ${published.version ?? "not published"}`);
+  if (published.detail) {
+    console.log(`   ${published.detail}`);
+  }
+  console.log(`${statusIcon(isExpectedLatest)} npm latest dist-tag: ${distTags.latest ?? "not visible"}`);
+  if (distTags.detail) {
+    console.log(`   ${distTags.detail}`);
+  }
+  console.log(`ok local npm session: ${whoami.user ?? "not logged in (not required for workflow publish)"}`);
+  if (whoami.detail) {
+    console.log(`   ${whoami.detail}`);
+  }
+  console.log(`${absenceIcon(!localNpmToken)} local NPM_TOKEN env: ${localNpmToken ? "present" : "absent"}`);
+  console.log(`${absenceIcon(!localNodeAuthToken)} local NODE_AUTH_TOKEN env: ${localNodeAuthToken ? "present" : "absent"}`);
+  console.log(`${absenceIcon(!repoSecrets.hasToken)} repo NPM_TOKEN secret: ${repoSecrets.hasToken ? "present" : "absent"}`);
+  if (repoSecrets.detail) {
+    console.log(`   ${repoSecrets.detail}`);
+  }
+  console.log(`${absenceIcon(!envSecrets.hasToken)} ${environment} NPM_TOKEN secret: ${envSecrets.hasToken ? "present" : "absent"}`);
+  if (envSecrets.detail) {
+    console.log(`   ${envSecrets.detail}`);
+  }
+  console.log(`${statusIcon(workflowShape.ok)} publish workflow OIDC shape: ${workflowShape.ok ? "ready" : "needs attention"}`);
+  if (workflowShape.detail) {
+    console.log(`   ${workflowShape.detail}`);
+  }
+  console.log("");
 
-if (isExpectedVersion && isExpectedLatest && workflowShape.ok && tokenHygieneOk) {
-  console.log("Release is visible on npm at the expected version.");
-  process.exit(0);
-}
+  if (isExpectedVersion && isExpectedLatest && workflowShape.ok && tokenHygieneOk) {
+    console.log("Release is visible on npm at the expected version.");
+    process.exit(0);
+  }
 
-console.log("Release is not complete yet.");
-console.log("");
-console.log("Next options:");
-if (!workflowShape.ok) {
-  console.log(`1. Fix ${workflowFile}:`);
-  console.log("   keep install/test/build in a read-only preflight job and grant id-token: write only to the isolated publish job");
-  console.log("2. Then rerun:");
-  console.log("   pnpm release:check-npm");
+  console.log("Release is not complete yet.");
+  console.log("");
+  console.log("Next options:");
+  if (!workflowShape.ok) {
+    console.log(`1. Fix ${workflowFile}:`);
+    console.log("   keep install/test/build in a read-only preflight job and grant id-token: write only to the isolated publish job");
+    console.log(`   keep release jobs on Node.js ${releaseNodeMajor}`);
+    console.log("   keep artifact transfer on actions/upload-artifact@v7+ and actions/download-artifact@v8+");
+    console.log("2. Then rerun:");
+    console.log("   pnpm release:check-npm");
+    process.exit(1);
+  }
+  if (!tokenHygieneOk) {
+    console.log("1. Remove npm token residue:");
+    console.log(`   delete repository and ${environment} environment NPM_TOKEN secrets, and unset local NPM_TOKEN/NODE_AUTH_TOKEN env vars`);
+    console.log("2. Then rerun:");
+    console.log("   pnpm release:check-npm");
+    process.exit(1);
+  }
+
+  console.log(`1. Confirm npm Trusted Publishing for ${packageName}:`);
+  console.log(`   npx --yes npm@11.14.0 trust github ${packageName} --repo ${repo} --file npm-publish.yml --env ${environment} --dry-run --json`);
+  if (!whoami.ok) {
+    console.log("   Use npmjs.com or an npm owner session if the trust configuration needs to be changed.");
+  }
+  console.log("2. Then run the release workflow:");
+  console.log(`   gh workflow run npm-publish.yml --ref main -f release_tag=v${expectedVersion} -f dry_run=true -f tag=latest`);
+  if (!published.ok || !isExpectedLatest) {
+    console.log("3. If the dry run passes for an unpublished version, run:");
+    console.log(`   gh workflow run npm-publish.yml --ref main -f release_tag=v${expectedVersion} -f dry_run=false -f tag=latest`);
+  }
+
   process.exit(1);
 }
-if (!tokenHygieneOk) {
-  console.log("1. Remove npm token residue:");
-  console.log(`   delete repository and ${environment} environment NPM_TOKEN secrets, and unset local NPM_TOKEN/NODE_AUTH_TOKEN env vars`);
-  console.log("2. Then rerun:");
-  console.log("   pnpm release:check-npm");
-  process.exit(1);
-}
 
-console.log(`1. Confirm npm Trusted Publishing for ${packageName}:`);
-console.log(`   npx --yes npm@11.14.0 trust github ${packageName} --repo ${repo} --file npm-publish.yml --env ${environment} --dry-run --json`);
-if (!whoami.ok) {
-  console.log("   Use npmjs.com or an npm owner session if the trust configuration needs to be changed.");
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main();
 }
-console.log("2. Then run the release workflow:");
-console.log(`   gh workflow run npm-publish.yml --ref main -f release_tag=v${expectedVersion} -f dry_run=true -f tag=latest`);
-if (!published.ok || !isExpectedLatest) {
-  console.log("3. If the dry run passes for an unpublished version, run:");
-  console.log(`   gh workflow run npm-publish.yml --ref main -f release_tag=v${expectedVersion} -f dry_run=false -f tag=latest`);
-}
-
-process.exit(1);

@@ -2,8 +2,8 @@ executionClient:
   name: geth
   version: ethpandaops/geth:bal-devnet-6
 consensusClient:
-  name: lighthouse
-  version: ethpandaops/lighthouse:glamsterdam-devnet-3
+  name: prysm
+  version: ethpandaops/prysm-beacon-chain:glamsterdam-devnet-3-minimal
 validatorClient:
   name: example-validator-client
   version: 1.0.0-compatible

@@ -31,7 +31,7 @@
           "role": "execution",
           "name": "geth",
           "version": "v1.99.0-example",
-          "matrixLastUpdated": "2026-05-12"
+          "matrixLastUpdated": "2026-05-13"
         }
       ],
       "recommendation": "Update the client compatibility matrix with sourced release/devnet information, or treat this as a manual-readiness checklist item."
@@ -53,7 +53,7 @@
           "role": "consensus",
           "name": "lighthouse",
           "version": "v9.99.0-example",
-          "matrixLastUpdated": "2026-05-12"
+          "matrixLastUpdated": "2026-05-13"
         }
       ],
       "recommendation": "Update the client compatibility matrix with sourced release/devnet information, or treat this as a manual-readiness checklist item."

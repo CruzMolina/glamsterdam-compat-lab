@@ -57,22 +57,22 @@
       "relatedEips": [
         "EIP-7732"
       ],
-      "description": "The compatibility matrix reports partial for lighthouse ethpandaops/lighthouse:glamsterdam-devnet-3. The scanner reports the matrix value without trying to override it.",
+      "description": "The compatibility matrix reports partial for prysm ethpandaops/prysm-beacon-chain:glamsterdam-devnet-3-minimal. The scanner reports the matrix value without trying to override it.",
       "evidence": [
         {
           "role": "consensus",
-          "name": "lighthouse",
-          "version": "ethpandaops/lighthouse:glamsterdam-devnet-3",
+          "name": "prysm",
+          "version": "ethpandaops/prysm-beacon-chain:glamsterdam-devnet-3-minimal",
           "matrixEntry": {
-            "version": "ethpandaops/lighthouse:glamsterdam-devnet-3",
+            "version": "ethpandaops/prysm-beacon-chain:glamsterdam-devnet-3-minimal",
             "status": "partial",
             "source": {
               "type": "public-devnet-spec",
               "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
-              "retrievedAt": "2026-05-12",
-              "claim": "The glamsterdam-devnet-2 Kurtosis example lists lighthouse with image ethpandaops/lighthouse:glamsterdam-devnet-3 as a consensus-layer participant."
+              "retrievedAt": "2026-05-13",
+              "claim": "The glamsterdam-devnet-2 Kurtosis example lists prysm with image ethpandaops/prysm-beacon-chain:glamsterdam-devnet-3-minimal as a consensus-layer participant."
             },
-            "notes": "Devnet image only. This is not a production Lighthouse release compatibility claim."
+            "notes": "Devnet image only. This is not a production Prysm release compatibility claim."
           }
         }
       ],

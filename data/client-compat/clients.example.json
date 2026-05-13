@@ -1,6 +1,6 @@
 {
   "fork": "glamsterdam",
-  "lastUpdated": "2026-05-12",
+  "lastUpdated": "2026-05-13",
   "sources": [
     {
       "type": "public-interop-recap",
@@ -220,6 +220,40 @@
       ]
     },
     {
+      "name": "lodestar",
+      "role": "consensus",
+      "versions": [
+        {
+          "version": "ethpandaops/lodestar:glamsterdam-devnet-2",
+          "status": "partial",
+          "source": {
+            "type": "public-devnet-spec",
+            "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+            "retrievedAt": "2026-05-13",
+            "claim": "The glamsterdam-devnet-2 Kurtosis example lists lodestar with image ethpandaops/lodestar:glamsterdam-devnet-2 as a consensus-layer participant."
+          },
+          "notes": "Devnet image only. This is not a production Lodestar release compatibility claim."
+        }
+      ]
+    },
+    {
+      "name": "prysm",
+      "role": "consensus",
+      "versions": [
+        {
+          "version": "ethpandaops/prysm-beacon-chain:glamsterdam-devnet-3-minimal",
+          "status": "partial",
+          "source": {
+            "type": "public-devnet-spec",
+            "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+            "retrievedAt": "2026-05-13",
+            "claim": "The glamsterdam-devnet-2 Kurtosis example lists prysm with image ethpandaops/prysm-beacon-chain:glamsterdam-devnet-3-minimal as a consensus-layer participant."
+          },
+          "notes": "Devnet image only. This is not a production Prysm release compatibility claim."
+        }
+      ]
+    },
+    {
       "name": "teku",
       "role": "consensus",
       "versions": [
@@ -233,6 +267,40 @@
             "claim": "The glamsterdam-devnet-2 Kurtosis example lists teku with image ethpandaops/teku:glamsterdam-devnet-2 as a consensus-layer participant."
           },
           "notes": "Devnet image only. This is not a production Teku release compatibility claim."
+        }
+      ]
+    },
+    {
+      "name": "nimbus",
+      "role": "consensus",
+      "versions": [
+        {
+          "version": "ethpandaops/nimbus-eth2:glamsterdam-devnet-2-minimal",
+          "status": "partial",
+          "source": {
+            "type": "public-devnet-spec",
+            "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+            "retrievedAt": "2026-05-13",
+            "claim": "The glamsterdam-devnet-2 Kurtosis example lists nimbus with image ethpandaops/nimbus-eth2:glamsterdam-devnet-2-minimal as a consensus-layer participant."
+          },
+          "notes": "Devnet image only. This is not a production Nimbus release compatibility claim."
+        }
+      ]
+    },
+    {
+      "name": "grandine",
+      "role": "consensus",
+      "versions": [
+        {
+          "version": "ethpandaops/grandine:glamsterdam-devnet-2-minimal",
+          "status": "partial",
+          "source": {
+            "type": "public-devnet-spec",
+            "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
+            "retrievedAt": "2026-05-13",
+            "claim": "The glamsterdam-devnet-2 Kurtosis example lists grandine with image ethpandaops/grandine:glamsterdam-devnet-2-minimal as a consensus-layer participant."
+          },
+          "notes": "Devnet image only. This is not a production Grandine release compatibility claim."
         }
       ]
     }

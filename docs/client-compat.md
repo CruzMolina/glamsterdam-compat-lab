@@ -68,6 +68,7 @@ The matrix can also include `devnets` entries. These are useful for tracking pub
 ```
 
 Devnet entries should not be treated as production compatibility claims. Use them as provenance for test images, interoperability context, and follow-up review.
+Every devnet participant with a concrete `execution`, `consensus`, or `validator` client image should also have a matching client version entry, unless the matrix documents a deliberate exclusion. This keeps operator fixtures from reporting `unknown` for an image that the same matrix already cites as a sourced public devnet participant.
 When a devnet entry lists `specVersions`, add a source object for each spec version when a public release page or spec document is available.
 
 ## Scanner Behavior

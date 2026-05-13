@@ -67,6 +67,10 @@ describe("golden report snapshots", () => {
     expectTraceJsonSnapshot("geth-json-rpc-structlogs.json");
   });
 
+  it("keeps real geth Tracoor trace JSON report structure stable", () => {
+    expectTraceJsonSnapshot("geth-mainnet-tracoor-debug-structlogs.json");
+  });
+
   it("keeps call-tracer tree JSON report structure stable", () => {
     expectTraceJsonSnapshot("call-tracer-tree.json");
   });
@@ -85,6 +89,10 @@ describe("golden report snapshots", () => {
 
   it("keeps real Nethermind Tracoor trace JSON report structure stable", () => {
     expectTraceJsonSnapshot("nethermind-mainnet-tracoor-debug-structlogs.json");
+  });
+
+  it("keeps real reth Tracoor trace JSON report structure stable", () => {
+    expectTraceJsonSnapshot("reth-mainnet-tracoor-debug-structlogs.json");
   });
 
   it("keeps real dRPC call-tracer JSON report structure stable", () => {

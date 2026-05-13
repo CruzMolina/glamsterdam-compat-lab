@@ -1,6 +1,6 @@
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   compareCompatibilityReports,
   loadFixtureProvenance,
@@ -12,7 +12,8 @@ import {
   scanValidatorConfig,
   type CompatibilityFinding,
   type CompatibilityReport,
-  type FixtureProvenanceEntry
+  type FixtureProvenanceEntry,
+  type FixtureProvenanceManifest
 } from "../src/index.js";
 import { TOOL_VERSION } from "../src/reports/reportTypes.js";
 
@@ -78,10 +79,19 @@ interface DatasetSummary {
 
 type CsvValue = string | number;
 
+export interface GeneratePublicDatasetOptions {
+  outputDir?: string;
+  quiet?: boolean;
+}
+
+export interface GeneratePublicDatasetResult {
+  outputDir: string;
+  reportCount: number;
+  comparisonCount: number;
+}
+
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const datasetDir = resolve(rootDir, "datasets/public-seed");
-const reportsDir = resolve(datasetDir, "reports");
-const comparisonsDir = resolve(datasetDir, "comparisons");
+const defaultDatasetDir = resolve(rootDir, "datasets/public-seed");
 const defaultThresholdsPath = resolve(rootDir, "data/detectors/thresholds.json");
 const researchThresholdsPath = resolve(rootDir, "data/detectors/thresholds.research.json");
 const datasetLastUpdated = "2026-05-13";
@@ -91,83 +101,106 @@ const csvExports = {
   summary: "summary.csv"
 } as const;
 
-const manifest = loadFixtureProvenance(resolve(rootDir, "fixtures/provenance.json"));
-const scannableFixtures = manifest.fixtures
-  .filter((fixture) => fixture.kind !== "report")
-  .sort((a, b) => a.path.localeCompare(b.path));
+let datasetDir = defaultDatasetDir;
+let reportsDir = resolve(datasetDir, "reports");
+let comparisonsDir = resolve(datasetDir, "comparisons");
+let manifest: FixtureProvenanceManifest;
+let scannableFixtures: FixtureProvenanceEntry[] = [];
+let reportEntries: DatasetReportEntry[] = [];
+let comparisonEntries: DatasetComparisonEntry[] = [];
+let findingEntries: DatasetFindingEntry[] = [];
 
-const reportEntries: DatasetReportEntry[] = [];
-const comparisonEntries: DatasetComparisonEntry[] = [];
-const findingEntries: DatasetFindingEntry[] = [];
+export function generatePublicDataset(options: GeneratePublicDatasetOptions = {}): GeneratePublicDatasetResult {
+  datasetDir = options.outputDir ? resolve(options.outputDir) : defaultDatasetDir;
+  reportsDir = resolve(datasetDir, "reports");
+  comparisonsDir = resolve(datasetDir, "comparisons");
+  manifest = loadFixtureProvenance(resolve(rootDir, "fixtures/provenance.json"));
+  scannableFixtures = manifest.fixtures
+    .filter((fixture) => fixture.kind !== "report")
+    .sort((a, b) => a.path.localeCompare(b.path));
+  reportEntries = [];
+  comparisonEntries = [];
+  findingEntries = [];
 
-rmSync(datasetDir, { recursive: true, force: true });
-mkdirSync(reportsDir, { recursive: true });
-mkdirSync(comparisonsDir, { recursive: true });
+  rmSync(datasetDir, { recursive: true, force: true });
+  mkdirSync(reportsDir, { recursive: true });
+  mkdirSync(comparisonsDir, { recursive: true });
 
-for (const fixture of scannableFixtures) {
-  const defaultReport = scanFixture(fixture, defaultThresholdsPath);
-  const defaultReportPath = writeReport(fixture, "default", defaultReport);
-  reportEntries.push(reportEntry(fixture, "default", defaultReportPath, defaultReport));
-  findingEntries.push(...findingEntriesForReport(fixture, "default", defaultReportPath, defaultReport));
+  for (const fixture of scannableFixtures) {
+    const defaultReport = scanFixture(fixture, defaultThresholdsPath);
+    const defaultReportPath = writeReport(fixture, "default", defaultReport);
+    reportEntries.push(reportEntry(fixture, "default", defaultReportPath, defaultReport));
+    findingEntries.push(...findingEntriesForReport(fixture, "default", defaultReportPath, defaultReport));
 
-  if (fixture.kind === "bytecode" || fixture.kind === "trace") {
-    const researchReport = scanFixture(fixture, researchThresholdsPath);
-    const researchReportPath = writeReport(fixture, "research", researchReport);
-    reportEntries.push(reportEntry(fixture, "research", researchReportPath, researchReport));
-    findingEntries.push(...findingEntriesForReport(fixture, "research", researchReportPath, researchReport));
+    if (fixture.kind === "bytecode" || fixture.kind === "trace") {
+      const researchReport = scanFixture(fixture, researchThresholdsPath);
+      const researchReportPath = writeReport(fixture, "research", researchReport);
+      reportEntries.push(reportEntry(fixture, "research", researchReportPath, researchReport));
+      findingEntries.push(...findingEntriesForReport(fixture, "research", researchReportPath, researchReport));
 
-    const comparison = compareCompatibilityReports(defaultReport, researchReport);
-    const comparisonPath = `comparisons/${slugFixturePath(fixture.path)}--default-vs-research.json`;
-    writeJson(resolve(datasetDir, comparisonPath), JSON.parse(renderJsonComparisonReport(comparison)));
-    comparisonEntries.push({
-      sourceFixture: fixture.path,
-      baselineReport: defaultReportPath,
-      candidateReport: researchReportPath,
-      comparison: comparisonPath,
-      riskChange: `${comparison.summary.riskChange.from}->${comparison.summary.riskChange.to} (${comparison.summary.riskChange.direction})`,
-      addedCount: comparison.summary.addedCount,
-      removedCount: comparison.summary.removedCount,
-      changedCount: comparison.summary.changedCount,
-      unchangedCount: comparison.summary.unchangedCount
-    });
-  }
-}
-
-const summary = buildSummary();
-
-writeJson(resolve(datasetDir, "manifest.json"), {
-  schemaVersion: 1,
-  name: "public-seed",
-  lastUpdated: datasetLastUpdated,
-  description:
-    "Deterministic seed dataset generated from safe-to-publish fixture inputs and threshold-profile comparisons.",
-  toolVersion: TOOL_VERSION,
-  sourceManifest: "fixtures/provenance.json",
-  summary: "summary.json",
-  csvExports,
-  thresholdProfiles: [
-    {
-      name: "default",
-      path: "data/detectors/thresholds.json"
-    },
-    {
-      name: "research",
-      path: "data/detectors/thresholds.research.json"
+      const comparison = compareCompatibilityReports(defaultReport, researchReport);
+      const comparisonPath = `comparisons/${slugFixturePath(fixture.path)}--default-vs-research.json`;
+      writeJson(resolve(datasetDir, comparisonPath), JSON.parse(renderJsonComparisonReport(comparison)));
+      comparisonEntries.push({
+        sourceFixture: fixture.path,
+        baselineReport: defaultReportPath,
+        candidateReport: researchReportPath,
+        comparison: comparisonPath,
+        riskChange: `${comparison.summary.riskChange.from}->${comparison.summary.riskChange.to} (${comparison.summary.riskChange.direction})`,
+        addedCount: comparison.summary.addedCount,
+        removedCount: comparison.summary.removedCount,
+        changedCount: comparison.summary.changedCount,
+        unchangedCount: comparison.summary.unchangedCount
+      });
     }
-  ],
-  reports: reportEntries,
-  comparisons: comparisonEntries,
-  limitations: [
-    "This seed dataset is fixture-based and intentionally small; it is not an aggregate measurement of public-chain Glamsterdam readiness.",
-    "Synthetic fixtures provide parser and detector coverage but do not prove real client behavior.",
-    "Threshold-profile comparisons are structural report differences, not final fork gas deltas."
-  ]
-});
-writeJson(resolve(datasetDir, "summary.json"), summary);
-writeCsv(resolve(datasetDir, csvExports.reports), reportCsvRows());
-writeCsv(resolve(datasetDir, csvExports.findings), findingCsvRows());
-writeCsv(resolve(datasetDir, csvExports.summary), summaryCsvRows(summary));
-writeReadme();
+  }
+
+  const summary = buildSummary();
+
+  writeJson(resolve(datasetDir, "manifest.json"), {
+    schemaVersion: 1,
+    name: "public-seed",
+    lastUpdated: datasetLastUpdated,
+    description:
+      "Deterministic seed dataset generated from safe-to-publish fixture inputs and threshold-profile comparisons.",
+    toolVersion: TOOL_VERSION,
+    sourceManifest: "fixtures/provenance.json",
+    summary: "summary.json",
+    csvExports,
+    thresholdProfiles: [
+      {
+        name: "default",
+        path: "data/detectors/thresholds.json"
+      },
+      {
+        name: "research",
+        path: "data/detectors/thresholds.research.json"
+      }
+    ],
+    reports: reportEntries,
+    comparisons: comparisonEntries,
+    limitations: [
+      "This seed dataset is fixture-based and intentionally small; it is not an aggregate measurement of public-chain Glamsterdam readiness.",
+      "Synthetic fixtures provide parser and detector coverage but do not prove real client behavior.",
+      "Threshold-profile comparisons are structural report differences, not final fork gas deltas."
+    ]
+  });
+  writeJson(resolve(datasetDir, "summary.json"), summary);
+  writeCsv(resolve(datasetDir, csvExports.reports), reportCsvRows());
+  writeCsv(resolve(datasetDir, csvExports.findings), findingCsvRows());
+  writeCsv(resolve(datasetDir, csvExports.summary), summaryCsvRows(summary));
+  writeReadme();
+
+  if (!options.quiet) {
+    process.stdout.write(`Generated public seed dataset with ${reportEntries.length} reports and ${comparisonEntries.length} comparisons.\n`);
+  }
+
+  return {
+    outputDir: datasetDir,
+    reportCount: reportEntries.length,
+    comparisonCount: comparisonEntries.length
+  };
+}
 
 function scanFixture(fixture: FixtureProvenanceEntry, thresholdsPath: string): CompatibilityReport {
   const absolutePath = resolve(rootDir, fixture.path);
@@ -379,6 +412,12 @@ The seed is intentionally small. It is meant to prove the dataset workflow, not 
 pnpm dataset:generate
 \`\`\`
 
+Check committed artifacts are fresh with:
+
+\`\`\`sh
+pnpm dataset:check
+\`\`\`
+
 Then run:
 
 \`\`\`sh
@@ -390,4 +429,6 @@ Review generated changes before publishing. Dataset comparisons are structural r
 `);
 }
 
-process.stdout.write(`Generated public seed dataset with ${reportEntries.length} reports and ${comparisonEntries.length} comparisons.\n`);
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  generatePublicDataset();
+}

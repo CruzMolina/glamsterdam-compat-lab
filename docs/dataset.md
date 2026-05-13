@@ -2,10 +2,11 @@
 
 The public seed dataset is a deterministic export generated from fixtures in this repository. It is meant for reproducible scanner review, spreadsheet inspection, and lightweight research workflows.
 
-The dataset lives under `datasets/public-seed/` and is regenerated with:
+The dataset lives under `datasets/public-seed/` and is regenerated and checked with:
 
 ```sh
 pnpm dataset:generate
+pnpm dataset:check
 pnpm test
 pnpm build
 ```
@@ -88,6 +89,8 @@ Use `summary.csv` as a denormalized view of `summary.json`. For example, `catego
 ```
 
 ## Stability
+
+Run `pnpm dataset:check` before opening a PR that changes fixtures, scanners, thresholds, registry data, or the client compatibility matrix. The check regenerates the dataset into a temporary directory and compares it with `datasets/public-seed/`. If it reports stale, missing, or extra committed files, run `pnpm dataset:generate` and review the generated artifact changes.
 
 These fields are intended to be stable enough for downstream scripts:
 

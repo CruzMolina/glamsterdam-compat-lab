@@ -45,6 +45,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "client-matrix:check": "tsx scripts/check-client-matrix.ts",
+    "dataset:check": "tsx scripts/check-public-dataset.ts",
     "dataset:generate": "tsx scripts/generate-public-dataset.ts",
     "glamsterdam": "tsx src/cli.ts",
     "pack:dry-run": "node scripts/pack-dry-run.mjs",

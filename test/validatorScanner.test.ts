@@ -3,7 +3,8 @@ import { tmpdir } from "node:os";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { loadClientMatrix, scanValidatorConfig } from "../src/scanners/validatorScanner.js";
+import { loadClientMatrix } from "../src/registry/clientMatrix.js";
+import { scanValidatorConfig } from "../src/scanners/validatorScanner.js";
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const defaultMatrixPath = resolve(rootDir, "data/client-compat/clients.example.json");

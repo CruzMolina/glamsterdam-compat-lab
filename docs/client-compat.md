@@ -82,16 +82,28 @@ When a devnet entry lists `specVersions`, add a source object for each spec vers
 
 The scanner reports the matrix value without trying to override it. Update the matrix from explicit release notes, devnet specs, or operator-maintained source documents when readiness changes.
 
+## Maintenance Check
+
+Run the offline matrix checker after editing `data/client-compat/clients.example.json`:
+
+```sh
+pnpm client-matrix:check
+```
+
+The checker validates schema shape, duplicate client keys, source dates against `lastUpdated`, devnet participant/client-entry consistency, documented participant exclusions, and conservative status rules. Public devnet, interop, and spec-release sources cannot be used as `compatible` client claims; keep those entries `partial` or `unknown` unless an explicit client release or operator-maintained source supports compatibility.
+
 ## Updating The Matrix
 
 1. Add or update a client version entry in `data/client-compat/clients.example.json`.
 2. Include a source URL, retrieval date, and exact claim summary.
 3. Prefer `partial` for devnet images and prerelease testing.
 4. Prefer `unknown` when the source does not explicitly state readiness.
-5. Add scanner tests when a new matrix shape or status path is introduced.
-6. Run:
+5. Use `matrixEntryExclusion.reason` on a devnet participant only when a concrete image intentionally should not have a matching client version entry.
+6. Add scanner tests when a new matrix shape or status path is introduced.
+7. Run:
 
 ```sh
+pnpm client-matrix:check
 pnpm test
 pnpm build
 ```

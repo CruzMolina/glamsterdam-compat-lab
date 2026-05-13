@@ -1,78 +1,19 @@
-import { readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-import { z } from "zod";
 import { detectEpbsBuilderReadiness } from "../detectors/epbsDetectors.js";
 import { domains, makeFinding } from "../detectors/types.js";
 import { loadDetectorThresholds, type DetectorThresholds } from "../detectors/thresholds.js";
 import { loadEipRegistry } from "../registry/eipRegistry.js";
+import {
+  defaultClientMatrixPath,
+  findClientMatrixEntry,
+  loadClientMatrix,
+  type ClientMatrix,
+  type ClientRole
+} from "../registry/clientMatrix.js";
 import type { EipRegistry } from "../registry/schemas.js";
 import { makeReport, type CompatibilityFinding, type CompatibilityReport } from "../reports/reportTypes.js";
 import { loadStructuredFile } from "../utils/files.js";
 
-const moduleDir = dirname(fileURLToPath(import.meta.url));
-
-const isoDateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
-
-const clientMatrixSourceSchema = z.object({
-  type: z.enum([
-    "public-devnet-spec",
-    "public-interop-recap",
-    "public-spec-release",
-    "synthetic-example",
-    "operator-maintained"
-  ]),
-  url: z.string().min(1),
-  sourceDate: isoDateSchema.optional(),
-  retrievedAt: isoDateSchema,
-  claim: z.string().min(1),
-  notes: z.string().optional()
-});
-
-const clientVersionSchema = z.object({
-  version: z.string(),
-  status: z.enum(["compatible", "incompatible", "partial", "unknown"]),
-  source: clientMatrixSourceSchema,
-  notes: z.string().optional()
-});
-
-const clientEntrySchema = z.object({
-  name: z.string(),
-  role: z.enum(["execution", "consensus", "validator"]),
-  versions: z.array(clientVersionSchema)
-});
-
-const devnetParticipantSchema = z.object({
-  role: z.enum(["execution", "consensus", "validator", "builder", "tooling"]),
-  name: z.string(),
-  image: z.string().optional(),
-  status: z.enum(["compatible", "incompatible", "partial", "unknown"]),
-  notes: z.string().optional()
-});
-
-const devnetEntrySchema = z.object({
-  name: z.string(),
-  status: z.string(),
-  source: clientMatrixSourceSchema,
-  participants: z.array(devnetParticipantSchema).default([]),
-  specVersions: z.array(z.object({
-    name: z.string(),
-    version: z.string(),
-    source: clientMatrixSourceSchema.optional()
-  })).default([]),
-  notes: z.string().optional()
-});
-
-const clientMatrixSchema = z.object({
-  fork: z.string(),
-  lastUpdated: isoDateSchema,
-  sources: z.array(clientMatrixSourceSchema).default([]),
-  clients: z.array(clientEntrySchema).default([]),
-  devnets: z.array(devnetEntrySchema).default([])
-});
-
-type ClientMatrix = z.infer<typeof clientMatrixSchema>;
-type ClientRole = "execution" | "consensus" | "validator";
+export { defaultClientMatrixPath, loadClientMatrix } from "../registry/clientMatrix.js";
 
 export interface ValidatorScanOptions {
   registry?: EipRegistry;
@@ -81,10 +22,6 @@ export interface ValidatorScanOptions {
   thresholdsPath?: string;
   clientMatrixPath?: string;
   targetName?: string;
-}
-
-export function defaultClientMatrixPath(): string {
-  return resolve(moduleDir, "../../data/client-compat/clients.example.json");
 }
 
 export function scanValidatorConfig(configPath: string, options: ValidatorScanOptions = {}): CompatibilityReport {
@@ -131,11 +68,6 @@ export function scanValidatorConfig(configPath: string, options: ValidatorScanOp
       "A clean report does not replace devnet/testnet participation or operational drills."
     ]
   });
-}
-
-export function loadClientMatrix(matrixPath: string): ClientMatrix {
-  const raw = readFileSync(matrixPath, "utf8");
-  return clientMatrixSchema.parse(JSON.parse(raw));
 }
 
 function detectClientMetadata(config: unknown, matrix: ClientMatrix): CompatibilityFinding[] {
@@ -282,24 +214,6 @@ function detectTestnetMetadata(config: unknown): CompatibilityFinding[] {
         "Add planned or completed testnet/devnet participation, including client versions, dates, observed issues, and rollback notes."
     })
   ];
-}
-
-function findClientMatrixEntry(
-  matrix: ClientMatrix,
-  role: ClientRole,
-  name: string,
-  version: string
-): z.infer<typeof clientVersionSchema> | undefined {
-  const normalizedName = name.toLowerCase();
-  const client = matrix.clients.find(
-    (entry) => entry.role === role && entry.name.toLowerCase() === normalizedName
-  );
-  if (!client) {
-    return undefined;
-  }
-
-  return client.versions.find((entry) => entry.version === version)
-    ?? client.versions.find((entry) => entry.version === "*");
 }
 
 function getPath(value: unknown, path: string[]): unknown {

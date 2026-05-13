@@ -35,7 +35,21 @@ export type {
   ScanTransactionTraceOptions
 } from "./scanners/rpcTraceScanner.js";
 export { scanIndexer, summarizeHandlers } from "./scanners/indexerScanner.js";
-export { scanValidatorConfig, defaultClientMatrixPath } from "./scanners/validatorScanner.js";
+export { scanValidatorConfig } from "./scanners/validatorScanner.js";
+export {
+  checkClientMatrix,
+  defaultClientMatrixPath,
+  findClientMatrixEntry,
+  loadClientMatrix
+} from "./registry/clientMatrix.js";
+export type {
+  ClientEntry,
+  ClientMatrix,
+  ClientMatrixCheckResult,
+  ClientMatrixSource,
+  ClientRole,
+  ClientVersion
+} from "./registry/clientMatrix.js";
 export { loadDetectorThresholds, defaultThresholdsPath, detectorThresholdsSchema } from "./detectors/thresholds.js";
 export type { DetectorThresholds } from "./detectors/thresholds.js";
 

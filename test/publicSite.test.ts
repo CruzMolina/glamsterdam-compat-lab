@@ -93,6 +93,7 @@ describe("public seed site", () => {
 
       expect(readinessHtml).toContain("Readiness Sources");
       expect(readinessHtml).toContain("Source Freshness");
+      expect(readinessHtml).toContain("Source type counts");
       expect(readinessHtml).toContain("Source Review Notes");
       expect(readinessHtml).toContain("pnpm readiness:freshness");
       expect(readinessHtml).toContain("fresh");
@@ -105,6 +106,8 @@ describe("public seed site", () => {
       expect(readinessHtml).toContain("EIP-7773");
       expect(readinessHtml).toContain("glamsterdam-devnet-2");
       expect(readinessHtml).toContain("ethpandaops/geth:bal-devnet-6");
+      expect(readinessHtml).toContain("public-client-release");
+      expect(readinessHtml).toContain("v1.17.3");
       expect(readinessHtml).toContain(readiness.eipRegistry.lastUpdated);
       expect(readinessHtml).toContain("../../datasets/public-seed/readiness-clients.csv");
       expect(readinessHtml).not.toMatch(/<script\b[^>]*\bsrc=/i);

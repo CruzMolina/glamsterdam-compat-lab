@@ -145,6 +145,7 @@ interface DatasetReadiness {
     lastUpdated: string;
     sourceCount: number;
     countsByFreshness: DatasetSummaryCount[];
+    countsBySourceType: DatasetSummaryCount[];
     countsByStatus: DatasetSummaryCount[];
     sources: DatasetReadinessSource[];
     eips: DatasetReadinessEip[];
@@ -153,6 +154,7 @@ interface DatasetReadiness {
     lastUpdated: string;
     sourceCount: number;
     countsByFreshness: DatasetSummaryCount[];
+    countsBySourceType: DatasetSummaryCount[];
     countsByStatus: DatasetSummaryCount[];
     countsByRole: DatasetSummaryCount[];
     check: {
@@ -1409,6 +1411,7 @@ function renderReadinessPage(data: SiteData): string {
   const readiness = data.readiness;
   const allSources = [...readiness.eipRegistry.sources, ...readiness.clientMatrix.sources];
   const allFreshnessCounts = freshnessCounts(allSources);
+  const allSourceTypeCounts = sourceTypeCounts(allSources);
   const body = `
     <section aria-labelledby="summary-heading">
       <h2 id="summary-heading">Summary</h2>
@@ -1446,18 +1449,21 @@ function renderReadinessPage(data: SiteData): string {
         ${detailPanel("All sources", [
           ["Sources", String(allSources.length)],
           ["Freshness counts", countsText(allFreshnessCounts)],
+          ["Source type counts", countsText(allSourceTypeCounts)],
           ["Age basis", readiness.sourceFreshnessPolicy.generatedAgeBasis]
         ])}
         ${detailPanel("EIP registry", [
           ["Last updated", readiness.eipRegistry.lastUpdated],
           ["Sources", String(readiness.eipRegistry.sourceCount)],
           ["Freshness counts", countsText(readiness.eipRegistry.countsByFreshness)],
+          ["Source type counts", countsText(readiness.eipRegistry.countsBySourceType)],
           ["Status counts", countsText(readiness.eipRegistry.countsByStatus)]
         ])}
         ${detailPanel("Client matrix", [
           ["Last updated", readiness.clientMatrix.lastUpdated],
           ["Sources", String(readiness.clientMatrix.sourceCount)],
           ["Freshness counts", countsText(readiness.clientMatrix.countsByFreshness)],
+          ["Source type counts", countsText(readiness.clientMatrix.countsBySourceType)],
           ["Matrix check", readiness.clientMatrix.check.ok ? "ok" : "failed"],
           ["Status counts", countsText(readiness.clientMatrix.countsByStatus)]
         ])}
@@ -2132,6 +2138,17 @@ function freshnessCounts(sources: DatasetReadinessSource[]): DatasetSummaryCount
   return Object.entries(counts)
     .map(([key, count]) => ({ key, count }))
     .filter((count) => count.count > 0);
+}
+
+function sourceTypeCounts(sources: DatasetReadinessSource[]): DatasetSummaryCount[] {
+  const counts = sources.reduce<Record<string, number>>((totals, source) => {
+    totals[source.type] = (totals[source.type] ?? 0) + 1;
+    return totals;
+  }, {});
+
+  return Object.entries(counts)
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([key, count]) => ({ key, count }));
 }
 
 function comparisonSection(title: string, rows: ComparisonReport["changes"]["added"]): string {

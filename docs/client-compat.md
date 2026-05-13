@@ -24,7 +24,7 @@ Each client version entry must include a source object:
   "source": {
     "type": "public-devnet-spec",
     "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
-    "retrievedAt": "2026-05-12",
+    "retrievedAt": "2026-05-13",
     "claim": "The glamsterdam-devnet-2 Kurtosis example lists geth with image ethpandaops/geth:bal-devnet-6 as the execution-layer participant."
   },
   "notes": "Devnet image only. This is not a production Geth release compatibility claim."
@@ -40,7 +40,9 @@ Supported source types are:
 - `synthetic-example`
 - `operator-maintained`
 
-For public sources, use stable public URLs and record the date you retrieved the source. Add `sourceDate` when the source has a clear publication or release date. Use `public-client-release` for release notes from a client repository; it can support a compatibility status only when the release note itself makes that claim.
+For public sources, use stable public URLs and record the date you retrieved the source. Add `sourceDate` when the source has a clear publication or release date. Use `public-devnet-spec` and `public-interop-recap` for devnet image provenance, `public-client-release` for client release-note provenance, and `operator-maintained` for an operator or client team compatibility statement maintained outside release notes.
+
+`public-client-release` can support `partial` only when the release note explicitly mentions Glamsterdam, Amsterdam, Gloas, ePBS, Block Access Lists, or a tracked fork EIP. It can support `compatible` only when the release note explicitly says the version is compatible or ready for the tracked Glamsterdam/Amsterdam/Gloas scope.
 All matrix dates use `YYYY-MM-DD`.
 
 ## Devnet Entries
@@ -54,7 +56,7 @@ The matrix can also include `devnets` entries. These are useful for tracking pub
   "source": {
     "type": "public-devnet-spec",
     "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
-    "retrievedAt": "2026-05-12",
+    "retrievedAt": "2026-05-13",
     "claim": "The glamsterdam-devnet-2 spec includes a Kurtosis participants matrix with specific EL and CL devnet images."
   },
   "participants": [
@@ -91,7 +93,7 @@ Run the offline matrix checker after editing `data/client-compat/clients.example
 pnpm client-matrix:check
 ```
 
-The checker validates schema shape, duplicate client keys, source dates against `lastUpdated`, devnet participant/client-entry consistency, documented participant exclusions, and conservative status rules. Public devnet, interop, and spec-release sources cannot be used as `compatible` client claims; keep those entries `partial` or `unknown` unless an explicit client release or operator-maintained source supports compatibility.
+The checker validates schema shape, duplicate client keys, source dates against `lastUpdated`, devnet participant/client-entry consistency, documented participant exclusions, and conservative status rules. Public devnet, interop, and spec-release sources cannot be used as `compatible` client claims; keep those entries `partial` or `unknown` unless an explicit client release or operator-maintained source supports compatibility. Public client releases also need explicit fork-signal text for `partial` and explicit compatibility/readiness wording for `compatible`.
 
 Run the live freshness audit when reviewing whether source records need a new retrieval pass:
 
@@ -102,7 +104,7 @@ pnpm readiness:freshness --as-of 2026-08-15
 
 Generated artifacts classify source retrieval age against `readiness.lastUpdated`: `fresh` is 0-30 days, `watch` is 31-90 days, and `stale` is more than 90 days. The live audit compares the same `retrievedAt` values against the current date by default. `watch` and `stale` are refresh prompts only; they do not mean the client is incompatible.
 
-The public seed dataset also exports matrix visibility into `datasets/public-seed/readiness.json`, `readiness-clients.csv`, `readiness-devnets.csv`, and `readiness-sources.csv`. The static browser renders the same source records at `site/public-seed/readiness.html`. These exports are audit aids: they show what the matrix says, how old the sources are, and which devnet participants are mirrored by client-version rows. They do not promote devnet participation to production compatibility.
+The public seed dataset also exports matrix visibility into `datasets/public-seed/readiness.json`, `readiness-clients.csv`, `readiness-devnets.csv`, and `readiness-sources.csv`. The readiness JSON and static browser include source-type counts so maintainers can distinguish devnet image provenance, client release-note provenance, spec provenance, synthetic examples, and operator-maintained claims. These exports are audit aids: they show what the matrix says, how old the sources are, and which devnet participants are mirrored by client-version rows. They do not promote devnet participation to production compatibility.
 
 ## Source Review Snapshot
 
@@ -118,7 +120,17 @@ The current source-review snapshot is dated `2026-05-13`. Refresh this table whe
 | `https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2` | 2026-05-13 | unknown | Lists glamsterdam-devnet-2 EIPs, spec versions, and Kurtosis participant images. | Devnet participant images remain `partial`. |
 | `https://github.com/ethereum/consensus-specs/releases/tag/v1.7.0-alpha.7` | 2026-05-13 | 2026-04-29 | Pre-release with Gloas changes referenced by the devnet spec. | Spec provenance, not a client release. |
 | `https://github.com/ethereum/execution-spec-tests/releases/tag/bal%40v5.6.1` | 2026-05-13 | 2026-04-02 | BAL/state-gas pre-release used by devnet testing. | Spec-test provenance, not a client release. |
-| `https://github.com/ethereum/go-ethereum/releases/tag/v1.17.2` | 2026-05-13 | 2026-03-30 | Lists Amsterdam fork updates for several EIPs and EIP-7928 prerequisite work. | Recorded as `partial`; it does not assert complete Glamsterdam production compatibility. |
+| `https://github.com/ethereum/go-ethereum/releases/tag/v1.17.3` | 2026-05-13 | 2026-05-11 | Describes continued progress on Amsterdam implementation and lists prerequisites for EIP-7928, EIP-8037, EIP-7976, EIP-7981, EIP-7610, and updated state tests. | Recorded as `partial`; it does not assert complete Glamsterdam production compatibility. |
+| `https://github.com/NethermindEth/nethermind/releases/tag/1.37.2` | 2026-05-13 | 2026-05-05 | Describes healthcheck and archive invalid-block fixes for v1.37.1. | Recorded as `unknown`; no explicit Glamsterdam/Amsterdam readiness signal found. |
+| `https://github.com/besu-eth/besu/releases/tag/26.5.0` | 2026-05-13 | 2026-05-12 | Lists Block Access List pipeline work, EIP-7928 budget enforcement, Block Access List encoding changes, and EIP-7981 added to Amsterdam. | Recorded as `partial`; it does not assert complete Glamsterdam production compatibility. |
+| `https://github.com/paradigmxyz/reth/releases/tag/v2.2.0` | 2026-05-13 | 2026-04-30 | Says the release lays groundwork for Amsterdam EIP-7928 Block Access Lists with BAL store, P2P, builder, and execution-path work. | Recorded as `partial`; groundwork and gated paths are not complete readiness. |
+| `https://github.com/sigp/lighthouse/releases/tag/v8.1.3` | 2026-05-13 | 2026-03-26 | Latest Lighthouse release focuses on security fixes, Gnosis Fulu scheduling, and performance fixes. | Recorded as `unknown`; the latest release note does not itself state Glamsterdam/Amsterdam/Gloas readiness. |
+| `https://github.com/sigp/lighthouse/releases/tag/v8.1.0` | 2026-05-13 | 2026-02-05 | Lists Gloas gossip, data-column, consensus type, payment-field, and EIP-7732 container/constant work. | Recorded as `partial`; it does not assert complete Glamsterdam production compatibility. |
+| `https://github.com/ChainSafe/lodestar/releases/tag/v1.42.0` | 2026-05-13 | 2026-04-13 | Says Lodestar is making great strides toward the Gloas hard fork and lists Gloas/ePBS implementation work. | Recorded as `partial`; it does not assert complete Glamsterdam production compatibility. |
+| `https://github.com/OffchainLabs/prysm/releases/tag/v7.1.3` | 2026-05-13 | 2026-03-18 | Describes extensive Gloas groundwork and lists builder, bid, slashing, API, payload attestation, and timing work. | Recorded as `partial`; it does not assert complete Glamsterdam production compatibility. |
+| `https://github.com/Consensys/teku/releases/tag/26.4.0` | 2026-05-13 | 2026-03-31 | Adds the PostPtcDuties REST API endpoint for the Gloas API. | Recorded as `partial`; it does not assert complete Glamsterdam production compatibility. |
+| `https://github.com/status-im/nimbus-eth2/releases/tag/v26.3.1` | 2026-05-13 | 2026-03-28 | Describes Ethereum column-handling performance, validator robustness, Gnosis Fulu scheduling, and fast-confirmation work. | Recorded as `unknown`; no explicit Glamsterdam/Amsterdam/Gloas readiness signal found. |
+| `https://github.com/grandinetech/grandine/releases/tag/2.0.4` | 2026-05-13 | 2026-03-31 | Lists post-Gloas beacon block API publishing, execution payload bid endpoints, payload attestation ticks, and consensus spec tests v1.7.0-alpha.3. | Recorded as `partial`; it does not assert complete Glamsterdam production compatibility. |
 
 ## Updating The Matrix
 

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "name": "public-seed-readiness",
   "lastUpdated": "2026-05-13",
-  "toolVersion": "0.3.4",
+  "toolVersion": "0.3.6",
   "fork": "glamsterdam",
   "sourceFreshnessPolicy": {
     "name": "readiness-source-freshness-v1",
@@ -44,6 +44,24 @@
       {
         "key": "fresh",
         "count": 5
+      }
+    ],
+    "countsBySourceType": [
+      {
+        "key": "ethereum-roadmap",
+        "count": 1
+      },
+      {
+        "key": "forkcast",
+        "count": 1
+      },
+      {
+        "key": "meta-eip",
+        "count": 1
+      },
+      {
+        "key": "protocol-blog",
+        "count": 2
       }
     ],
     "countsByStatus": [
@@ -874,11 +892,33 @@
   },
   "clientMatrix": {
     "lastUpdated": "2026-05-13",
-    "sourceCount": 29,
+    "sourceCount": 49,
     "countsByFreshness": [
       {
         "key": "fresh",
-        "count": 29
+        "count": 49
+      }
+    ],
+    "countsBySourceType": [
+      {
+        "key": "public-client-release",
+        "count": 22
+      },
+      {
+        "key": "public-devnet-spec",
+        "count": 9
+      },
+      {
+        "key": "public-interop-recap",
+        "count": 2
+      },
+      {
+        "key": "public-spec-release",
+        "count": 4
+      },
+      {
+        "key": "synthetic-example",
+        "count": 12
       }
     ],
     "countsByStatus": [
@@ -892,21 +932,21 @@
       },
       {
         "key": "partial",
-        "count": 11
+        "count": 18
       },
       {
         "key": "unknown",
-        "count": 3
+        "count": 6
       }
     ],
     "countsByRole": [
       {
         "key": "consensus",
-        "count": 10
+        "count": 17
       },
       {
         "key": "execution",
-        "count": 6
+        "count": 9
       },
       {
         "key": "validator",
@@ -924,8 +964,8 @@
         "type": "public-interop-recap",
         "url": "https://blog.ethereum.org/2026/05/02/soldogn-interop-recap",
         "sourceDate": "2026-05-02",
-        "retrievedAt": "2026-05-12",
-        "retrievedDaysAgo": 1,
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
         "sourceAgeDays": 11,
         "freshnessAsOf": "2026-05-13",
         "freshnessBand": "fresh",
@@ -938,8 +978,8 @@
         "label": "sources[1]",
         "type": "public-devnet-spec",
         "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
-        "retrievedAt": "2026-05-12",
-        "retrievedDaysAgo": 1,
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
         "freshnessAsOf": "2026-05-13",
         "freshnessBand": "fresh",
         "freshnessReview": "Source was reviewed recently enough for the readiness export.",
@@ -952,8 +992,8 @@
         "type": "public-spec-release",
         "url": "https://github.com/ethereum/consensus-specs/releases/tag/v1.7.0-alpha.7",
         "sourceDate": "2026-04-29",
-        "retrievedAt": "2026-05-12",
-        "retrievedDaysAgo": 1,
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
         "sourceAgeDays": 14,
         "freshnessAsOf": "2026-05-13",
         "freshnessBand": "fresh",
@@ -967,8 +1007,8 @@
         "type": "public-spec-release",
         "url": "https://github.com/ethereum/execution-spec-tests/releases/tag/bal%40v5.6.1",
         "sourceDate": "2026-04-02",
-        "retrievedAt": "2026-05-12",
-        "retrievedDaysAgo": 1,
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
         "sourceAgeDays": 41,
         "freshnessAsOf": "2026-05-13",
         "freshnessBand": "fresh",
@@ -980,15 +1020,165 @@
         "area": "client-matrix",
         "label": "sources[4]",
         "type": "public-client-release",
-        "url": "https://github.com/ethereum/go-ethereum/releases/tag/v1.17.2",
-        "sourceDate": "2026-03-30",
+        "url": "https://github.com/ethereum/go-ethereum/releases/tag/v1.17.3",
+        "sourceDate": "2026-05-11",
         "retrievedAt": "2026-05-13",
         "retrievedDaysAgo": 0,
-        "sourceAgeDays": 44,
+        "sourceAgeDays": 2,
         "freshnessAsOf": "2026-05-13",
         "freshnessBand": "fresh",
         "freshnessReview": "Source was reviewed recently enough for the readiness export.",
-        "claim": "Geth v1.17.2 release notes list Amsterdam fork updates for EIP-8024, EIP-7778, EIP-7954, EIP-7708, and gas-measurement order work prerequisite for EIP-7928.",
+        "claim": "Geth v1.17.3 release notes describe continued progress on the Amsterdam fork implementation, including prerequisites for EIP-7928, EIP-8037, EIP-7976, EIP-7981, EIP-7610, and updated state tests.",
+        "notes": "Client release-note provenance only. This does not assert complete Glamsterdam production compatibility."
+      },
+      {
+        "area": "client-matrix",
+        "label": "sources[5]",
+        "type": "public-client-release",
+        "url": "https://github.com/NethermindEth/nethermind/releases/tag/1.37.2",
+        "sourceDate": "2026-05-05",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 8,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Nethermind v1.37.2 release notes describe healthcheck and archive invalid-block fixes for v1.37.1 and do not state Glamsterdam or Amsterdam readiness.",
+        "notes": "Latest release reviewed. No explicit Glamsterdam/Amsterdam readiness signal found in this release note."
+      },
+      {
+        "area": "client-matrix",
+        "label": "sources[6]",
+        "type": "public-client-release",
+        "url": "https://github.com/besu-eth/besu/releases/tag/26.5.0",
+        "sourceDate": "2026-05-12",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 1,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Besu 26.5.0 release notes include Block Access List pipeline work, EIP-7928 Block Access List budget enforcement, Block Access List index encoding changes, and adding EIP-7981 to Amsterdam.",
+        "notes": "Client release-note provenance only. This does not assert complete Glamsterdam production compatibility."
+      },
+      {
+        "area": "client-matrix",
+        "label": "sources[7]",
+        "type": "public-client-release",
+        "url": "https://github.com/paradigmxyz/reth/releases/tag/v2.2.0",
+        "sourceDate": "2026-04-30",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 13,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Reth v2.2.0 release notes say the release lays groundwork for Amsterdam EIP-7928 Block Access Lists, with BAL store, P2P wire support, payload-builder integration, and parallel/batched BAL execution paths.",
+        "notes": "Client release-note provenance only. The notes call this groundwork and mention gated paths, not complete Glamsterdam production compatibility."
+      },
+      {
+        "area": "client-matrix",
+        "label": "sources[8]",
+        "type": "public-client-release",
+        "url": "https://github.com/sigp/lighthouse/releases/tag/v8.1.3",
+        "sourceDate": "2026-03-26",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 48,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Lighthouse v8.1.3 release notes describe maintenance fixes and do not state Glamsterdam, Amsterdam, or Gloas readiness.",
+        "notes": "Latest release reviewed. Use the v8.1.0 row for the explicit Gloas release-note signal."
+      },
+      {
+        "area": "client-matrix",
+        "label": "sources[9]",
+        "type": "public-client-release",
+        "url": "https://github.com/sigp/lighthouse/releases/tag/v8.1.0",
+        "sourceDate": "2026-02-05",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 97,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Lighthouse v8.1.0 release notes include Gloas gossip boilerplate, Gloas data column support, consensus types updated for Gloas v1.7.0-alpha.1, Gloas off-protocol payment fields, and EIP-7732 Gloas containers/constants.",
+        "notes": "Client release-note provenance only. This does not assert complete Glamsterdam production compatibility."
+      },
+      {
+        "area": "client-matrix",
+        "label": "sources[10]",
+        "type": "public-client-release",
+        "url": "https://github.com/ChainSafe/lodestar/releases/tag/v1.42.0",
+        "sourceDate": "2026-04-13",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 30,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Lodestar v1.42.0 release notes say the release makes great strides toward the Gloas hard fork and list Gloas network processor, data-column sidecar, payload-envelope pipeline, voluntary-exit, and ePBS state-cache work.",
+        "notes": "Client release-note provenance only. This does not assert complete Glamsterdam production compatibility."
+      },
+      {
+        "area": "client-matrix",
+        "label": "sources[11]",
+        "type": "public-client-release",
+        "url": "https://github.com/OffchainLabs/prysm/releases/tag/v7.1.3",
+        "sourceDate": "2026-03-18",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 56,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Prysm v7.1.3 release notes describe extensive Gloas groundwork and list Gloas builder support, latest execution bid processing, proposer slashing, beacon API block returns, payload attestation processing, and Gloas timing intervals.",
+        "notes": "Client release-note provenance only. This does not assert complete Glamsterdam production compatibility."
+      },
+      {
+        "area": "client-matrix",
+        "label": "sources[12]",
+        "type": "public-client-release",
+        "url": "https://github.com/Consensys/teku/releases/tag/26.4.0",
+        "sourceDate": "2026-03-31",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 43,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Teku 26.4.0 release notes include the PostPtcDuties REST API endpoint for the Gloas API.",
+        "notes": "Client release-note provenance only. This does not assert complete Glamsterdam production compatibility."
+      },
+      {
+        "area": "client-matrix",
+        "label": "sources[13]",
+        "type": "public-client-release",
+        "url": "https://github.com/status-im/nimbus-eth2/releases/tag/v26.3.1",
+        "sourceDate": "2026-03-28",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 46,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Nimbus v26.3.1 release notes describe Ethereum column-handling performance, validator robustness, Gnosis Fulu scheduling, and fast-confirmation work, but do not state Glamsterdam, Amsterdam, or Gloas readiness.",
+        "notes": "Latest release reviewed. No explicit Glamsterdam/Amsterdam/Gloas readiness signal found in this release note."
+      },
+      {
+        "area": "client-matrix",
+        "label": "sources[14]",
+        "type": "public-client-release",
+        "url": "https://github.com/grandinetech/grandine/releases/tag/2.0.4",
+        "sourceDate": "2026-03-31",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 43,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Grandine 2.0.4 release notes include post-Gloas beacon block API publishing, execution payload bid endpoints, payload attestation ticks, and consensus spec tests v1.7.0-alpha.3.",
         "notes": "Client release-note provenance only. This does not assert complete Glamsterdam production compatibility."
       },
       {
@@ -1140,8 +1330,8 @@
         "label": "clients.execution.geth.ethpandaops/geth:bal-devnet-6.source",
         "type": "public-devnet-spec",
         "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
-        "retrievedAt": "2026-05-12",
-        "retrievedDaysAgo": 1,
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
         "freshnessAsOf": "2026-05-13",
         "freshnessBand": "fresh",
         "freshnessReview": "Source was reviewed recently enough for the readiness export.",
@@ -1149,30 +1339,105 @@
       },
       {
         "area": "client-matrix",
-        "label": "clients.execution.geth.v1.17.2.source",
+        "label": "clients.execution.geth.v1.17.3.source",
         "type": "public-client-release",
-        "url": "https://github.com/ethereum/go-ethereum/releases/tag/v1.17.2",
-        "sourceDate": "2026-03-30",
+        "url": "https://github.com/ethereum/go-ethereum/releases/tag/v1.17.3",
+        "sourceDate": "2026-05-11",
         "retrievedAt": "2026-05-13",
         "retrievedDaysAgo": 0,
-        "sourceAgeDays": 44,
+        "sourceAgeDays": 2,
         "freshnessAsOf": "2026-05-13",
         "freshnessBand": "fresh",
         "freshnessReview": "Source was reviewed recently enough for the readiness export.",
-        "claim": "Geth v1.17.2 release notes list Amsterdam fork updates for EIP-8024, EIP-7778, EIP-7954, EIP-7708, and gas-measurement order work prerequisite for EIP-7928.",
+        "claim": "Geth v1.17.3 release notes describe continued progress on the Amsterdam fork implementation, including prerequisites for EIP-7928, EIP-8037, EIP-7976, EIP-7981, EIP-7610, and updated state tests.",
         "notes": "Client release-note provenance only. This does not assert complete Glamsterdam production compatibility."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.execution.nethermind.1.37.2.source",
+        "type": "public-client-release",
+        "url": "https://github.com/NethermindEth/nethermind/releases/tag/1.37.2",
+        "sourceDate": "2026-05-05",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 8,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Nethermind v1.37.2 release notes describe healthcheck and archive invalid-block fixes for v1.37.1 and do not state Glamsterdam or Amsterdam readiness.",
+        "notes": "Latest release reviewed. No explicit Glamsterdam/Amsterdam readiness signal found in this release note."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.execution.besu.26.5.0.source",
+        "type": "public-client-release",
+        "url": "https://github.com/besu-eth/besu/releases/tag/26.5.0",
+        "sourceDate": "2026-05-12",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 1,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Besu 26.5.0 release notes include Block Access List pipeline work, EIP-7928 Block Access List budget enforcement, Block Access List index encoding changes, and adding EIP-7981 to Amsterdam.",
+        "notes": "Client release-note provenance only. This does not assert complete Glamsterdam production compatibility."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.execution.reth.v2.2.0.source",
+        "type": "public-client-release",
+        "url": "https://github.com/paradigmxyz/reth/releases/tag/v2.2.0",
+        "sourceDate": "2026-04-30",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 13,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Reth v2.2.0 release notes say the release lays groundwork for Amsterdam EIP-7928 Block Access Lists, with BAL store, P2P wire support, payload-builder integration, and parallel/batched BAL execution paths.",
+        "notes": "Client release-note provenance only. The notes call this groundwork and mention gated paths, not complete Glamsterdam production compatibility."
       },
       {
         "area": "client-matrix",
         "label": "clients.consensus.lighthouse.ethpandaops/lighthouse:glamsterdam-devnet-3.source",
         "type": "public-devnet-spec",
         "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
-        "retrievedAt": "2026-05-12",
-        "retrievedDaysAgo": 1,
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
         "freshnessAsOf": "2026-05-13",
         "freshnessBand": "fresh",
         "freshnessReview": "Source was reviewed recently enough for the readiness export.",
         "claim": "The glamsterdam-devnet-2 Kurtosis example lists lighthouse with image ethpandaops/lighthouse:glamsterdam-devnet-3 as a consensus-layer participant."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.consensus.lighthouse.v8.1.3.source",
+        "type": "public-client-release",
+        "url": "https://github.com/sigp/lighthouse/releases/tag/v8.1.3",
+        "sourceDate": "2026-03-26",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 48,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Lighthouse v8.1.3 release notes describe maintenance fixes and do not state Glamsterdam, Amsterdam, or Gloas readiness.",
+        "notes": "Latest release reviewed. Use the v8.1.0 row for the explicit Gloas release-note signal."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.consensus.lighthouse.v8.1.0.source",
+        "type": "public-client-release",
+        "url": "https://github.com/sigp/lighthouse/releases/tag/v8.1.0",
+        "sourceDate": "2026-02-05",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 97,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Lighthouse v8.1.0 release notes include Gloas gossip boilerplate, Gloas data column support, consensus types updated for Gloas v1.7.0-alpha.1, Gloas off-protocol payment fields, and EIP-7732 Gloas containers/constants.",
+        "notes": "Client release-note provenance only. This does not assert complete Glamsterdam production compatibility."
       },
       {
         "area": "client-matrix",
@@ -1188,6 +1453,21 @@
       },
       {
         "area": "client-matrix",
+        "label": "clients.consensus.lodestar.v1.42.0.source",
+        "type": "public-client-release",
+        "url": "https://github.com/ChainSafe/lodestar/releases/tag/v1.42.0",
+        "sourceDate": "2026-04-13",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 30,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Lodestar v1.42.0 release notes say the release makes great strides toward the Gloas hard fork and list Gloas network processor, data-column sidecar, payload-envelope pipeline, voluntary-exit, and ePBS state-cache work.",
+        "notes": "Client release-note provenance only. This does not assert complete Glamsterdam production compatibility."
+      },
+      {
+        "area": "client-matrix",
         "label": "clients.consensus.prysm.ethpandaops/prysm-beacon-chain:glamsterdam-devnet-3-minimal.source",
         "type": "public-devnet-spec",
         "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
@@ -1200,15 +1480,45 @@
       },
       {
         "area": "client-matrix",
+        "label": "clients.consensus.prysm.v7.1.3.source",
+        "type": "public-client-release",
+        "url": "https://github.com/OffchainLabs/prysm/releases/tag/v7.1.3",
+        "sourceDate": "2026-03-18",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 56,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Prysm v7.1.3 release notes describe extensive Gloas groundwork and list Gloas builder support, latest execution bid processing, proposer slashing, beacon API block returns, payload attestation processing, and Gloas timing intervals.",
+        "notes": "Client release-note provenance only. This does not assert complete Glamsterdam production compatibility."
+      },
+      {
+        "area": "client-matrix",
         "label": "clients.consensus.teku.ethpandaops/teku:glamsterdam-devnet-2.source",
         "type": "public-devnet-spec",
         "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
-        "retrievedAt": "2026-05-12",
-        "retrievedDaysAgo": 1,
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
         "freshnessAsOf": "2026-05-13",
         "freshnessBand": "fresh",
         "freshnessReview": "Source was reviewed recently enough for the readiness export.",
         "claim": "The glamsterdam-devnet-2 Kurtosis example lists teku with image ethpandaops/teku:glamsterdam-devnet-2 as a consensus-layer participant."
+      },
+      {
+        "area": "client-matrix",
+        "label": "clients.consensus.teku.26.4.0.source",
+        "type": "public-client-release",
+        "url": "https://github.com/Consensys/teku/releases/tag/26.4.0",
+        "sourceDate": "2026-03-31",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 43,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Teku 26.4.0 release notes include the PostPtcDuties REST API endpoint for the Gloas API.",
+        "notes": "Client release-note provenance only. This does not assert complete Glamsterdam production compatibility."
       },
       {
         "area": "client-matrix",
@@ -1224,6 +1534,21 @@
       },
       {
         "area": "client-matrix",
+        "label": "clients.consensus.nimbus.v26.3.1.source",
+        "type": "public-client-release",
+        "url": "https://github.com/status-im/nimbus-eth2/releases/tag/v26.3.1",
+        "sourceDate": "2026-03-28",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 46,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Nimbus v26.3.1 release notes describe Ethereum column-handling performance, validator robustness, Gnosis Fulu scheduling, and fast-confirmation work, but do not state Glamsterdam, Amsterdam, or Gloas readiness.",
+        "notes": "Latest release reviewed. No explicit Glamsterdam/Amsterdam/Gloas readiness signal found in this release note."
+      },
+      {
+        "area": "client-matrix",
         "label": "clients.consensus.grandine.ethpandaops/grandine:glamsterdam-devnet-2-minimal.source",
         "type": "public-devnet-spec",
         "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
@@ -1236,11 +1561,26 @@
       },
       {
         "area": "client-matrix",
+        "label": "clients.consensus.grandine.2.0.4.source",
+        "type": "public-client-release",
+        "url": "https://github.com/grandinetech/grandine/releases/tag/2.0.4",
+        "sourceDate": "2026-03-31",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "sourceAgeDays": 43,
+        "freshnessAsOf": "2026-05-13",
+        "freshnessBand": "fresh",
+        "freshnessReview": "Source was reviewed recently enough for the readiness export.",
+        "claim": "Grandine 2.0.4 release notes include post-Gloas beacon block API publishing, execution payload bid endpoints, payload attestation ticks, and consensus spec tests v1.7.0-alpha.3.",
+        "notes": "Client release-note provenance only. This does not assert complete Glamsterdam production compatibility."
+      },
+      {
+        "area": "client-matrix",
         "label": "devnets.glamsterdam-devnet-2.source",
         "type": "public-devnet-spec",
         "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
-        "retrievedAt": "2026-05-12",
-        "retrievedDaysAgo": 1,
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
         "freshnessAsOf": "2026-05-13",
         "freshnessBand": "fresh",
         "freshnessReview": "Source was reviewed recently enough for the readiness export.",
@@ -1252,8 +1592,8 @@
         "type": "public-spec-release",
         "url": "https://github.com/ethereum/consensus-specs/releases/tag/v1.7.0-alpha.7",
         "sourceDate": "2026-04-29",
-        "retrievedAt": "2026-05-12",
-        "retrievedDaysAgo": 1,
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
         "sourceAgeDays": 14,
         "freshnessAsOf": "2026-05-13",
         "freshnessBand": "fresh",
@@ -1266,8 +1606,8 @@
         "type": "public-spec-release",
         "url": "https://github.com/ethereum/execution-spec-tests/releases/tag/bal%40v5.6.1",
         "sourceDate": "2026-04-02",
-        "retrievedAt": "2026-05-12",
-        "retrievedDaysAgo": 1,
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
         "sourceAgeDays": 41,
         "freshnessAsOf": "2026-05-13",
         "freshnessBand": "fresh",
@@ -1280,8 +1620,8 @@
         "type": "public-interop-recap",
         "url": "https://blog.ethereum.org/2026/05/02/soldogn-interop-recap",
         "sourceDate": "2026-05-02",
-        "retrievedAt": "2026-05-12",
-        "retrievedDaysAgo": 1,
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
         "sourceAgeDays": 11,
         "freshnessAsOf": "2026-05-13",
         "freshnessBand": "fresh",
@@ -1341,6 +1681,18 @@
       {
         "role": "consensus",
         "name": "grandine",
+        "version": "2.0.4",
+        "status": "partial",
+        "sourceType": "public-client-release",
+        "sourceUrl": "https://github.com/grandinetech/grandine/releases/tag/2.0.4",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "freshnessBand": "fresh",
+        "notes": "Public release notes show post-Gloas API and testing work, but not a complete Glamsterdam mainnet readiness statement."
+      },
+      {
+        "role": "consensus",
+        "name": "grandine",
         "version": "ethpandaops/grandine:glamsterdam-devnet-2-minimal",
         "status": "partial",
         "sourceType": "public-devnet-spec",
@@ -1357,10 +1709,34 @@
         "status": "partial",
         "sourceType": "public-devnet-spec",
         "sourceUrl": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
-        "retrievedAt": "2026-05-12",
-        "retrievedDaysAgo": 1,
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
         "freshnessBand": "fresh",
         "notes": "Devnet image only. This is not a production Lighthouse release compatibility claim."
+      },
+      {
+        "role": "consensus",
+        "name": "lighthouse",
+        "version": "v8.1.0",
+        "status": "partial",
+        "sourceType": "public-client-release",
+        "sourceUrl": "https://github.com/sigp/lighthouse/releases/tag/v8.1.0",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "freshnessBand": "fresh",
+        "notes": "Public release notes show Gloas implementation work, but not a complete Glamsterdam mainnet readiness statement."
+      },
+      {
+        "role": "consensus",
+        "name": "lighthouse",
+        "version": "v8.1.3",
+        "status": "unknown",
+        "sourceType": "public-client-release",
+        "sourceUrl": "https://github.com/sigp/lighthouse/releases/tag/v8.1.3",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "freshnessBand": "fresh",
+        "notes": "Latest public release note reviewed; status remains unknown because this release note does not itself claim Glamsterdam/Amsterdam/Gloas readiness."
       },
       {
         "role": "consensus",
@@ -1376,6 +1752,18 @@
       },
       {
         "role": "consensus",
+        "name": "lodestar",
+        "version": "v1.42.0",
+        "status": "partial",
+        "sourceType": "public-client-release",
+        "sourceUrl": "https://github.com/ChainSafe/lodestar/releases/tag/v1.42.0",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "freshnessBand": "fresh",
+        "notes": "Public release notes show Gloas implementation work, but not a complete Glamsterdam mainnet readiness statement."
+      },
+      {
+        "role": "consensus",
         "name": "nimbus",
         "version": "ethpandaops/nimbus-eth2:glamsterdam-devnet-2-minimal",
         "status": "partial",
@@ -1385,6 +1773,18 @@
         "retrievedDaysAgo": 0,
         "freshnessBand": "fresh",
         "notes": "Devnet image only. This is not a production Nimbus release compatibility claim."
+      },
+      {
+        "role": "consensus",
+        "name": "nimbus",
+        "version": "v26.3.1",
+        "status": "unknown",
+        "sourceType": "public-client-release",
+        "sourceUrl": "https://github.com/status-im/nimbus-eth2/releases/tag/v26.3.1",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "freshnessBand": "fresh",
+        "notes": "Latest public release note reviewed; status remains unknown until a client release or operator-maintained source explicitly states readiness."
       },
       {
         "role": "consensus",
@@ -1400,15 +1800,51 @@
       },
       {
         "role": "consensus",
+        "name": "prysm",
+        "version": "v7.1.3",
+        "status": "partial",
+        "sourceType": "public-client-release",
+        "sourceUrl": "https://github.com/OffchainLabs/prysm/releases/tag/v7.1.3",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "freshnessBand": "fresh",
+        "notes": "Public release notes show Gloas groundwork and implementation work, but not a complete Glamsterdam mainnet readiness statement."
+      },
+      {
+        "role": "consensus",
+        "name": "teku",
+        "version": "26.4.0",
+        "status": "partial",
+        "sourceType": "public-client-release",
+        "sourceUrl": "https://github.com/Consensys/teku/releases/tag/26.4.0",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "freshnessBand": "fresh",
+        "notes": "Public release notes show a Gloas API implementation item, but not a complete Glamsterdam mainnet readiness statement."
+      },
+      {
+        "role": "consensus",
         "name": "teku",
         "version": "ethpandaops/teku:glamsterdam-devnet-2",
         "status": "partial",
         "sourceType": "public-devnet-spec",
         "sourceUrl": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
-        "retrievedAt": "2026-05-12",
-        "retrievedDaysAgo": 1,
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
         "freshnessBand": "fresh",
         "notes": "Devnet image only. This is not a production Teku release compatibility claim."
+      },
+      {
+        "role": "execution",
+        "name": "besu",
+        "version": "26.5.0",
+        "status": "partial",
+        "sourceType": "public-client-release",
+        "sourceUrl": "https://github.com/besu-eth/besu/releases/tag/26.5.0",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "freshnessBand": "fresh",
+        "notes": "Public release notes show Amsterdam and Block Access List implementation work, but not a complete Glamsterdam mainnet readiness statement."
       },
       {
         "role": "execution",
@@ -1465,22 +1901,46 @@
         "status": "partial",
         "sourceType": "public-devnet-spec",
         "sourceUrl": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
-        "retrievedAt": "2026-05-12",
-        "retrievedDaysAgo": 1,
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
         "freshnessBand": "fresh",
         "notes": "Devnet image only. This is not a production Geth release compatibility claim."
       },
       {
         "role": "execution",
         "name": "geth",
-        "version": "v1.17.2",
+        "version": "v1.17.3",
         "status": "partial",
         "sourceType": "public-client-release",
-        "sourceUrl": "https://github.com/ethereum/go-ethereum/releases/tag/v1.17.2",
+        "sourceUrl": "https://github.com/ethereum/go-ethereum/releases/tag/v1.17.3",
         "retrievedAt": "2026-05-13",
         "retrievedDaysAgo": 0,
         "freshnessBand": "fresh",
         "notes": "Public release notes show Amsterdam-related implementation work, but not a complete Glamsterdam mainnet readiness statement."
+      },
+      {
+        "role": "execution",
+        "name": "nethermind",
+        "version": "1.37.2",
+        "status": "unknown",
+        "sourceType": "public-client-release",
+        "sourceUrl": "https://github.com/NethermindEth/nethermind/releases/tag/1.37.2",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "freshnessBand": "fresh",
+        "notes": "Latest public release note reviewed; status remains unknown until a client release or operator-maintained source explicitly states readiness."
+      },
+      {
+        "role": "execution",
+        "name": "reth",
+        "version": "v2.2.0",
+        "status": "partial",
+        "sourceType": "public-client-release",
+        "sourceUrl": "https://github.com/paradigmxyz/reth/releases/tag/v2.2.0",
+        "retrievedAt": "2026-05-13",
+        "retrievedDaysAgo": 0,
+        "freshnessBand": "fresh",
+        "notes": "Public release notes show Amsterdam/BAL implementation groundwork, but not a complete Glamsterdam mainnet readiness statement."
       },
       {
         "role": "validator",
@@ -1536,7 +1996,7 @@
         "name": "glamsterdam-devnet-2",
         "status": "partial",
         "sourceUrl": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
-        "retrievedAt": "2026-05-12",
+        "retrievedAt": "2026-05-13",
         "participants": [
           {
             "devnet": "glamsterdam-devnet-2",
@@ -1608,14 +2068,14 @@
             "name": "consensus-specs",
             "version": "v1.7.0-alpha.7",
             "sourceUrl": "https://github.com/ethereum/consensus-specs/releases/tag/v1.7.0-alpha.7",
-            "retrievedAt": "2026-05-12"
+            "retrievedAt": "2026-05-13"
           },
           {
             "devnet": "glamsterdam-devnet-2",
             "name": "execution-spec-tests",
             "version": "bal@v5.6.1",
             "sourceUrl": "https://github.com/ethereum/execution-spec-tests/releases/tag/bal%40v5.6.1",
-            "retrievedAt": "2026-05-12"
+            "retrievedAt": "2026-05-13"
           }
         ],
         "notes": "Devnet participation is tracked as partial readiness. Production release compatibility must come from client release notes or other explicit public statements."
@@ -1624,7 +2084,7 @@
         "name": "soldogn-interop",
         "status": "stable-multi-client-devnet-reported",
         "sourceUrl": "https://blog.ethereum.org/2026/05/02/soldogn-interop-recap",
-        "retrievedAt": "2026-05-12",
+        "retrievedAt": "2026-05-13",
         "participants": [],
         "specVersions": [],
         "notes": "Interop recap is useful context for the matrix, but this entry intentionally avoids per-client production compatibility claims."

@@ -376,7 +376,7 @@
       </div>
       <div class="meta" aria-label="Dataset metadata">
         <span>Dataset 2026-05-13</span>
-        <span>Tool 0.3.4</span>
+        <span>Tool 0.3.6</span>
         <span>Site 2026-05-13</span>
       </div>
     </header>
@@ -385,10 +385,10 @@
       <h2 id="summary-heading">Summary</h2>
       <div class="stats">
         <div class="stat"><span class="stat-value">65</span><span class="stat-label">EIPs</span></div>
-        <div class="stat"><span class="stat-value">20</span><span class="stat-label">Client versions</span></div>
+        <div class="stat"><span class="stat-value">30</span><span class="stat-label">Client versions</span></div>
         <div class="stat"><span class="stat-value">2</span><span class="stat-label">Devnets</span></div>
-        <div class="stat"><span class="stat-value">34</span><span class="stat-label">Sources</span></div>
-        <div class="stat"><span class="stat-value">34</span><span class="stat-label">Fresh sources</span></div>
+        <div class="stat"><span class="stat-value">54</span><span class="stat-label">Sources</span></div>
+        <div class="stat"><span class="stat-value">54</span><span class="stat-label">Fresh sources</span></div>
         <div class="stat"><span class="stat-value">0</span><span class="stat-label">Watch sources</span></div>
         <div class="stat"><span class="stat-value">0</span><span class="stat-label">Stale sources</span></div>
         <div class="stat"><span class="stat-value">2026-05-13</span><span class="stat-label">Freshness as of</span></div>
@@ -418,8 +418,9 @@
         <div class="panel">
     <h3>All sources</h3>
     <dl class="kv">
-      <dt>Sources</dt><dd>34</dd>
-<dt>Freshness counts</dt><dd>fresh: 34</dd>
+      <dt>Sources</dt><dd>54</dd>
+<dt>Freshness counts</dt><dd>fresh: 54</dd>
+<dt>Source type counts</dt><dd>ethereum-roadmap: 1, forkcast: 1, meta-eip: 1, protocol-blog: 2, public-client-release: 22, public-devnet-spec: 9, public-interop-recap: 2, public-spec-release: 4, synthetic-example: 12</dd>
 <dt>Age basis</dt><dd>readiness.lastUpdated</dd>
     </dl>
   </div>
@@ -429,6 +430,7 @@
       <dt>Last updated</dt><dd>2026-05-13</dd>
 <dt>Sources</dt><dd>5</dd>
 <dt>Freshness counts</dt><dd>fresh: 5</dd>
+<dt>Source type counts</dt><dd>ethereum-roadmap: 1, forkcast: 1, meta-eip: 1, protocol-blog: 2</dd>
 <dt>Status counts</dt><dd>considered: 14, declined: 38, proposed: 3, scheduled: 10</dd>
     </dl>
   </div>
@@ -436,10 +438,11 @@
     <h3>Client matrix</h3>
     <dl class="kv">
       <dt>Last updated</dt><dd>2026-05-13</dd>
-<dt>Sources</dt><dd>29</dd>
-<dt>Freshness counts</dt><dd>fresh: 29</dd>
+<dt>Sources</dt><dd>49</dd>
+<dt>Freshness counts</dt><dd>fresh: 49</dd>
+<dt>Source type counts</dt><dd>public-client-release: 22, public-devnet-spec: 9, public-interop-recap: 2, public-spec-release: 4, synthetic-example: 12</dd>
 <dt>Matrix check</dt><dd>ok</dd>
-<dt>Status counts</dt><dd>compatible: 3, incompatible: 3, partial: 11, unknown: 3</dd>
+<dt>Status counts</dt><dd>compatible: 3, incompatible: 3, partial: 18, unknown: 6</dd>
     </dl>
   </div>
       </div>
@@ -983,6 +986,16 @@
   </tr>
 <tr>
     <td><strong>grandine</strong><div class="subtle">consensus</div></td>
+    <td><div class="path">2.0.4</div></td>
+    <td><span class="badge risk-medium">partial</span></td>
+    <td>
+      <a href="https://github.com/grandinetech/grandine/releases/tag/2.0.4" rel="noopener">public-client-release</a>
+      <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
+    </td>
+    <td>Public release notes show post-Gloas API and testing work, but not a complete Glamsterdam mainnet readiness statement.</td>
+  </tr>
+<tr>
+    <td><strong>grandine</strong><div class="subtle">consensus</div></td>
     <td><div class="path">ethpandaops/grandine:glamsterdam-devnet-2-minimal</div></td>
     <td><span class="badge risk-medium">partial</span></td>
     <td>
@@ -997,9 +1010,29 @@
     <td><span class="badge risk-medium">partial</span></td>
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
-      <div class="subtle">retrieved 2026-05-12 / 1d old / <span class="badge risk-low">fresh</span></div>
+      <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Devnet image only. This is not a production Lighthouse release compatibility claim.</td>
+  </tr>
+<tr>
+    <td><strong>lighthouse</strong><div class="subtle">consensus</div></td>
+    <td><div class="path">v8.1.0</div></td>
+    <td><span class="badge risk-medium">partial</span></td>
+    <td>
+      <a href="https://github.com/sigp/lighthouse/releases/tag/v8.1.0" rel="noopener">public-client-release</a>
+      <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
+    </td>
+    <td>Public release notes show Gloas implementation work, but not a complete Glamsterdam mainnet readiness statement.</td>
+  </tr>
+<tr>
+    <td><strong>lighthouse</strong><div class="subtle">consensus</div></td>
+    <td><div class="path">v8.1.3</div></td>
+    <td><span class="badge risk-unknown">unknown</span></td>
+    <td>
+      <a href="https://github.com/sigp/lighthouse/releases/tag/v8.1.3" rel="noopener">public-client-release</a>
+      <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
+    </td>
+    <td>Latest public release note reviewed; status remains unknown because this release note does not itself claim Glamsterdam/Amsterdam/Gloas readiness.</td>
   </tr>
 <tr>
     <td><strong>lodestar</strong><div class="subtle">consensus</div></td>
@@ -1012,6 +1045,16 @@
     <td>Devnet image only. This is not a production Lodestar release compatibility claim.</td>
   </tr>
 <tr>
+    <td><strong>lodestar</strong><div class="subtle">consensus</div></td>
+    <td><div class="path">v1.42.0</div></td>
+    <td><span class="badge risk-medium">partial</span></td>
+    <td>
+      <a href="https://github.com/ChainSafe/lodestar/releases/tag/v1.42.0" rel="noopener">public-client-release</a>
+      <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
+    </td>
+    <td>Public release notes show Gloas implementation work, but not a complete Glamsterdam mainnet readiness statement.</td>
+  </tr>
+<tr>
     <td><strong>nimbus</strong><div class="subtle">consensus</div></td>
     <td><div class="path">ethpandaops/nimbus-eth2:glamsterdam-devnet-2-minimal</div></td>
     <td><span class="badge risk-medium">partial</span></td>
@@ -1020,6 +1063,16 @@
       <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Devnet image only. This is not a production Nimbus release compatibility claim.</td>
+  </tr>
+<tr>
+    <td><strong>nimbus</strong><div class="subtle">consensus</div></td>
+    <td><div class="path">v26.3.1</div></td>
+    <td><span class="badge risk-unknown">unknown</span></td>
+    <td>
+      <a href="https://github.com/status-im/nimbus-eth2/releases/tag/v26.3.1" rel="noopener">public-client-release</a>
+      <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
+    </td>
+    <td>Latest public release note reviewed; status remains unknown until a client release or operator-maintained source explicitly states readiness.</td>
   </tr>
 <tr>
     <td><strong>prysm</strong><div class="subtle">consensus</div></td>
@@ -1032,14 +1085,44 @@
     <td>Devnet image only. This is not a production Prysm release compatibility claim.</td>
   </tr>
 <tr>
+    <td><strong>prysm</strong><div class="subtle">consensus</div></td>
+    <td><div class="path">v7.1.3</div></td>
+    <td><span class="badge risk-medium">partial</span></td>
+    <td>
+      <a href="https://github.com/OffchainLabs/prysm/releases/tag/v7.1.3" rel="noopener">public-client-release</a>
+      <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
+    </td>
+    <td>Public release notes show Gloas groundwork and implementation work, but not a complete Glamsterdam mainnet readiness statement.</td>
+  </tr>
+<tr>
+    <td><strong>teku</strong><div class="subtle">consensus</div></td>
+    <td><div class="path">26.4.0</div></td>
+    <td><span class="badge risk-medium">partial</span></td>
+    <td>
+      <a href="https://github.com/Consensys/teku/releases/tag/26.4.0" rel="noopener">public-client-release</a>
+      <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
+    </td>
+    <td>Public release notes show a Gloas API implementation item, but not a complete Glamsterdam mainnet readiness statement.</td>
+  </tr>
+<tr>
     <td><strong>teku</strong><div class="subtle">consensus</div></td>
     <td><div class="path">ethpandaops/teku:glamsterdam-devnet-2</div></td>
     <td><span class="badge risk-medium">partial</span></td>
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
-      <div class="subtle">retrieved 2026-05-12 / 1d old / <span class="badge risk-low">fresh</span></div>
+      <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Devnet image only. This is not a production Teku release compatibility claim.</td>
+  </tr>
+<tr>
+    <td><strong>besu</strong><div class="subtle">execution</div></td>
+    <td><div class="path">26.5.0</div></td>
+    <td><span class="badge risk-medium">partial</span></td>
+    <td>
+      <a href="https://github.com/besu-eth/besu/releases/tag/26.5.0" rel="noopener">public-client-release</a>
+      <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
+    </td>
+    <td>Public release notes show Amsterdam and Block Access List implementation work, but not a complete Glamsterdam mainnet readiness statement.</td>
   </tr>
 <tr>
     <td><strong>example-execution-client</strong><div class="subtle">execution</div></td>
@@ -1087,19 +1170,39 @@
     <td><span class="badge risk-medium">partial</span></td>
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
-      <div class="subtle">retrieved 2026-05-12 / 1d old / <span class="badge risk-low">fresh</span></div>
+      <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Devnet image only. This is not a production Geth release compatibility claim.</td>
   </tr>
 <tr>
     <td><strong>geth</strong><div class="subtle">execution</div></td>
-    <td><div class="path">v1.17.2</div></td>
+    <td><div class="path">v1.17.3</div></td>
     <td><span class="badge risk-medium">partial</span></td>
     <td>
-      <a href="https://github.com/ethereum/go-ethereum/releases/tag/v1.17.2" rel="noopener">public-client-release</a>
+      <a href="https://github.com/ethereum/go-ethereum/releases/tag/v1.17.3" rel="noopener">public-client-release</a>
       <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Public release notes show Amsterdam-related implementation work, but not a complete Glamsterdam mainnet readiness statement.</td>
+  </tr>
+<tr>
+    <td><strong>nethermind</strong><div class="subtle">execution</div></td>
+    <td><div class="path">1.37.2</div></td>
+    <td><span class="badge risk-unknown">unknown</span></td>
+    <td>
+      <a href="https://github.com/NethermindEth/nethermind/releases/tag/1.37.2" rel="noopener">public-client-release</a>
+      <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
+    </td>
+    <td>Latest public release note reviewed; status remains unknown until a client release or operator-maintained source explicitly states readiness.</td>
+  </tr>
+<tr>
+    <td><strong>reth</strong><div class="subtle">execution</div></td>
+    <td><div class="path">v2.2.0</div></td>
+    <td><span class="badge risk-medium">partial</span></td>
+    <td>
+      <a href="https://github.com/paradigmxyz/reth/releases/tag/v2.2.0" rel="noopener">public-client-release</a>
+      <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
+    </td>
+    <td>Public release notes show Amsterdam/BAL implementation groundwork, but not a complete Glamsterdam mainnet readiness statement.</td>
   </tr>
 <tr>
     <td><strong>example-validator-client</strong><div class="subtle">validator</div></td>
@@ -1167,7 +1270,7 @@
     <td><a href="https://github.com/ethereum/consensus-specs/releases/tag/v1.7.0-alpha.7" rel="noopener">consensus-specs v1.7.0-alpha.7</a><br><a href="https://github.com/ethereum/execution-spec-tests/releases/tag/bal%40v5.6.1" rel="noopener">execution-spec-tests bal@v5.6.1</a></td>
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">source</a>
-      <div class="subtle">retrieved 2026-05-12</div>
+      <div class="subtle">retrieved 2026-05-13</div>
     </td>
   </tr>
 <tr>
@@ -1177,7 +1280,7 @@
     <td>none recorded</td>
     <td>
       <a href="https://blog.ethereum.org/2026/05/02/soldogn-interop-recap" rel="noopener">source</a>
-      <div class="subtle">retrieved 2026-05-12</div>
+      <div class="subtle">retrieved 2026-05-13</div>
     </td>
   </tr>
           </tbody>
@@ -1297,7 +1400,7 @@
       <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
-      <div>retrieved 2026-05-12 (1d)</div>
+      <div>retrieved 2026-05-13 (0d)</div>
       <div class="subtle">source 2026-05-02 (11d)</div>
     </td>
     <td>The Ethereum Foundation Soldogn recap says the week ended with a stable multi-client Glamsterdam devnet running the latest ePBS, repricing, and block access list specs, and that nearly all clients were running together on glamsterdam-devnet-2 with the external builders pipeline tested end-to-end.</td>
@@ -1314,7 +1417,7 @@
       <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
-      <div>retrieved 2026-05-12 (1d)</div>
+      <div>retrieved 2026-05-13 (0d)</div>
       
     </td>
     <td>The EthPandaOps glamsterdam-devnet-2 spec lists a Kurtosis participants matrix with geth as the execution client image and prysm, lodestar, lighthouse, teku, nimbus, and grandine as consensus client images.</td>
@@ -1331,7 +1434,7 @@
       <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
-      <div>retrieved 2026-05-12 (1d)</div>
+      <div>retrieved 2026-05-13 (0d)</div>
       <div class="subtle">source 2026-04-29 (14d)</div>
     </td>
     <td>The consensus-specs v1.7.0-alpha.7 release is a pre-release containing Gloas changes used by the glamsterdam-devnet-2 spec.</td>
@@ -1348,7 +1451,7 @@
       <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
-      <div>retrieved 2026-05-12 (1d)</div>
+      <div>retrieved 2026-05-13 (0d)</div>
       <div class="subtle">source 2026-04-02 (41d)</div>
     </td>
     <td>The execution-spec-tests bal@v5.6.1 pre-release is labeled for bal-devnet-3 v7 and includes BAL/state-gas test updates referenced by the glamsterdam-devnet-2 spec.</td>
@@ -1357,7 +1460,7 @@
     <td>client-matrix</td>
     <td><div class="path">sources[4]</div></td>
     <td>
-      <a href="https://github.com/ethereum/go-ethereum/releases/tag/v1.17.2" rel="noopener">public-client-release</a>
+      <a href="https://github.com/ethereum/go-ethereum/releases/tag/v1.17.3" rel="noopener">public-client-release</a>
       <div class="subtle">Client release-note provenance only. This does not assert complete Glamsterdam production compatibility.</div>
     </td>
     <td>
@@ -1366,9 +1469,179 @@
     </td>
     <td>
       <div>retrieved 2026-05-13 (0d)</div>
-      <div class="subtle">source 2026-03-30 (44d)</div>
+      <div class="subtle">source 2026-05-11 (2d)</div>
     </td>
-    <td>Geth v1.17.2 release notes list Amsterdam fork updates for EIP-8024, EIP-7778, EIP-7954, EIP-7708, and gas-measurement order work prerequisite for EIP-7928.</td>
+    <td>Geth v1.17.3 release notes describe continued progress on the Amsterdam fork implementation, including prerequisites for EIP-7928, EIP-8037, EIP-7976, EIP-7981, EIP-7610, and updated state tests.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
+    <td><div class="path">sources[5]</div></td>
+    <td>
+      <a href="https://github.com/NethermindEth/nethermind/releases/tag/1.37.2" rel="noopener">public-client-release</a>
+      <div class="subtle">Latest release reviewed. No explicit Glamsterdam/Amsterdam readiness signal found in this release note.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-05-05 (8d)</div>
+    </td>
+    <td>Nethermind v1.37.2 release notes describe healthcheck and archive invalid-block fixes for v1.37.1 and do not state Glamsterdam or Amsterdam readiness.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
+    <td><div class="path">sources[6]</div></td>
+    <td>
+      <a href="https://github.com/besu-eth/besu/releases/tag/26.5.0" rel="noopener">public-client-release</a>
+      <div class="subtle">Client release-note provenance only. This does not assert complete Glamsterdam production compatibility.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-05-12 (1d)</div>
+    </td>
+    <td>Besu 26.5.0 release notes include Block Access List pipeline work, EIP-7928 Block Access List budget enforcement, Block Access List index encoding changes, and adding EIP-7981 to Amsterdam.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
+    <td><div class="path">sources[7]</div></td>
+    <td>
+      <a href="https://github.com/paradigmxyz/reth/releases/tag/v2.2.0" rel="noopener">public-client-release</a>
+      <div class="subtle">Client release-note provenance only. The notes call this groundwork and mention gated paths, not complete Glamsterdam production compatibility.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-04-30 (13d)</div>
+    </td>
+    <td>Reth v2.2.0 release notes say the release lays groundwork for Amsterdam EIP-7928 Block Access Lists, with BAL store, P2P wire support, payload-builder integration, and parallel/batched BAL execution paths.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
+    <td><div class="path">sources[8]</div></td>
+    <td>
+      <a href="https://github.com/sigp/lighthouse/releases/tag/v8.1.3" rel="noopener">public-client-release</a>
+      <div class="subtle">Latest release reviewed. Use the v8.1.0 row for the explicit Gloas release-note signal.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-03-26 (48d)</div>
+    </td>
+    <td>Lighthouse v8.1.3 release notes describe maintenance fixes and do not state Glamsterdam, Amsterdam, or Gloas readiness.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
+    <td><div class="path">sources[9]</div></td>
+    <td>
+      <a href="https://github.com/sigp/lighthouse/releases/tag/v8.1.0" rel="noopener">public-client-release</a>
+      <div class="subtle">Client release-note provenance only. This does not assert complete Glamsterdam production compatibility.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-02-05 (97d)</div>
+    </td>
+    <td>Lighthouse v8.1.0 release notes include Gloas gossip boilerplate, Gloas data column support, consensus types updated for Gloas v1.7.0-alpha.1, Gloas off-protocol payment fields, and EIP-7732 Gloas containers/constants.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
+    <td><div class="path">sources[10]</div></td>
+    <td>
+      <a href="https://github.com/ChainSafe/lodestar/releases/tag/v1.42.0" rel="noopener">public-client-release</a>
+      <div class="subtle">Client release-note provenance only. This does not assert complete Glamsterdam production compatibility.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-04-13 (30d)</div>
+    </td>
+    <td>Lodestar v1.42.0 release notes say the release makes great strides toward the Gloas hard fork and list Gloas network processor, data-column sidecar, payload-envelope pipeline, voluntary-exit, and ePBS state-cache work.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
+    <td><div class="path">sources[11]</div></td>
+    <td>
+      <a href="https://github.com/OffchainLabs/prysm/releases/tag/v7.1.3" rel="noopener">public-client-release</a>
+      <div class="subtle">Client release-note provenance only. This does not assert complete Glamsterdam production compatibility.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-03-18 (56d)</div>
+    </td>
+    <td>Prysm v7.1.3 release notes describe extensive Gloas groundwork and list Gloas builder support, latest execution bid processing, proposer slashing, beacon API block returns, payload attestation processing, and Gloas timing intervals.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
+    <td><div class="path">sources[12]</div></td>
+    <td>
+      <a href="https://github.com/Consensys/teku/releases/tag/26.4.0" rel="noopener">public-client-release</a>
+      <div class="subtle">Client release-note provenance only. This does not assert complete Glamsterdam production compatibility.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-03-31 (43d)</div>
+    </td>
+    <td>Teku 26.4.0 release notes include the PostPtcDuties REST API endpoint for the Gloas API.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
+    <td><div class="path">sources[13]</div></td>
+    <td>
+      <a href="https://github.com/status-im/nimbus-eth2/releases/tag/v26.3.1" rel="noopener">public-client-release</a>
+      <div class="subtle">Latest release reviewed. No explicit Glamsterdam/Amsterdam/Gloas readiness signal found in this release note.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-03-28 (46d)</div>
+    </td>
+    <td>Nimbus v26.3.1 release notes describe Ethereum column-handling performance, validator robustness, Gnosis Fulu scheduling, and fast-confirmation work, but do not state Glamsterdam, Amsterdam, or Gloas readiness.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
+    <td><div class="path">sources[14]</div></td>
+    <td>
+      <a href="https://github.com/grandinetech/grandine/releases/tag/2.0.4" rel="noopener">public-client-release</a>
+      <div class="subtle">Client release-note provenance only. This does not assert complete Glamsterdam production compatibility.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-03-31 (43d)</div>
+    </td>
+    <td>Grandine 2.0.4 release notes include post-Gloas beacon block API publishing, execution payload bid endpoints, payload attestation ticks, and consensus spec tests v1.7.0-alpha.3.</td>
   </tr>
 <tr>
     <td>client-matrix</td>
@@ -1586,16 +1859,16 @@
       <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
-      <div>retrieved 2026-05-12 (1d)</div>
+      <div>retrieved 2026-05-13 (0d)</div>
       
     </td>
     <td>The glamsterdam-devnet-2 Kurtosis example lists geth with image ethpandaops/geth:bal-devnet-6 as the execution-layer participant.</td>
   </tr>
 <tr>
     <td>client-matrix</td>
-    <td><div class="path">clients.execution.geth.v1.17.2.source</div></td>
+    <td><div class="path">clients.execution.geth.v1.17.3.source</div></td>
     <td>
-      <a href="https://github.com/ethereum/go-ethereum/releases/tag/v1.17.2" rel="noopener">public-client-release</a>
+      <a href="https://github.com/ethereum/go-ethereum/releases/tag/v1.17.3" rel="noopener">public-client-release</a>
       <div class="subtle">Client release-note provenance only. This does not assert complete Glamsterdam production compatibility.</div>
     </td>
     <td>
@@ -1604,9 +1877,60 @@
     </td>
     <td>
       <div>retrieved 2026-05-13 (0d)</div>
-      <div class="subtle">source 2026-03-30 (44d)</div>
+      <div class="subtle">source 2026-05-11 (2d)</div>
     </td>
-    <td>Geth v1.17.2 release notes list Amsterdam fork updates for EIP-8024, EIP-7778, EIP-7954, EIP-7708, and gas-measurement order work prerequisite for EIP-7928.</td>
+    <td>Geth v1.17.3 release notes describe continued progress on the Amsterdam fork implementation, including prerequisites for EIP-7928, EIP-8037, EIP-7976, EIP-7981, EIP-7610, and updated state tests.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
+    <td><div class="path">clients.execution.nethermind.1.37.2.source</div></td>
+    <td>
+      <a href="https://github.com/NethermindEth/nethermind/releases/tag/1.37.2" rel="noopener">public-client-release</a>
+      <div class="subtle">Latest release reviewed. No explicit Glamsterdam/Amsterdam readiness signal found in this release note.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-05-05 (8d)</div>
+    </td>
+    <td>Nethermind v1.37.2 release notes describe healthcheck and archive invalid-block fixes for v1.37.1 and do not state Glamsterdam or Amsterdam readiness.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
+    <td><div class="path">clients.execution.besu.26.5.0.source</div></td>
+    <td>
+      <a href="https://github.com/besu-eth/besu/releases/tag/26.5.0" rel="noopener">public-client-release</a>
+      <div class="subtle">Client release-note provenance only. This does not assert complete Glamsterdam production compatibility.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-05-12 (1d)</div>
+    </td>
+    <td>Besu 26.5.0 release notes include Block Access List pipeline work, EIP-7928 Block Access List budget enforcement, Block Access List index encoding changes, and adding EIP-7981 to Amsterdam.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
+    <td><div class="path">clients.execution.reth.v2.2.0.source</div></td>
+    <td>
+      <a href="https://github.com/paradigmxyz/reth/releases/tag/v2.2.0" rel="noopener">public-client-release</a>
+      <div class="subtle">Client release-note provenance only. The notes call this groundwork and mention gated paths, not complete Glamsterdam production compatibility.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-04-30 (13d)</div>
+    </td>
+    <td>Reth v2.2.0 release notes say the release lays groundwork for Amsterdam EIP-7928 Block Access Lists, with BAL store, P2P wire support, payload-builder integration, and parallel/batched BAL execution paths.</td>
   </tr>
 <tr>
     <td>client-matrix</td>
@@ -1620,10 +1944,44 @@
       <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
-      <div>retrieved 2026-05-12 (1d)</div>
+      <div>retrieved 2026-05-13 (0d)</div>
       
     </td>
     <td>The glamsterdam-devnet-2 Kurtosis example lists lighthouse with image ethpandaops/lighthouse:glamsterdam-devnet-3 as a consensus-layer participant.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
+    <td><div class="path">clients.consensus.lighthouse.v8.1.3.source</div></td>
+    <td>
+      <a href="https://github.com/sigp/lighthouse/releases/tag/v8.1.3" rel="noopener">public-client-release</a>
+      <div class="subtle">Latest release reviewed. Use the v8.1.0 row for the explicit Gloas release-note signal.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-03-26 (48d)</div>
+    </td>
+    <td>Lighthouse v8.1.3 release notes describe maintenance fixes and do not state Glamsterdam, Amsterdam, or Gloas readiness.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
+    <td><div class="path">clients.consensus.lighthouse.v8.1.0.source</div></td>
+    <td>
+      <a href="https://github.com/sigp/lighthouse/releases/tag/v8.1.0" rel="noopener">public-client-release</a>
+      <div class="subtle">Client release-note provenance only. This does not assert complete Glamsterdam production compatibility.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-02-05 (97d)</div>
+    </td>
+    <td>Lighthouse v8.1.0 release notes include Gloas gossip boilerplate, Gloas data column support, consensus types updated for Gloas v1.7.0-alpha.1, Gloas off-protocol payment fields, and EIP-7732 Gloas containers/constants.</td>
   </tr>
 <tr>
     <td>client-matrix</td>
@@ -1644,6 +2002,23 @@
   </tr>
 <tr>
     <td>client-matrix</td>
+    <td><div class="path">clients.consensus.lodestar.v1.42.0.source</div></td>
+    <td>
+      <a href="https://github.com/ChainSafe/lodestar/releases/tag/v1.42.0" rel="noopener">public-client-release</a>
+      <div class="subtle">Client release-note provenance only. This does not assert complete Glamsterdam production compatibility.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-04-13 (30d)</div>
+    </td>
+    <td>Lodestar v1.42.0 release notes say the release makes great strides toward the Gloas hard fork and list Gloas network processor, data-column sidecar, payload-envelope pipeline, voluntary-exit, and ePBS state-cache work.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
     <td><div class="path">clients.consensus.prysm.ethpandaops/prysm-beacon-chain:glamsterdam-devnet-3-minimal.source</div></td>
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
@@ -1661,6 +2036,23 @@
   </tr>
 <tr>
     <td>client-matrix</td>
+    <td><div class="path">clients.consensus.prysm.v7.1.3.source</div></td>
+    <td>
+      <a href="https://github.com/OffchainLabs/prysm/releases/tag/v7.1.3" rel="noopener">public-client-release</a>
+      <div class="subtle">Client release-note provenance only. This does not assert complete Glamsterdam production compatibility.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-03-18 (56d)</div>
+    </td>
+    <td>Prysm v7.1.3 release notes describe extensive Gloas groundwork and list Gloas builder support, latest execution bid processing, proposer slashing, beacon API block returns, payload attestation processing, and Gloas timing intervals.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
     <td><div class="path">clients.consensus.teku.ethpandaops/teku:glamsterdam-devnet-2.source</div></td>
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
@@ -1671,10 +2063,27 @@
       <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
-      <div>retrieved 2026-05-12 (1d)</div>
+      <div>retrieved 2026-05-13 (0d)</div>
       
     </td>
     <td>The glamsterdam-devnet-2 Kurtosis example lists teku with image ethpandaops/teku:glamsterdam-devnet-2 as a consensus-layer participant.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
+    <td><div class="path">clients.consensus.teku.26.4.0.source</div></td>
+    <td>
+      <a href="https://github.com/Consensys/teku/releases/tag/26.4.0" rel="noopener">public-client-release</a>
+      <div class="subtle">Client release-note provenance only. This does not assert complete Glamsterdam production compatibility.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-03-31 (43d)</div>
+    </td>
+    <td>Teku 26.4.0 release notes include the PostPtcDuties REST API endpoint for the Gloas API.</td>
   </tr>
 <tr>
     <td>client-matrix</td>
@@ -1695,6 +2104,23 @@
   </tr>
 <tr>
     <td>client-matrix</td>
+    <td><div class="path">clients.consensus.nimbus.v26.3.1.source</div></td>
+    <td>
+      <a href="https://github.com/status-im/nimbus-eth2/releases/tag/v26.3.1" rel="noopener">public-client-release</a>
+      <div class="subtle">Latest release reviewed. No explicit Glamsterdam/Amsterdam/Gloas readiness signal found in this release note.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-03-28 (46d)</div>
+    </td>
+    <td>Nimbus v26.3.1 release notes describe Ethereum column-handling performance, validator robustness, Gnosis Fulu scheduling, and fast-confirmation work, but do not state Glamsterdam, Amsterdam, or Gloas readiness.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
     <td><div class="path">clients.consensus.grandine.ethpandaops/grandine:glamsterdam-devnet-2-minimal.source</div></td>
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
@@ -1712,6 +2138,23 @@
   </tr>
 <tr>
     <td>client-matrix</td>
+    <td><div class="path">clients.consensus.grandine.2.0.4.source</div></td>
+    <td>
+      <a href="https://github.com/grandinetech/grandine/releases/tag/2.0.4" rel="noopener">public-client-release</a>
+      <div class="subtle">Client release-note provenance only. This does not assert complete Glamsterdam production compatibility.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-03-31 (43d)</div>
+    </td>
+    <td>Grandine 2.0.4 release notes include post-Gloas beacon block API publishing, execution payload bid endpoints, payload attestation ticks, and consensus spec tests v1.7.0-alpha.3.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
     <td><div class="path">devnets.glamsterdam-devnet-2.source</div></td>
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
@@ -1722,7 +2165,7 @@
       <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
-      <div>retrieved 2026-05-12 (1d)</div>
+      <div>retrieved 2026-05-13 (0d)</div>
       
     </td>
     <td>The glamsterdam-devnet-2 spec targets launch on 2026-04-30 and includes a Kurtosis participants matrix with specific EL and CL devnet images.</td>
@@ -1739,7 +2182,7 @@
       <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
-      <div>retrieved 2026-05-12 (1d)</div>
+      <div>retrieved 2026-05-13 (0d)</div>
       <div class="subtle">source 2026-04-29 (14d)</div>
     </td>
     <td>The consensus-specs v1.7.0-alpha.7 release is a pre-release containing Gloas changes used by the glamsterdam-devnet-2 spec.</td>
@@ -1756,7 +2199,7 @@
       <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
-      <div>retrieved 2026-05-12 (1d)</div>
+      <div>retrieved 2026-05-13 (0d)</div>
       <div class="subtle">source 2026-04-02 (41d)</div>
     </td>
     <td>The execution-spec-tests bal@v5.6.1 pre-release is labeled for bal-devnet-3 v7 and includes BAL/state-gas test updates referenced by the glamsterdam-devnet-2 spec.</td>
@@ -1773,7 +2216,7 @@
       <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
-      <div>retrieved 2026-05-12 (1d)</div>
+      <div>retrieved 2026-05-13 (0d)</div>
       <div class="subtle">source 2026-05-02 (11d)</div>
     </td>
     <td>The Ethereum Foundation Soldogn recap reports a stable multi-client Glamsterdam devnet running the latest ePBS, repricing, and block access list specs, with nearly all clients running together on glamsterdam-devnet-2 by Friday.</td>

@@ -132,6 +132,7 @@ const publicSeedReadinessSchema = z.object({
     lastUpdated: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     sourceCount: z.number().int().nonnegative(),
     countsByFreshness: z.array(datasetSummaryCountSchema),
+    countsBySourceType: z.array(datasetSummaryCountSchema),
     countsByStatus: z.array(datasetSummaryCountSchema),
     sources: z.array(readinessSourceSchema).min(1),
     eips: z.array(z.object({
@@ -147,6 +148,7 @@ const publicSeedReadinessSchema = z.object({
     lastUpdated: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     sourceCount: z.number().int().nonnegative(),
     countsByFreshness: z.array(datasetSummaryCountSchema),
+    countsBySourceType: z.array(datasetSummaryCountSchema),
     countsByStatus: z.array(datasetSummaryCountSchema),
     countsByRole: z.array(datasetSummaryCountSchema),
     check: z.object({
@@ -380,6 +382,9 @@ describe("public seed dataset", () => {
     );
     expect(datasetReadiness.eipRegistry.sourceCount).toBe(eipRegistry.sources.length);
     expect(datasetReadiness.eipRegistry.countsByFreshness).toEqual([{ key: "fresh", count: eipRegistry.sources.length }]);
+    expect(datasetReadiness.eipRegistry.countsBySourceType).toEqual(
+      countBy(eipRegistry.sources.map((source) => source.type))
+    );
     expect(datasetReadiness.eipRegistry.countsByStatus).toEqual(countBy(eipRegistry.eips.map((entry) => entry.status)));
     expect(datasetReadiness.eipRegistry.eips).toEqual(
       eipRegistry.eips.map((entry) => ({
@@ -397,6 +402,9 @@ describe("public seed dataset", () => {
     expect(datasetReadiness.clientMatrix.countsByFreshness).toEqual(
       countBy([...datasetReadiness.clientMatrix.sources].map((source) => source.freshnessBand))
     );
+    expect(datasetReadiness.clientMatrix.countsBySourceType).toEqual(
+      countBy(datasetReadiness.clientMatrix.sources.map((source) => source.type))
+    );
     expect(datasetReadiness.clientMatrix.countsByStatus).toEqual(
       countBy(expectedClients.map((entry) => entry.status))
     );
@@ -406,6 +414,27 @@ describe("public seed dataset", () => {
     expect(datasetReadiness.clientMatrix.clients.every((entry) =>
       !(entry.status === "compatible" && entry.sourceType.startsWith("public-"))
     )).toBe(true);
+    expect(datasetReadiness.clientMatrix.clients).toContainEqual(expect.objectContaining({
+      role: "execution",
+      name: "geth",
+      version: "v1.17.3",
+      status: "partial",
+      sourceType: "public-client-release"
+    }));
+    expect(datasetReadiness.clientMatrix.clients).toContainEqual(expect.objectContaining({
+      role: "execution",
+      name: "nethermind",
+      version: "1.37.2",
+      status: "unknown",
+      sourceType: "public-client-release"
+    }));
+    expect(datasetReadiness.clientMatrix.clients).toContainEqual(expect.objectContaining({
+      role: "consensus",
+      name: "lodestar",
+      version: "v1.42.0",
+      status: "partial",
+      sourceType: "public-client-release"
+    }));
   });
 
   it("exports readiness CSV rows aligned with readiness JSON", () => {

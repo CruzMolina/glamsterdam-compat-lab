@@ -10,6 +10,8 @@ const nonProductionSourceTypes = new Set([
   "public-interop-recap",
   "public-spec-release"
 ]);
+const publicClientReleaseForkSignalPattern = /\b(?:glamsterdam|amsterdam|gloas|epbs|eip-7732|eip-7928|block access list|bal)\b/i;
+const publicClientReleaseCompatibilityPattern = /\b(?:compatible|compatibility|ready|readiness|mainnet-ready|production-ready)\b/i;
 
 export const isoDateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 
@@ -225,6 +227,24 @@ function checkConservativeStatuses(matrix: ClientMatrix, errors: string[]): void
           `Client ${client.role}:${client.name}:${version.version} is compatible from ${version.source.type}; use partial/unknown unless an explicit client release or operator-maintained source supports compatibility.`
         );
       }
+      if (
+        version.source.type === "public-client-release"
+        && version.status === "partial"
+        && !hasPublicClientReleaseForkSignal(version)
+      ) {
+        errors.push(
+          `Client ${client.role}:${client.name}:${version.version} is partial from public-client-release without an explicit Glamsterdam/Amsterdam/Gloas release-note signal.`
+        );
+      }
+      if (
+        version.source.type === "public-client-release"
+        && version.status === "compatible"
+        && !hasExplicitPublicClientReleaseCompatibilityClaim(version)
+      ) {
+        errors.push(
+          `Client ${client.role}:${client.name}:${version.version} is compatible from public-client-release without an explicit Glamsterdam/Amsterdam/Gloas compatibility or readiness claim.`
+        );
+      }
     }
   }
 
@@ -237,6 +257,19 @@ function checkConservativeStatuses(matrix: ClientMatrix, errors: string[]): void
       }
     }
   }
+}
+
+function hasPublicClientReleaseForkSignal(version: ClientVersion): boolean {
+  return publicClientReleaseForkSignalPattern.test(publicClientReleaseText(version));
+}
+
+function hasExplicitPublicClientReleaseCompatibilityClaim(version: ClientVersion): boolean {
+  const text = publicClientReleaseText(version);
+  return publicClientReleaseForkSignalPattern.test(text) && publicClientReleaseCompatibilityPattern.test(text);
+}
+
+function publicClientReleaseText(version: ClientVersion): string {
+  return version.source.claim;
 }
 
 export function clientMatrixSourceRefs(matrix: ClientMatrix): ClientMatrixSourceRef[] {

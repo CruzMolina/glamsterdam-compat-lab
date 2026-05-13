@@ -172,6 +172,7 @@ interface DatasetReadiness {
     lastUpdated: string;
     sourceCount: number;
     countsByFreshness: DatasetSummaryCount[];
+    countsBySourceType: DatasetSummaryCount[];
     countsByStatus: DatasetSummaryCount[];
     sources: DatasetReadinessSource[];
     eips: DatasetReadinessEip[];
@@ -180,6 +181,7 @@ interface DatasetReadiness {
     lastUpdated: string;
     sourceCount: number;
     countsByFreshness: DatasetSummaryCount[];
+    countsBySourceType: DatasetSummaryCount[];
     countsByStatus: DatasetSummaryCount[];
     countsByRole: DatasetSummaryCount[];
     check: {
@@ -592,6 +594,7 @@ function buildReadiness(): DatasetReadiness {
   const eipRegistry = loadEipRegistry();
   const clientMatrix = loadClientMatrix();
   const matrixCheck = checkClientMatrix(clientMatrix);
+  const clientMatrixSources = clientMatrixSourceRefs(clientMatrix);
 
   if (!matrixCheck.ok) {
     throw new Error(`Client compatibility matrix is not exportable: ${matrixCheck.errors.join("; ")}`);
@@ -674,6 +677,7 @@ function buildReadiness(): DatasetReadiness {
       countsByFreshness: countBy(eipRegistry.sources, (source) =>
         sourceFreshness(source.retrievedAt, datasetLastUpdated).band
       ),
+      countsBySourceType: countBy(eipRegistry.sources, (source) => source.type),
       countsByStatus: countBy(eipRegistry.eips, (entry) => entry.status),
       sources: eipRegistry.sources.map((source, index) =>
         readinessSource("eip-registry", `sources[${index}]`, source)
@@ -689,17 +693,18 @@ function buildReadiness(): DatasetReadiness {
     },
     clientMatrix: {
       lastUpdated: clientMatrix.lastUpdated,
-      sourceCount: clientMatrixSourceRefs(clientMatrix).length,
-      countsByFreshness: countBy(clientMatrixSourceRefs(clientMatrix), ({ source }) =>
+      sourceCount: clientMatrixSources.length,
+      countsByFreshness: countBy(clientMatrixSources, ({ source }) =>
         sourceFreshness(source.retrievedAt, datasetLastUpdated).band
       ),
+      countsBySourceType: countBy(clientMatrixSources, ({ source }) => source.type),
       countsByStatus: countBy(clients, (entry) => entry.status),
       countsByRole: countBy(clients, (entry) => entry.role),
       check: {
         ok: matrixCheck.ok,
         warnings: matrixCheck.warnings
       },
-      sources: clientMatrixSourceRefs(clientMatrix).map(({ label, source }) =>
+      sources: clientMatrixSources.map(({ label, source }) =>
         readinessSource("client-matrix", label, source)
       ),
       clients,

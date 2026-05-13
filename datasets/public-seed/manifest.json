@@ -3,7 +3,7 @@
   "name": "public-seed",
   "lastUpdated": "2026-05-13",
   "description": "Deterministic seed dataset generated from safe-to-publish fixture inputs and threshold-profile comparisons.",
-  "toolVersion": "0.3.4",
+  "toolVersion": "0.3.6",
   "sourceManifest": "fixtures/provenance.json",
   "summary": "summary.json",
   "readiness": "readiness.json",

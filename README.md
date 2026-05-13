@@ -36,14 +36,14 @@ pnpm glamsterdam scan-bytecode fixtures/bytecode/storage-heavy.hex
 Install the published CLI from npm:
 
 ```sh
-npm install -g glamsterdam-compat-lab@0.3.2
+npm install -g glamsterdam-compat-lab@0.3.3
 glamsterdam eips
 ```
 
-The v0.3.2 GitHub release tarball remains available as a reproducible release artifact:
+The v0.3.3 GitHub release tarball remains available as a reproducible release artifact:
 
 ```sh
-npm install -g https://github.com/CruzMolina/glamsterdam-compat-lab/releases/download/v0.3.2/glamsterdam-compat-lab-0.3.2.tgz
+npm install -g https://github.com/CruzMolina/glamsterdam-compat-lab/releases/download/v0.3.3/glamsterdam-compat-lab-0.3.3.tgz
 ```
 
 See [docs/release.md](docs/release.md) for maintainer release checks and npm publishing notes.
@@ -133,7 +133,7 @@ Each scanner returns a `CompatibilityReport`:
 
 ```json
 {
-  "toolVersion": "0.3.2",
+  "toolVersion": "0.3.3",
   "fork": "glamsterdam",
   "target": {
     "kind": "bytecode",
@@ -221,7 +221,7 @@ Release publishing notes live in [docs/release.md](docs/release.md).
 
 ## Roadmap
 
-See [ROADMAP.md](ROADMAP.md) for planned phases. Phase 0 is released as `v0.1.0`; `v0.2.0` starts Phase 1 with RPC transaction trace ingestion and broader trace fixture coverage; `v0.3.0` adds baseline comparison reports; `v0.3.1` expands public-safe fixture and dataset coverage; `v0.3.2` adds packaged CSV dataset exports.
+See [ROADMAP.md](ROADMAP.md) for planned phases. Phase 0 is released as `v0.1.0`; `v0.2.0` starts Phase 1 with RPC transaction trace ingestion and broader trace fixture coverage; `v0.3.0` adds baseline comparison reports; `v0.3.1` expands public-safe fixture and dataset coverage; `v0.3.2` adds packaged CSV dataset exports; `v0.3.3` adds additional public Geth and Reth trace fixture coverage.
 
 ## Disclaimer
 

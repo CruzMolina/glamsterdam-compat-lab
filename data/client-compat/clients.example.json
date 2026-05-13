@@ -32,6 +32,14 @@
       "retrievedAt": "2026-05-12",
       "claim": "The execution-spec-tests bal@v5.6.1 pre-release is labeled for bal-devnet-3 v7 and includes BAL/state-gas test updates referenced by the glamsterdam-devnet-2 spec.",
       "notes": "Spec-test release metadata is useful provenance for devnet test entries, but is not a client release."
+    },
+    {
+      "type": "public-client-release",
+      "url": "https://github.com/ethereum/go-ethereum/releases/tag/v1.17.2",
+      "sourceDate": "2026-03-30",
+      "retrievedAt": "2026-05-13",
+      "claim": "Geth v1.17.2 release notes list Amsterdam fork updates for EIP-8024, EIP-7778, EIP-7954, EIP-7708, and gas-measurement order work prerequisite for EIP-7928.",
+      "notes": "Client release-note provenance only. This does not assert complete Glamsterdam production compatibility."
     }
   ],
   "clients": [
@@ -199,6 +207,19 @@
             "claim": "The glamsterdam-devnet-2 Kurtosis example lists geth with image ethpandaops/geth:bal-devnet-6 as the execution-layer participant."
           },
           "notes": "Devnet image only. This is not a production Geth release compatibility claim."
+        },
+        {
+          "version": "v1.17.2",
+          "status": "partial",
+          "source": {
+            "type": "public-client-release",
+            "url": "https://github.com/ethereum/go-ethereum/releases/tag/v1.17.2",
+            "sourceDate": "2026-03-30",
+            "retrievedAt": "2026-05-13",
+            "claim": "Geth v1.17.2 release notes list Amsterdam fork updates for EIP-8024, EIP-7778, EIP-7954, EIP-7708, and gas-measurement order work prerequisite for EIP-7928.",
+            "notes": "Client release-note provenance only. This does not assert complete Glamsterdam production compatibility."
+          },
+          "notes": "Public release notes show Amsterdam-related implementation work, but not a complete Glamsterdam mainnet readiness statement."
         }
       ]
     },

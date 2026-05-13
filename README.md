@@ -83,9 +83,12 @@ Regenerate and verify it with:
 ```sh
 pnpm dataset:generate
 pnpm dataset:check
+pnpm readiness:freshness
 pnpm site:generate
 pnpm site:check
 ```
+
+`readiness.json`, `readiness-sources.csv`, and `site/public-seed/readiness.html` include source freshness bands. Generated age fields are pinned to the readiness dataset date for deterministic artifacts; `pnpm readiness:freshness` performs the live current-date audit and warns when sources move from `fresh` to `watch` or `stale`.
 
 ## What the scanners can detect
 
@@ -226,7 +229,7 @@ Release publishing notes live in [docs/release.md](docs/release.md).
 
 ## Roadmap
 
-See [ROADMAP.md](ROADMAP.md) for planned phases. Phase 0 is released as `v0.1.0`; `v0.2.0` starts Phase 1 with RPC transaction trace ingestion and broader trace fixture coverage; `v0.3.0` adds baseline comparison reports; `v0.3.1` expands public-safe fixture and dataset coverage; `v0.3.2` adds packaged CSV dataset exports; `v0.3.3` adds additional public Geth and Reth trace fixture coverage; `v0.3.4` adds the static public-seed browser, detail/finding pages, and sourced readiness visibility exports.
+See [ROADMAP.md](ROADMAP.md) for planned phases. Phase 0 is released as `v0.1.0`; `v0.2.0` starts Phase 1 with RPC transaction trace ingestion and broader trace fixture coverage; `v0.3.0` adds baseline comparison reports; `v0.3.1` expands public-safe fixture and dataset coverage; `v0.3.2` adds packaged CSV dataset exports; `v0.3.3` adds additional public Geth and Reth trace fixture coverage; `v0.3.4` adds the static public-seed browser, detail/finding pages, and sourced readiness visibility exports; the next `v0.3.5` checkpoint adds readiness source freshness and drift guardrails.
 
 ## Disclaimer
 

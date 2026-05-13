@@ -3,7 +3,9 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   compareCompatibilityReports,
+  clientMatrixSourceRefs,
   checkClientMatrix,
+  daysBetweenIsoDates,
   loadClientMatrix,
   loadEipRegistry,
   loadFixtureProvenance,
@@ -15,14 +17,15 @@ import {
   scanValidatorConfig,
   type CompatibilityFinding,
   type CompatibilityReport,
-  type ClientMatrix,
   type ClientMatrixSource,
   type ClientVersion,
   type EipEntry,
-  type EipRegistry,
   type EipRegistrySource,
   type FixtureProvenanceEntry,
-  type FixtureProvenanceManifest
+  type FixtureProvenanceManifest,
+  SOURCE_FRESHNESS_POLICY,
+  sourceFreshness,
+  type SourceFreshnessBand
 } from "../src/index.js";
 import { TOOL_VERSION } from "../src/reports/reportTypes.js";
 
@@ -86,6 +89,21 @@ interface DatasetSummary {
   };
 }
 
+interface DatasetReadinessFreshnessPolicy {
+  name: string;
+  asOf: string;
+  generatedAgeBasis: "readiness.lastUpdated";
+  liveAuditCommand: "pnpm readiness:freshness";
+  freshMaxDays: number;
+  watchMaxDays: number;
+  bands: Array<{
+    band: SourceFreshnessBand;
+    minDays: number;
+    maxDays?: number;
+    meaning: string;
+  }>;
+}
+
 interface DatasetReadinessSource {
   area: "eip-registry" | "client-matrix";
   label: string;
@@ -95,6 +113,9 @@ interface DatasetReadinessSource {
   retrievedAt: string;
   retrievedDaysAgo: number;
   sourceAgeDays?: number;
+  freshnessAsOf: string;
+  freshnessBand: SourceFreshnessBand;
+  freshnessReview: string;
   claim: string;
   notes?: string;
 }
@@ -117,6 +138,7 @@ interface DatasetReadinessClient {
   sourceUrl: string;
   retrievedAt: string;
   retrievedDaysAgo: number;
+  freshnessBand: SourceFreshnessBand;
   notes?: string;
 }
 
@@ -144,9 +166,12 @@ interface DatasetReadiness {
   lastUpdated: string;
   toolVersion: string;
   fork: string;
+  sourceFreshnessPolicy: DatasetReadinessFreshnessPolicy;
+  sourceReviewNotes: string[];
   eipRegistry: {
     lastUpdated: string;
     sourceCount: number;
+    countsByFreshness: DatasetSummaryCount[];
     countsByStatus: DatasetSummaryCount[];
     sources: DatasetReadinessSource[];
     eips: DatasetReadinessEip[];
@@ -154,6 +179,7 @@ interface DatasetReadiness {
   clientMatrix: {
     lastUpdated: string;
     sourceCount: number;
+    countsByFreshness: DatasetSummaryCount[];
     countsByStatus: DatasetSummaryCount[];
     countsByRole: DatasetSummaryCount[];
     check: {
@@ -474,6 +500,7 @@ function readinessClientCsvRows(readiness: DatasetReadiness): Array<Record<strin
     sourceUrl: client.sourceUrl,
     retrievedAt: client.retrievedAt,
     retrievedDaysAgo: client.retrievedDaysAgo,
+    freshnessBand: client.freshnessBand,
     notes: client.notes ?? ""
   }));
 }
@@ -529,6 +556,9 @@ function readinessSourceCsvRows(readiness: DatasetReadiness): Array<Record<strin
     retrievedAt: source.retrievedAt,
     retrievedDaysAgo: source.retrievedDaysAgo,
     sourceAgeDays: source.sourceAgeDays ?? "",
+    freshnessAsOf: source.freshnessAsOf,
+    freshnessBand: source.freshnessBand,
+    freshnessReview: source.freshnessReview,
     claim: source.claim,
     notes: source.notes ?? ""
   }));
@@ -582,6 +612,7 @@ function buildReadiness(): DatasetReadiness {
         sourceUrl: version.source.url,
         retrievedAt: version.source.retrievedAt,
         retrievedDaysAgo: ageInDays(version.source.retrievedAt),
+        freshnessBand: sourceFreshness(version.source.retrievedAt, datasetLastUpdated).band,
         notes: version.notes
       }))
     )
@@ -622,9 +653,27 @@ function buildReadiness(): DatasetReadiness {
     lastUpdated: datasetLastUpdated,
     toolVersion: TOOL_VERSION,
     fork: eipRegistry.fork,
+    sourceFreshnessPolicy: {
+      name: SOURCE_FRESHNESS_POLICY.name,
+      asOf: datasetLastUpdated,
+      generatedAgeBasis: "readiness.lastUpdated",
+      liveAuditCommand: "pnpm readiness:freshness",
+      freshMaxDays: SOURCE_FRESHNESS_POLICY.freshMaxDays,
+      watchMaxDays: SOURCE_FRESHNESS_POLICY.watchMaxDays,
+      bands: SOURCE_FRESHNESS_POLICY.bands
+    },
+    sourceReviewNotes: [
+      "Generated source age fields are calculated against readiness.lastUpdated so committed artifacts stay deterministic.",
+      "Run pnpm readiness:freshness for a live audit against the current date.",
+      "Watch and stale freshness bands mean the source should be rechecked; they do not mean a client is incompatible.",
+      "Do not infer production compatibility from devnet participation, prerelease specs, client family, or related implementation code."
+    ],
     eipRegistry: {
       lastUpdated: eipRegistry.lastUpdated,
       sourceCount: eipRegistry.sources.length,
+      countsByFreshness: countBy(eipRegistry.sources, (source) =>
+        sourceFreshness(source.retrievedAt, datasetLastUpdated).band
+      ),
       countsByStatus: countBy(eipRegistry.eips, (entry) => entry.status),
       sources: eipRegistry.sources.map((source, index) =>
         readinessSource("eip-registry", `sources[${index}]`, source)
@@ -641,6 +690,9 @@ function buildReadiness(): DatasetReadiness {
     clientMatrix: {
       lastUpdated: clientMatrix.lastUpdated,
       sourceCount: clientMatrixSourceRefs(clientMatrix).length,
+      countsByFreshness: countBy(clientMatrixSourceRefs(clientMatrix), ({ source }) =>
+        sourceFreshness(source.retrievedAt, datasetLastUpdated).band
+      ),
       countsByStatus: countBy(clients, (entry) => entry.status),
       countsByRole: countBy(clients, (entry) => entry.role),
       check: {
@@ -661,52 +713,13 @@ function buildReadiness(): DatasetReadiness {
   };
 }
 
-function clientMatrixSourceRefs(matrix: ClientMatrix): Array<{ label: string; source: ClientMatrixSource }> {
-  const refs = matrix.sources.map((source, index) => ({
-    label: `sources[${index}]`,
-    source
-  }));
-
-  for (const client of matrix.clients) {
-    for (const version of client.versions) {
-      refs.push({
-        label: `clients.${client.role}.${client.name}.${version.version}.source`,
-        source: version.source
-      });
-    }
-  }
-
-  for (const devnet of matrix.devnets) {
-    refs.push({
-      label: `devnets.${devnet.name}.source`,
-      source: devnet.source
-    });
-    for (const participant of devnet.participants) {
-      if (participant.matrixEntryExclusion?.source) {
-        refs.push({
-          label: `devnets.${devnet.name}.participants.${participant.name}.matrixEntryExclusion.source`,
-          source: participant.matrixEntryExclusion.source
-        });
-      }
-    }
-    for (const specVersion of devnet.specVersions) {
-      if (specVersion.source) {
-        refs.push({
-          label: `devnets.${devnet.name}.specVersions.${specVersion.name}.${specVersion.version}.source`,
-          source: specVersion.source
-        });
-      }
-    }
-  }
-
-  return refs;
-}
-
 function readinessSource(
   area: DatasetReadinessSource["area"],
   label: string,
   source: ClientMatrixSource | EipRegistrySource
 ): DatasetReadinessSource {
+  const freshness = sourceFreshness(source.retrievedAt, datasetLastUpdated);
+
   return {
     area,
     label,
@@ -714,8 +727,11 @@ function readinessSource(
     url: source.url,
     sourceDate: source.sourceDate,
     retrievedAt: source.retrievedAt,
-    retrievedDaysAgo: ageInDays(source.retrievedAt),
+    retrievedDaysAgo: freshness.retrievedDaysAgo,
     sourceAgeDays: source.sourceDate ? ageInDays(source.sourceDate) : undefined,
+    freshnessAsOf: freshness.asOf,
+    freshnessBand: freshness.band,
+    freshnessReview: freshness.review,
     claim: source.claim,
     notes: source.notes
   };
@@ -734,9 +750,7 @@ function assertSourceDate(label: string, lastUpdated: string, source: ClientMatr
 }
 
 function ageInDays(date: string): number {
-  const start = Date.parse(`${date}T00:00:00Z`);
-  const end = Date.parse(`${datasetLastUpdated}T00:00:00Z`);
-  return Math.max(0, Math.round((end - start) / 86_400_000));
+  return daysBetweenIsoDates(datasetLastUpdated, date);
 }
 
 function countBy<T>(items: T[], keyForItem: (item: T) => string): DatasetSummaryCount[] {
@@ -782,6 +796,12 @@ Check committed artifacts are fresh with:
 pnpm dataset:check
 \`\`\`
 
+Run a live readiness source audit with:
+
+\`\`\`sh
+pnpm readiness:freshness
+\`\`\`
+
 Then run:
 
 \`\`\`sh
@@ -789,7 +809,7 @@ pnpm test
 pnpm build
 \`\`\`
 
-Review generated changes before publishing. Dataset comparisons are structural report differences only; they do not infer final Glamsterdam gas deltas or client behavior.
+Review generated changes before publishing. Dataset comparisons are structural report differences only; they do not infer final Glamsterdam gas deltas or client behavior. Readiness freshness bands are source-review prompts; stale sources do not imply incompatibility.
 `);
 }
 

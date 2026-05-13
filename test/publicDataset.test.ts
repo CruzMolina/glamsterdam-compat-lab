@@ -68,6 +68,23 @@ const datasetSummaryCountSchema = z.object({
   count: z.number().int().nonnegative()
 });
 
+const freshnessBandSchema = z.enum(["fresh", "watch", "stale"]);
+
+const readinessFreshnessPolicySchema = z.object({
+  name: z.literal("readiness-source-freshness-v1"),
+  asOf: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  generatedAgeBasis: z.literal("readiness.lastUpdated"),
+  liveAuditCommand: z.literal("pnpm readiness:freshness"),
+  freshMaxDays: z.number().int().positive(),
+  watchMaxDays: z.number().int().positive(),
+  bands: z.array(z.object({
+    band: freshnessBandSchema,
+    minDays: z.number().int().nonnegative(),
+    maxDays: z.number().int().nonnegative().optional(),
+    meaning: z.string().min(1)
+  })).length(3)
+});
+
 const publicSeedSummarySchema = z.object({
   schemaVersion: z.literal(1),
   name: z.literal("public-seed-summary"),
@@ -96,6 +113,9 @@ const readinessSourceSchema = z.object({
   retrievedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   retrievedDaysAgo: z.number().int().nonnegative(),
   sourceAgeDays: z.number().int().nonnegative().optional(),
+  freshnessAsOf: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  freshnessBand: freshnessBandSchema,
+  freshnessReview: z.string().min(1),
   claim: z.string().min(1),
   notes: z.string().optional()
 });
@@ -106,9 +126,12 @@ const publicSeedReadinessSchema = z.object({
   lastUpdated: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   toolVersion: z.string().min(1),
   fork: z.literal("glamsterdam"),
+  sourceFreshnessPolicy: readinessFreshnessPolicySchema,
+  sourceReviewNotes: z.array(z.string().min(1)).min(1),
   eipRegistry: z.object({
     lastUpdated: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     sourceCount: z.number().int().nonnegative(),
+    countsByFreshness: z.array(datasetSummaryCountSchema),
     countsByStatus: z.array(datasetSummaryCountSchema),
     sources: z.array(readinessSourceSchema).min(1),
     eips: z.array(z.object({
@@ -123,6 +146,7 @@ const publicSeedReadinessSchema = z.object({
   clientMatrix: z.object({
     lastUpdated: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     sourceCount: z.number().int().nonnegative(),
+    countsByFreshness: z.array(datasetSummaryCountSchema),
     countsByStatus: z.array(datasetSummaryCountSchema),
     countsByRole: z.array(datasetSummaryCountSchema),
     check: z.object({
@@ -139,6 +163,7 @@ const publicSeedReadinessSchema = z.object({
       sourceUrl: z.string().url(),
       retrievedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
       retrievedDaysAgo: z.number().int().nonnegative(),
+      freshnessBand: freshnessBandSchema,
       notes: z.string().optional()
     })).min(1),
     devnets: z.array(z.object({
@@ -336,6 +361,7 @@ describe("public seed dataset", () => {
         sourceUrl: version.source.url,
         retrievedAt: version.source.retrievedAt,
         retrievedDaysAgo: daysBetween(datasetReadiness.lastUpdated, version.source.retrievedAt),
+        freshnessBand: freshnessBandForAge(daysBetween(datasetReadiness.lastUpdated, version.source.retrievedAt)),
         ...(version.notes ? { notes: version.notes } : {})
       }))
     ).sort((left, right) =>
@@ -346,7 +372,14 @@ describe("public seed dataset", () => {
 
     expect(existsSync(resolve(rootDir, "datasets/public-seed", datasetManifest.readiness))).toBe(true);
     expect(datasetReadiness.eipRegistry.lastUpdated).toBe(eipRegistry.lastUpdated);
+    expect(datasetReadiness.sourceFreshnessPolicy.asOf).toBe(datasetReadiness.lastUpdated);
+    expect(datasetReadiness.sourceFreshnessPolicy.freshMaxDays).toBe(30);
+    expect(datasetReadiness.sourceFreshnessPolicy.watchMaxDays).toBe(90);
+    expect(datasetReadiness.sourceReviewNotes).toContainEqual(
+      expect.stringContaining("stale freshness bands")
+    );
     expect(datasetReadiness.eipRegistry.sourceCount).toBe(eipRegistry.sources.length);
+    expect(datasetReadiness.eipRegistry.countsByFreshness).toEqual([{ key: "fresh", count: eipRegistry.sources.length }]);
     expect(datasetReadiness.eipRegistry.countsByStatus).toEqual(countBy(eipRegistry.eips.map((entry) => entry.status)));
     expect(datasetReadiness.eipRegistry.eips).toEqual(
       eipRegistry.eips.map((entry) => ({
@@ -361,6 +394,9 @@ describe("public seed dataset", () => {
     expect(datasetReadiness.eipRegistry.eips.some((entry) => entry.status === "proposed")).toBe(true);
     expect(datasetReadiness.clientMatrix.check).toEqual({ ok: matrixCheck.ok, warnings: matrixCheck.warnings });
     expect(datasetReadiness.clientMatrix.clients).toEqual(expectedClients);
+    expect(datasetReadiness.clientMatrix.countsByFreshness).toEqual(
+      countBy([...datasetReadiness.clientMatrix.sources].map((source) => source.freshnessBand))
+    );
     expect(datasetReadiness.clientMatrix.countsByStatus).toEqual(
       countBy(expectedClients.map((entry) => entry.status))
     );
@@ -383,6 +419,7 @@ describe("public seed dataset", () => {
         sourceUrl: client.sourceUrl,
         retrievedAt: client.retrievedAt,
         retrievedDaysAgo: String(client.retrievedDaysAgo),
+        freshnessBand: client.freshnessBand,
         notes: client.notes ?? ""
       }))
     );
@@ -406,6 +443,9 @@ describe("public seed dataset", () => {
         retrievedAt: source.retrievedAt,
         retrievedDaysAgo: String(source.retrievedDaysAgo),
         sourceAgeDays: source.sourceAgeDays === undefined ? "" : String(source.sourceAgeDays),
+        freshnessAsOf: source.freshnessAsOf,
+        freshnessBand: source.freshnessBand,
+        freshnessReview: source.freshnessReview,
         claim: source.claim,
         notes: source.notes ?? ""
       }))
@@ -442,6 +482,16 @@ function daysBetween(latest: string, earlier: string): number {
   const end = Date.parse(`${latest}T00:00:00Z`);
   const start = Date.parse(`${earlier}T00:00:00Z`);
   return Math.max(0, Math.round((end - start) / 86_400_000));
+}
+
+function freshnessBandForAge(ageDays: number): "fresh" | "watch" | "stale" {
+  if (ageDays <= 30) {
+    return "fresh";
+  }
+  if (ageDays <= 90) {
+    return "watch";
+  }
+  return "stale";
 }
 
 function parseCsvFile(path: string): Array<Record<string, string>> {

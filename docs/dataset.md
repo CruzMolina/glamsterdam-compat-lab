@@ -7,6 +7,7 @@ The dataset lives under `datasets/public-seed/` and is regenerated and checked w
 ```sh
 pnpm dataset:generate
 pnpm dataset:check
+pnpm readiness:freshness
 pnpm site:generate
 pnpm site:check
 pnpm test
@@ -26,7 +27,7 @@ Treat the dataset as reproducibility scaffolding. It is not an aggregate measure
 - `readiness-clients.csv`: one row per client/version matrix entry.
 - `readiness-devnets.csv`: one row per devnet participant, or one devnet-only row when no participants are recorded.
 - `readiness-eips.csv`: one row per tracked registry entry, including scheduled, considered, declined, and proposed status groupings.
-- `readiness-sources.csv`: one row per EIP registry or client matrix source reference with retrieval/source dates and claim text.
+- `readiness-sources.csv`: one row per EIP registry or client matrix source reference with retrieval/source dates, freshness band, and claim text.
 - `reports/`: generated JSON compatibility reports.
 - `comparisons/`: generated JSON default-vs-research comparison reports for bytecode and trace fixtures.
 
@@ -43,7 +44,28 @@ The generated `reports/` pages render finding summaries, stable finding anchors,
 
 The generated `findings/` pages group every report occurrence for a finding ID. They link back to the anchored report detail row, raw report JSON, source fixture, and comparison detail page when a comparison exists.
 
-The generated `readiness.html` page shows EIP status groupings, client matrix rows, devnet participant images, spec versions, source links, retrieval/source dates, and matrix warnings. It is a source visibility page, not a production compatibility assertion.
+The generated `readiness.html` page shows EIP status groupings, client matrix rows, devnet participant images, spec versions, source links, retrieval/source dates, freshness bands, policy thresholds, source-review notes, and matrix warnings. It is a source visibility page, not a production compatibility assertion.
+
+## Source Freshness
+
+`readiness.json` exports a deterministic `sourceFreshnessPolicy`. Generated source age fields use `readiness.lastUpdated` as the `asOf` date, so `dataset:generate` and `site:generate` stay stable when run on a later calendar day.
+
+The policy bands are:
+
+| Band | Retrieved age | Meaning |
+| --- | --- | --- |
+| `fresh` | 0-30 days | No refresh prompt. |
+| `watch` | 31-90 days | Recheck soon, especially before release work. |
+| `stale` | More than 90 days | Refresh before relying on the row. |
+
+Run a live audit when maintainers want to compare source `retrievedAt` values with the current date:
+
+```sh
+pnpm readiness:freshness
+pnpm readiness:freshness --as-of 2026-08-15
+```
+
+The live audit fails on invalid dates, missing source metadata, future `retrievedAt`/`sourceDate` values, and `retrievedAt` dates before `sourceDate`. It warns, but does not fail, for `watch` or `stale` sources. A stale source means "refresh this citation"; it does not mean the associated EIP or client is incompatible.
 
 ## CSV Headers
 
@@ -95,6 +117,7 @@ The generated `readiness.html` page shows EIP status groupings, client matrix ro
 | `sourceUrl` | Public or local source URL. |
 | `retrievedAt` | Date the source was retrieved. |
 | `retrievedDaysAgo` | Source retrieval age in days relative to the dataset date. |
+| `freshnessBand` | `fresh`, `watch`, or `stale` band for the source retrieval date. |
 | `notes` | Matrix notes for the version, when present. |
 
 `readiness-devnets.csv` has one row per devnet participant.
@@ -134,6 +157,9 @@ The generated `readiness.html` page shows EIP status groupings, client matrix ro
 | `retrievedAt` | Retrieval date. |
 | `retrievedDaysAgo` | Retrieval age in days relative to the dataset date. |
 | `sourceAgeDays` | Publication/release age in days relative to the dataset date, when `sourceDate` is present. |
+| `freshnessAsOf` | Date used to classify source freshness, equal to `readiness.lastUpdated` for generated artifacts. |
+| `freshnessBand` | `fresh`, `watch`, or `stale` source freshness band. |
+| `freshnessReview` | Human-readable refresh guidance for the band. |
 | `claim` | Concise source claim summary. |
 | `notes` | Source notes. |
 
@@ -175,6 +201,8 @@ readiness-sources.csv.url = source.url
 ## Stability
 
 Run `pnpm dataset:check` before opening a PR that changes fixtures, scanners, thresholds, registry data, or the client compatibility matrix. The check regenerates the dataset into a temporary directory and compares it with `datasets/public-seed/`. If it reports stale, missing, or extra committed files, run `pnpm dataset:generate` and review the generated artifact changes.
+
+Run `pnpm readiness:freshness` when reviewing source currency against today's date. This live audit is intentionally separate from `dataset:check`: committed artifact age fields remain pinned to the dataset date, while the live audit can warn that real-world source retrievals have aged into `watch` or `stale`.
 
 Run `pnpm site:check` before opening a PR that changes committed dataset artifacts or the site generator. The check regenerates the static site into a temporary directory and compares it with `site/public-seed/`. If it reports stale, missing, or extra committed files, run `pnpm site:generate` and review the generated site changes.
 

@@ -35,11 +35,12 @@ Supported source types are:
 
 - `public-devnet-spec`
 - `public-interop-recap`
+- `public-client-release`
 - `public-spec-release`
 - `synthetic-example`
 - `operator-maintained`
 
-For public sources, use stable public URLs and record the date you retrieved the source. Add `sourceDate` when the source has a clear publication or release date.
+For public sources, use stable public URLs and record the date you retrieved the source. Add `sourceDate` when the source has a clear publication or release date. Use `public-client-release` for release notes from a client repository; it can support a compatibility status only when the release note itself makes that claim.
 All matrix dates use `YYYY-MM-DD`.
 
 ## Devnet Entries
@@ -92,7 +93,32 @@ pnpm client-matrix:check
 
 The checker validates schema shape, duplicate client keys, source dates against `lastUpdated`, devnet participant/client-entry consistency, documented participant exclusions, and conservative status rules. Public devnet, interop, and spec-release sources cannot be used as `compatible` client claims; keep those entries `partial` or `unknown` unless an explicit client release or operator-maintained source supports compatibility.
 
+Run the live freshness audit when reviewing whether source records need a new retrieval pass:
+
+```sh
+pnpm readiness:freshness
+pnpm readiness:freshness --as-of 2026-08-15
+```
+
+Generated artifacts classify source retrieval age against `readiness.lastUpdated`: `fresh` is 0-30 days, `watch` is 31-90 days, and `stale` is more than 90 days. The live audit compares the same `retrievedAt` values against the current date by default. `watch` and `stale` are refresh prompts only; they do not mean the client is incompatible.
+
 The public seed dataset also exports matrix visibility into `datasets/public-seed/readiness.json`, `readiness-clients.csv`, `readiness-devnets.csv`, and `readiness-sources.csv`. The static browser renders the same source records at `site/public-seed/readiness.html`. These exports are audit aids: they show what the matrix says, how old the sources are, and which devnet participants are mirrored by client-version rows. They do not promote devnet participation to production compatibility.
+
+## Source Review Snapshot
+
+The current source-review snapshot is dated `2026-05-13`. Refresh this table when `data/eips/glamsterdam.json`, `data/client-compat/clients.example.json`, or the public readiness sources change.
+
+| URL | Retrieved | Source date | Claim | Conservative note |
+| --- | --- | --- | --- | --- |
+| `https://eips.ethereum.org/EIPS/eip-7773` | 2026-05-13 | 2024-09-26 | Lists scheduled, considered, declined, and proposed Glamsterdam EIPs; activation rows remain unfilled. | Canonical status grouping for the local registry until the meta EIP changes. |
+| `https://ethereum.org/roadmap/glamsterdam/` | 2026-05-13 | 2026-04-13 | Describes Glamsterdam as an upcoming H1 2026 upgrade and points to Forkcast for latest status. | Roadmap context only; use EIP-7773/Forkcast for status grouping. |
+| `https://forkcast.org/upgrade/glamsterdam/` | 2026-05-13 | unknown | Public status surface linked from ethereum.org and EF Checkpoint #9. | Keep as a pointer unless structured status is ingested explicitly. |
+| `https://blog.ethereum.org/2026/04/10/checkpoint-9` | 2026-05-13 | 2026-04-10 | Explains scheduled and considered Glamsterdam feature expectations and devnet sequencing. | Process/status context, not a client compatibility source. |
+| `https://blog.ethereum.org/2026/05/02/soldogn-interop-recap` | 2026-05-13 | 2026-05-02 | Reports stable multi-client Glamsterdam devnet progress and nearly all clients on glamsterdam-devnet-2. | Interop progress is not production release compatibility. |
+| `https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2` | 2026-05-13 | unknown | Lists glamsterdam-devnet-2 EIPs, spec versions, and Kurtosis participant images. | Devnet participant images remain `partial`. |
+| `https://github.com/ethereum/consensus-specs/releases/tag/v1.7.0-alpha.7` | 2026-05-13 | 2026-04-29 | Pre-release with Gloas changes referenced by the devnet spec. | Spec provenance, not a client release. |
+| `https://github.com/ethereum/execution-spec-tests/releases/tag/bal%40v5.6.1` | 2026-05-13 | 2026-04-02 | BAL/state-gas pre-release used by devnet testing. | Spec-test provenance, not a client release. |
+| `https://github.com/ethereum/go-ethereum/releases/tag/v1.17.2` | 2026-05-13 | 2026-03-30 | Lists Amsterdam fork updates for several EIPs and EIP-7928 prerequisite work. | Recorded as `partial`; it does not assert complete Glamsterdam production compatibility. |
 
 ## Updating The Matrix
 

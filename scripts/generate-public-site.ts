@@ -14,6 +14,7 @@ import {
 
 type ThresholdProfile = "default" | "research";
 type ReportRisk = CompatibilityReport["summary"]["risk"];
+type SourceFreshnessBand = "fresh" | "watch" | "stale";
 
 interface DatasetReportEntry {
   sourceFixture: string;
@@ -61,6 +62,21 @@ interface DatasetSummary {
   };
 }
 
+interface DatasetReadinessFreshnessPolicy {
+  name: string;
+  asOf: string;
+  generatedAgeBasis: "readiness.lastUpdated";
+  liveAuditCommand: "pnpm readiness:freshness";
+  freshMaxDays: number;
+  watchMaxDays: number;
+  bands: Array<{
+    band: SourceFreshnessBand;
+    minDays: number;
+    maxDays?: number;
+    meaning: string;
+  }>;
+}
+
 interface DatasetReadinessSource {
   area: "eip-registry" | "client-matrix";
   label: string;
@@ -70,6 +86,9 @@ interface DatasetReadinessSource {
   retrievedAt: string;
   retrievedDaysAgo: number;
   sourceAgeDays?: number;
+  freshnessAsOf: string;
+  freshnessBand: SourceFreshnessBand;
+  freshnessReview: string;
   claim: string;
   notes?: string;
 }
@@ -92,6 +111,7 @@ interface DatasetReadinessClient {
   sourceUrl: string;
   retrievedAt: string;
   retrievedDaysAgo: number;
+  freshnessBand: SourceFreshnessBand;
   notes?: string;
 }
 
@@ -119,9 +139,12 @@ interface DatasetReadiness {
   lastUpdated: string;
   toolVersion: string;
   fork: string;
+  sourceFreshnessPolicy: DatasetReadinessFreshnessPolicy;
+  sourceReviewNotes: string[];
   eipRegistry: {
     lastUpdated: string;
     sourceCount: number;
+    countsByFreshness: DatasetSummaryCount[];
     countsByStatus: DatasetSummaryCount[];
     sources: DatasetReadinessSource[];
     eips: DatasetReadinessEip[];
@@ -129,6 +152,7 @@ interface DatasetReadiness {
   clientMatrix: {
     lastUpdated: string;
     sourceCount: number;
+    countsByFreshness: DatasetSummaryCount[];
     countsByStatus: DatasetSummaryCount[];
     countsByRole: DatasetSummaryCount[];
     check: {
@@ -1383,6 +1407,8 @@ function renderFindingDetailPage(data: SiteData, finding: SiteFindingPage): stri
 
 function renderReadinessPage(data: SiteData): string {
   const readiness = data.readiness;
+  const allSources = [...readiness.eipRegistry.sources, ...readiness.clientMatrix.sources];
+  const allFreshnessCounts = freshnessCounts(allSources);
   const body = `
     <section aria-labelledby="summary-heading">
       <h2 id="summary-heading">Summary</h2>
@@ -1391,6 +1417,10 @@ function renderReadinessPage(data: SiteData): string {
         ${stat("Client versions", readiness.clientMatrix.clients.length)}
         ${stat("Devnets", readiness.clientMatrix.devnets.length)}
         ${stat("Sources", readiness.eipRegistry.sourceCount + readiness.clientMatrix.sourceCount)}
+        ${stat("Fresh sources", allSources.filter((source) => source.freshnessBand === "fresh").length)}
+        ${stat("Watch sources", allSources.filter((source) => source.freshnessBand === "watch").length)}
+        ${stat("Stale sources", allSources.filter((source) => source.freshnessBand === "stale").length)}
+        ${stat("Freshness as of", readiness.sourceFreshnessPolicy.asOf)}
       </div>
       ${detailLinkRow([
         ["readiness json", datasetUrl("readiness.json")],
@@ -1406,18 +1436,33 @@ function renderReadinessPage(data: SiteData): string {
     <section aria-labelledby="source-heading">
       <h2 id="source-heading">Source Freshness</h2>
       <div class="detail-grid">
+        ${detailPanel("Policy", [
+          ["As of", readiness.sourceFreshnessPolicy.asOf],
+          ["Fresh", `0-${readiness.sourceFreshnessPolicy.freshMaxDays} days`],
+          ["Watch", `${readiness.sourceFreshnessPolicy.freshMaxDays + 1}-${readiness.sourceFreshnessPolicy.watchMaxDays} days`],
+          ["Stale", `>${readiness.sourceFreshnessPolicy.watchMaxDays} days`],
+          ["Live audit", readiness.sourceFreshnessPolicy.liveAuditCommand]
+        ])}
+        ${detailPanel("All sources", [
+          ["Sources", String(allSources.length)],
+          ["Freshness counts", countsText(allFreshnessCounts)],
+          ["Age basis", readiness.sourceFreshnessPolicy.generatedAgeBasis]
+        ])}
         ${detailPanel("EIP registry", [
           ["Last updated", readiness.eipRegistry.lastUpdated],
           ["Sources", String(readiness.eipRegistry.sourceCount)],
+          ["Freshness counts", countsText(readiness.eipRegistry.countsByFreshness)],
           ["Status counts", countsText(readiness.eipRegistry.countsByStatus)]
         ])}
         ${detailPanel("Client matrix", [
           ["Last updated", readiness.clientMatrix.lastUpdated],
           ["Sources", String(readiness.clientMatrix.sourceCount)],
+          ["Freshness counts", countsText(readiness.clientMatrix.countsByFreshness)],
           ["Matrix check", readiness.clientMatrix.check.ok ? "ok" : "failed"],
           ["Status counts", countsText(readiness.clientMatrix.countsByStatus)]
         ])}
       </div>
+      ${detailTextSection("Source Review Notes", readiness.sourceReviewNotes)}
       ${readiness.clientMatrix.check.warnings.length > 0 ? detailTextSection("Matrix Warnings", readiness.clientMatrix.check.warnings) : ""}
     </section>
 
@@ -1490,12 +1535,13 @@ function renderReadinessPage(data: SiteData): string {
               <th scope="col">Area</th>
               <th scope="col">Label</th>
               <th scope="col">Source</th>
+              <th scope="col">Freshness</th>
               <th scope="col">Dates</th>
               <th scope="col">Claim</th>
             </tr>
           </thead>
           <tbody>
-            ${[...readiness.eipRegistry.sources, ...readiness.clientMatrix.sources].map(readinessSourceRow).join("\n")}
+            ${allSources.map(readinessSourceRow).join("\n")}
           </tbody>
         </table>
       </div>
@@ -2000,7 +2046,7 @@ function readinessClientRow(client: DatasetReadinessClient): string {
     <td>${statusBadge(client.status)}</td>
     <td>
       <a href="${escapeAttr(client.sourceUrl)}" rel="noopener">${escapeHtml(client.sourceType)}</a>
-      <div class="subtle">retrieved ${escapeHtml(client.retrievedAt)} / ${client.retrievedDaysAgo.toLocaleString("en-US")}d old</div>
+      <div class="subtle">retrieved ${escapeHtml(client.retrievedAt)} / ${client.retrievedDaysAgo.toLocaleString("en-US")}d old / ${statusBadge(client.freshnessBand)}</div>
     </td>
     <td>${escapeHtml(client.notes ?? "")}</td>
   </tr>`;
@@ -2042,6 +2088,10 @@ function readinessSourceRow(source: DatasetReadinessSource): string {
       ${source.notes ? `<div class="subtle">${escapeHtml(source.notes)}</div>` : ""}
     </td>
     <td>
+      ${statusBadge(source.freshnessBand)}
+      <div class="subtle">${escapeHtml(source.freshnessReview)}</div>
+    </td>
+    <td>
       <div>retrieved ${escapeHtml(source.retrievedAt)} (${source.retrievedDaysAgo.toLocaleString("en-US")}d)</div>
       ${source.sourceDate ? `<div class="subtle">source ${escapeHtml(source.sourceDate)} (${(source.sourceAgeDays ?? 0).toLocaleString("en-US")}d)</div>` : ""}
     </td>
@@ -2054,13 +2104,13 @@ function statusBadge(status: string): string {
 }
 
 function statusClass(status: string): string {
-  if (status === "compatible" || status === "scheduled" || status === "ok") {
+  if (status === "compatible" || status === "scheduled" || status === "ok" || status === "fresh") {
     return "risk-low";
   }
-  if (status === "incompatible" || status === "declined" || status === "failed") {
+  if (status === "incompatible" || status === "declined" || status === "failed" || status === "stale") {
     return "risk-high";
   }
-  if (status === "partial" || status === "considered" || status === "proposed") {
+  if (status === "partial" || status === "considered" || status === "proposed" || status === "watch") {
     return "risk-medium";
   }
   return "risk-unknown";
@@ -2068,6 +2118,20 @@ function statusClass(status: string): string {
 
 function countsText(counts: DatasetSummaryCount[]): string {
   return counts.map((count) => `${count.key}: ${count.count}`).join(", ");
+}
+
+function freshnessCounts(sources: DatasetReadinessSource[]): DatasetSummaryCount[] {
+  const counts: Record<SourceFreshnessBand, number> = {
+    fresh: 0,
+    watch: 0,
+    stale: 0
+  };
+  for (const source of sources) {
+    counts[source.freshnessBand] += 1;
+  }
+  return Object.entries(counts)
+    .map(([key, count]) => ({ key, count }))
+    .filter((count) => count.count > 0);
 }
 
 function comparisonSection(title: string, rows: ComparisonReport["changes"]["added"]): string {

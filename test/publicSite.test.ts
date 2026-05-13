@@ -93,6 +93,11 @@ describe("public seed site", () => {
 
       expect(readinessHtml).toContain("Readiness Sources");
       expect(readinessHtml).toContain("Source Freshness");
+      expect(readinessHtml).toContain("Source Review Notes");
+      expect(readinessHtml).toContain("pnpm readiness:freshness");
+      expect(readinessHtml).toContain("fresh");
+      expect(readinessHtml).toContain("Watch");
+      expect(readinessHtml).toContain("stale");
       expect(readinessHtml).toContain("EIP Status");
       expect(readinessHtml).toContain("Client Matrix");
       expect(readinessHtml).toContain("Devnets");

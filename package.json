@@ -53,6 +53,7 @@
     "prepublishOnly": "pnpm test && pnpm build",
     "release:check-pack": "node scripts/check-packed-install.mjs",
     "release:check-npm": "node scripts/check-npm-release.mjs",
+    "readiness:freshness": "tsx scripts/check-readiness-freshness.ts",
     "site:check": "tsx scripts/check-public-site.ts",
     "site:generate": "tsx scripts/generate-public-site.ts",
     "test": "vitest run",

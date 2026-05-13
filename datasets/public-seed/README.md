@@ -28,6 +28,12 @@ Check committed artifacts are fresh with:
 pnpm dataset:check
 ```
 
+Run a live readiness source audit with:
+
+```sh
+pnpm readiness:freshness
+```
+
 Then run:
 
 ```sh
@@ -35,4 +41,4 @@ pnpm test
 pnpm build
 ```
 
-Review generated changes before publishing. Dataset comparisons are structural report differences only; they do not infer final Glamsterdam gas deltas or client behavior.
+Review generated changes before publishing. Dataset comparisons are structural report differences only; they do not infer final Glamsterdam gas deltas or client behavior. Readiness freshness bands are source-review prompts; stale sources do not imply incompatibility.

@@ -385,9 +385,13 @@
       <h2 id="summary-heading">Summary</h2>
       <div class="stats">
         <div class="stat"><span class="stat-value">65</span><span class="stat-label">EIPs</span></div>
-        <div class="stat"><span class="stat-value">19</span><span class="stat-label">Client versions</span></div>
+        <div class="stat"><span class="stat-value">20</span><span class="stat-label">Client versions</span></div>
         <div class="stat"><span class="stat-value">2</span><span class="stat-label">Devnets</span></div>
-        <div class="stat"><span class="stat-value">32</span><span class="stat-label">Sources</span></div>
+        <div class="stat"><span class="stat-value">34</span><span class="stat-label">Sources</span></div>
+        <div class="stat"><span class="stat-value">34</span><span class="stat-label">Fresh sources</span></div>
+        <div class="stat"><span class="stat-value">0</span><span class="stat-label">Watch sources</span></div>
+        <div class="stat"><span class="stat-value">0</span><span class="stat-label">Stale sources</span></div>
+        <div class="stat"><span class="stat-value">2026-05-13</span><span class="stat-label">Freshness as of</span></div>
       </div>
       <div class="link-row"><a href="../../datasets/public-seed/readiness.json">readiness json</a>
 <a href="../../datasets/public-seed/readiness-clients.csv">client csv</a>
@@ -402,10 +406,29 @@
       <h2 id="source-heading">Source Freshness</h2>
       <div class="detail-grid">
         <div class="panel">
+    <h3>Policy</h3>
+    <dl class="kv">
+      <dt>As of</dt><dd>2026-05-13</dd>
+<dt>Fresh</dt><dd>0-30 days</dd>
+<dt>Watch</dt><dd>31-90 days</dd>
+<dt>Stale</dt><dd>&gt;90 days</dd>
+<dt>Live audit</dt><dd>pnpm readiness:freshness</dd>
+    </dl>
+  </div>
+        <div class="panel">
+    <h3>All sources</h3>
+    <dl class="kv">
+      <dt>Sources</dt><dd>34</dd>
+<dt>Freshness counts</dt><dd>fresh: 34</dd>
+<dt>Age basis</dt><dd>readiness.lastUpdated</dd>
+    </dl>
+  </div>
+        <div class="panel">
     <h3>EIP registry</h3>
     <dl class="kv">
       <dt>Last updated</dt><dd>2026-05-13</dd>
 <dt>Sources</dt><dd>5</dd>
+<dt>Freshness counts</dt><dd>fresh: 5</dd>
 <dt>Status counts</dt><dd>considered: 14, declined: 38, proposed: 3, scheduled: 10</dd>
     </dl>
   </div>
@@ -413,12 +436,20 @@
     <h3>Client matrix</h3>
     <dl class="kv">
       <dt>Last updated</dt><dd>2026-05-13</dd>
-<dt>Sources</dt><dd>27</dd>
+<dt>Sources</dt><dd>29</dd>
+<dt>Freshness counts</dt><dd>fresh: 29</dd>
 <dt>Matrix check</dt><dd>ok</dd>
-<dt>Status counts</dt><dd>compatible: 3, incompatible: 3, partial: 10, unknown: 3</dd>
+<dt>Status counts</dt><dd>compatible: 3, incompatible: 3, partial: 11, unknown: 3</dd>
     </dl>
   </div>
       </div>
+      <section aria-labelledby="source-review-notes">
+    <h2 id="source-review-notes">Source Review Notes</h2>
+    <ul><li>Generated source age fields are calculated against readiness.lastUpdated so committed artifacts stay deterministic.</li>
+<li>Run pnpm readiness:freshness for a live audit against the current date.</li>
+<li>Watch and stale freshness bands mean the source should be rechecked; they do not mean a client is incompatible.</li>
+<li>Do not infer production compatibility from devnet participation, prerelease specs, client family, or related implementation code.</li></ul>
+  </section>
       
     </section>
 
@@ -916,7 +947,7 @@
     <td><span class="badge risk-unknown">unknown</span></td>
     <td>
       <a href="https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json" rel="noopener">synthetic-example</a>
-      <div class="subtle">retrieved 2026-05-12 / 1d old</div>
+      <div class="subtle">retrieved 2026-05-12 / 1d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Placeholder only. Replace with a sourced compatibility statement before relying on this matrix.</td>
   </tr>
@@ -926,7 +957,7 @@
     <td><span class="badge risk-low">compatible</span></td>
     <td>
       <a href="https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json" rel="noopener">synthetic-example</a>
-      <div class="subtle">retrieved 2026-05-12 / 1d old</div>
+      <div class="subtle">retrieved 2026-05-12 / 1d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Synthetic compatible status used by safe fixture variants; do not treat as a real client release.</td>
   </tr>
@@ -936,7 +967,7 @@
     <td><span class="badge risk-medium">partial</span></td>
     <td>
       <a href="https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json" rel="noopener">synthetic-example</a>
-      <div class="subtle">retrieved 2026-05-12 / 1d old</div>
+      <div class="subtle">retrieved 2026-05-12 / 1d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Synthetic partial status for tests and examples only.</td>
   </tr>
@@ -946,7 +977,7 @@
     <td><span class="badge risk-high">incompatible</span></td>
     <td>
       <a href="https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json" rel="noopener">synthetic-example</a>
-      <div class="subtle">retrieved 2026-05-12 / 1d old</div>
+      <div class="subtle">retrieved 2026-05-12 / 1d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Synthetic incompatible status for tests and examples only.</td>
   </tr>
@@ -956,7 +987,7 @@
     <td><span class="badge risk-medium">partial</span></td>
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
-      <div class="subtle">retrieved 2026-05-13 / 0d old</div>
+      <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Devnet image only. This is not a production Grandine release compatibility claim.</td>
   </tr>
@@ -966,7 +997,7 @@
     <td><span class="badge risk-medium">partial</span></td>
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
-      <div class="subtle">retrieved 2026-05-12 / 1d old</div>
+      <div class="subtle">retrieved 2026-05-12 / 1d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Devnet image only. This is not a production Lighthouse release compatibility claim.</td>
   </tr>
@@ -976,7 +1007,7 @@
     <td><span class="badge risk-medium">partial</span></td>
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
-      <div class="subtle">retrieved 2026-05-13 / 0d old</div>
+      <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Devnet image only. This is not a production Lodestar release compatibility claim.</td>
   </tr>
@@ -986,7 +1017,7 @@
     <td><span class="badge risk-medium">partial</span></td>
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
-      <div class="subtle">retrieved 2026-05-13 / 0d old</div>
+      <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Devnet image only. This is not a production Nimbus release compatibility claim.</td>
   </tr>
@@ -996,7 +1027,7 @@
     <td><span class="badge risk-medium">partial</span></td>
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
-      <div class="subtle">retrieved 2026-05-13 / 0d old</div>
+      <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Devnet image only. This is not a production Prysm release compatibility claim.</td>
   </tr>
@@ -1006,7 +1037,7 @@
     <td><span class="badge risk-medium">partial</span></td>
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
-      <div class="subtle">retrieved 2026-05-12 / 1d old</div>
+      <div class="subtle">retrieved 2026-05-12 / 1d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Devnet image only. This is not a production Teku release compatibility claim.</td>
   </tr>
@@ -1016,7 +1047,7 @@
     <td><span class="badge risk-unknown">unknown</span></td>
     <td>
       <a href="https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json" rel="noopener">synthetic-example</a>
-      <div class="subtle">retrieved 2026-05-12 / 1d old</div>
+      <div class="subtle">retrieved 2026-05-12 / 1d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Placeholder only. Replace with a sourced compatibility statement before relying on this matrix.</td>
   </tr>
@@ -1026,7 +1057,7 @@
     <td><span class="badge risk-low">compatible</span></td>
     <td>
       <a href="https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json" rel="noopener">synthetic-example</a>
-      <div class="subtle">retrieved 2026-05-12 / 1d old</div>
+      <div class="subtle">retrieved 2026-05-12 / 1d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Synthetic compatible status used by safe fixture variants; do not treat as a real client release.</td>
   </tr>
@@ -1036,7 +1067,7 @@
     <td><span class="badge risk-medium">partial</span></td>
     <td>
       <a href="https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json" rel="noopener">synthetic-example</a>
-      <div class="subtle">retrieved 2026-05-12 / 1d old</div>
+      <div class="subtle">retrieved 2026-05-12 / 1d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Synthetic partial status for tests and examples only.</td>
   </tr>
@@ -1046,7 +1077,7 @@
     <td><span class="badge risk-high">incompatible</span></td>
     <td>
       <a href="https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json" rel="noopener">synthetic-example</a>
-      <div class="subtle">retrieved 2026-05-12 / 1d old</div>
+      <div class="subtle">retrieved 2026-05-12 / 1d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Synthetic incompatible status for tests and examples only.</td>
   </tr>
@@ -1056,9 +1087,19 @@
     <td><span class="badge risk-medium">partial</span></td>
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
-      <div class="subtle">retrieved 2026-05-12 / 1d old</div>
+      <div class="subtle">retrieved 2026-05-12 / 1d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Devnet image only. This is not a production Geth release compatibility claim.</td>
+  </tr>
+<tr>
+    <td><strong>geth</strong><div class="subtle">execution</div></td>
+    <td><div class="path">v1.17.2</div></td>
+    <td><span class="badge risk-medium">partial</span></td>
+    <td>
+      <a href="https://github.com/ethereum/go-ethereum/releases/tag/v1.17.2" rel="noopener">public-client-release</a>
+      <div class="subtle">retrieved 2026-05-13 / 0d old / <span class="badge risk-low">fresh</span></div>
+    </td>
+    <td>Public release notes show Amsterdam-related implementation work, but not a complete Glamsterdam mainnet readiness statement.</td>
   </tr>
 <tr>
     <td><strong>example-validator-client</strong><div class="subtle">validator</div></td>
@@ -1066,7 +1107,7 @@
     <td><span class="badge risk-unknown">unknown</span></td>
     <td>
       <a href="https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json" rel="noopener">synthetic-example</a>
-      <div class="subtle">retrieved 2026-05-12 / 1d old</div>
+      <div class="subtle">retrieved 2026-05-12 / 1d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Placeholder only. Replace with a sourced compatibility statement before relying on this matrix.</td>
   </tr>
@@ -1076,7 +1117,7 @@
     <td><span class="badge risk-low">compatible</span></td>
     <td>
       <a href="https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json" rel="noopener">synthetic-example</a>
-      <div class="subtle">retrieved 2026-05-12 / 1d old</div>
+      <div class="subtle">retrieved 2026-05-12 / 1d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Synthetic compatible status used by safe fixture variants; do not treat as a real client release.</td>
   </tr>
@@ -1086,7 +1127,7 @@
     <td><span class="badge risk-medium">partial</span></td>
     <td>
       <a href="https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json" rel="noopener">synthetic-example</a>
-      <div class="subtle">retrieved 2026-05-12 / 1d old</div>
+      <div class="subtle">retrieved 2026-05-12 / 1d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Synthetic partial status for tests and examples only.</td>
   </tr>
@@ -1096,7 +1137,7 @@
     <td><span class="badge risk-high">incompatible</span></td>
     <td>
       <a href="https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json" rel="noopener">synthetic-example</a>
-      <div class="subtle">retrieved 2026-05-12 / 1d old</div>
+      <div class="subtle">retrieved 2026-05-12 / 1d old / <span class="badge risk-low">fresh</span></div>
     </td>
     <td>Synthetic incompatible status for tests and examples only.</td>
   </tr>
@@ -1153,6 +1194,7 @@
               <th scope="col">Area</th>
               <th scope="col">Label</th>
               <th scope="col">Source</th>
+              <th scope="col">Freshness</th>
               <th scope="col">Dates</th>
               <th scope="col">Claim</th>
             </tr>
@@ -1164,6 +1206,10 @@
     <td>
       <a href="https://eips.ethereum.org/EIPS/eip-7773" rel="noopener">meta-eip</a>
       <div class="subtle">Treat this as the canonical status grouping for this local registry until the meta EIP changes. The sourceDate is the EIP creation date; use retrievedAt for current status grouping freshness.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
       <div>retrieved 2026-05-13 (0d)</div>
@@ -1179,6 +1225,10 @@
       
     </td>
     <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
       <div>retrieved 2026-05-13 (0d)</div>
       <div class="subtle">source 2026-04-13 (30d)</div>
     </td>
@@ -1190,6 +1240,10 @@
     <td>
       <a href="https://forkcast.org/upgrade/glamsterdam/" rel="noopener">forkcast</a>
       
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
       <div>retrieved 2026-05-13 (0d)</div>
@@ -1205,6 +1259,10 @@
       
     </td>
     <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
       <div>retrieved 2026-05-13 (0d)</div>
       <div class="subtle">source 2026-04-10 (33d)</div>
     </td>
@@ -1216,6 +1274,10 @@
     <td>
       <a href="https://blog.ethereum.org/2026/05/02/soldogn-interop-recap" rel="noopener">protocol-blog</a>
       <div class="subtle">Interop/devnet progress is not a production client compatibility claim.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
       <div>retrieved 2026-05-13 (0d)</div>
@@ -1231,6 +1293,10 @@
       <div class="subtle">This source supports devnet/interoperability context, not production release compatibility.</div>
     </td>
     <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
       <div>retrieved 2026-05-12 (1d)</div>
       <div class="subtle">source 2026-05-02 (11d)</div>
     </td>
@@ -1242,6 +1308,10 @@
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
       <div class="subtle">This source supports devnet participant examples. It does not claim mainnet-ready client releases.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
       <div>retrieved 2026-05-12 (1d)</div>
@@ -1257,6 +1327,10 @@
       <div class="subtle">Spec release metadata is useful provenance for devnet test entries, but is not a client release.</div>
     </td>
     <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
       <div>retrieved 2026-05-12 (1d)</div>
       <div class="subtle">source 2026-04-29 (14d)</div>
     </td>
@@ -1270,6 +1344,10 @@
       <div class="subtle">Spec-test release metadata is useful provenance for devnet test entries, but is not a client release.</div>
     </td>
     <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
       <div>retrieved 2026-05-12 (1d)</div>
       <div class="subtle">source 2026-04-02 (41d)</div>
     </td>
@@ -1277,10 +1355,31 @@
   </tr>
 <tr>
     <td>client-matrix</td>
+    <td><div class="path">sources[4]</div></td>
+    <td>
+      <a href="https://github.com/ethereum/go-ethereum/releases/tag/v1.17.2" rel="noopener">public-client-release</a>
+      <div class="subtle">Client release-note provenance only. This does not assert complete Glamsterdam production compatibility.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-03-30 (44d)</div>
+    </td>
+    <td>Geth v1.17.2 release notes list Amsterdam fork updates for EIP-8024, EIP-7778, EIP-7954, EIP-7708, and gas-measurement order work prerequisite for EIP-7928.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
     <td><div class="path">clients.execution.example-execution-client.0.0.0-example.source</div></td>
     <td>
       <a href="https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json" rel="noopener">synthetic-example</a>
       
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
       <div>retrieved 2026-05-12 (1d)</div>
@@ -1296,6 +1395,10 @@
       
     </td>
     <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
       <div>retrieved 2026-05-12 (1d)</div>
       
     </td>
@@ -1307,6 +1410,10 @@
     <td>
       <a href="https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json" rel="noopener">synthetic-example</a>
       
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
       <div>retrieved 2026-05-12 (1d)</div>
@@ -1322,6 +1429,10 @@
       
     </td>
     <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
       <div>retrieved 2026-05-12 (1d)</div>
       
     </td>
@@ -1333,6 +1444,10 @@
     <td>
       <a href="https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json" rel="noopener">synthetic-example</a>
       
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
       <div>retrieved 2026-05-12 (1d)</div>
@@ -1348,6 +1463,10 @@
       
     </td>
     <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
       <div>retrieved 2026-05-12 (1d)</div>
       
     </td>
@@ -1359,6 +1478,10 @@
     <td>
       <a href="https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json" rel="noopener">synthetic-example</a>
       
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
       <div>retrieved 2026-05-12 (1d)</div>
@@ -1374,6 +1497,10 @@
       
     </td>
     <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
       <div>retrieved 2026-05-12 (1d)</div>
       
     </td>
@@ -1385,6 +1512,10 @@
     <td>
       <a href="https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json" rel="noopener">synthetic-example</a>
       
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
       <div>retrieved 2026-05-12 (1d)</div>
@@ -1400,6 +1531,10 @@
       
     </td>
     <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
       <div>retrieved 2026-05-12 (1d)</div>
       
     </td>
@@ -1411,6 +1546,10 @@
     <td>
       <a href="https://github.com/CruzMolina/glamsterdam-compat-lab/blob/main/data/client-compat/clients.example.json" rel="noopener">synthetic-example</a>
       
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
       <div>retrieved 2026-05-12 (1d)</div>
@@ -1426,6 +1565,10 @@
       
     </td>
     <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
       <div>retrieved 2026-05-12 (1d)</div>
       
     </td>
@@ -1439,6 +1582,10 @@
       
     </td>
     <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
       <div>retrieved 2026-05-12 (1d)</div>
       
     </td>
@@ -1446,10 +1593,31 @@
   </tr>
 <tr>
     <td>client-matrix</td>
+    <td><div class="path">clients.execution.geth.v1.17.2.source</div></td>
+    <td>
+      <a href="https://github.com/ethereum/go-ethereum/releases/tag/v1.17.2" rel="noopener">public-client-release</a>
+      <div class="subtle">Client release-note provenance only. This does not assert complete Glamsterdam production compatibility.</div>
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
+      <div>retrieved 2026-05-13 (0d)</div>
+      <div class="subtle">source 2026-03-30 (44d)</div>
+    </td>
+    <td>Geth v1.17.2 release notes list Amsterdam fork updates for EIP-8024, EIP-7778, EIP-7954, EIP-7708, and gas-measurement order work prerequisite for EIP-7928.</td>
+  </tr>
+<tr>
+    <td>client-matrix</td>
     <td><div class="path">clients.consensus.lighthouse.ethpandaops/lighthouse:glamsterdam-devnet-3.source</div></td>
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
       
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
       <div>retrieved 2026-05-12 (1d)</div>
@@ -1465,6 +1633,10 @@
       
     </td>
     <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
       <div>retrieved 2026-05-13 (0d)</div>
       
     </td>
@@ -1476,6 +1648,10 @@
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
       
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
       <div>retrieved 2026-05-13 (0d)</div>
@@ -1491,6 +1667,10 @@
       
     </td>
     <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
       <div>retrieved 2026-05-12 (1d)</div>
       
     </td>
@@ -1502,6 +1682,10 @@
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
       
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
       <div>retrieved 2026-05-13 (0d)</div>
@@ -1517,6 +1701,10 @@
       
     </td>
     <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
       <div>retrieved 2026-05-13 (0d)</div>
       
     </td>
@@ -1528,6 +1716,10 @@
     <td>
       <a href="https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2" rel="noopener">public-devnet-spec</a>
       
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
       <div>retrieved 2026-05-12 (1d)</div>
@@ -1543,6 +1735,10 @@
       
     </td>
     <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
       <div>retrieved 2026-05-12 (1d)</div>
       <div class="subtle">source 2026-04-29 (14d)</div>
     </td>
@@ -1556,6 +1752,10 @@
       
     </td>
     <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
+    </td>
+    <td>
       <div>retrieved 2026-05-12 (1d)</div>
       <div class="subtle">source 2026-04-02 (41d)</div>
     </td>
@@ -1567,6 +1767,10 @@
     <td>
       <a href="https://blog.ethereum.org/2026/05/02/soldogn-interop-recap" rel="noopener">public-interop-recap</a>
       
+    </td>
+    <td>
+      <span class="badge risk-low">fresh</span>
+      <div class="subtle">Source was reviewed recently enough for the readiness export.</div>
     </td>
     <td>
       <div>retrieved 2026-05-12 (1d)</div>

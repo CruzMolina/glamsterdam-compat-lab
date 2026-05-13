@@ -17,6 +17,7 @@ export const clientMatrixSourceSchema = z.object({
   type: z.enum([
     "public-devnet-spec",
     "public-interop-recap",
+    "public-client-release",
     "public-spec-release",
     "synthetic-example",
     "operator-maintained"
@@ -88,7 +89,7 @@ export interface ClientMatrixCheckResult {
   warnings: string[];
 }
 
-interface SourceRef {
+export interface ClientMatrixSourceRef {
   label: string;
   source: ClientMatrixSource;
 }
@@ -141,7 +142,7 @@ export function checkClientMatrix(matrix: ClientMatrix): ClientMatrixCheckResult
 }
 
 function checkDates(matrix: ClientMatrix, errors: string[]): void {
-  for (const { label, source } of sourceRefs(matrix)) {
+  for (const { label, source } of clientMatrixSourceRefs(matrix)) {
     if (source.sourceDate && source.retrievedAt < source.sourceDate) {
       errors.push(`${label} has retrievedAt ${source.retrievedAt} before sourceDate ${source.sourceDate}.`);
     }
@@ -238,8 +239,8 @@ function checkConservativeStatuses(matrix: ClientMatrix, errors: string[]): void
   }
 }
 
-function sourceRefs(matrix: ClientMatrix): SourceRef[] {
-  const refs: SourceRef[] = matrix.sources.map((source, index) => ({
+export function clientMatrixSourceRefs(matrix: ClientMatrix): ClientMatrixSourceRef[] {
+  const refs: ClientMatrixSourceRef[] = matrix.sources.map((source, index) => ({
     label: `sources[${index}]`,
     source
   }));

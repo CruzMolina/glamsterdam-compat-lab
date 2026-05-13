@@ -37,6 +37,7 @@ export type {
 export { scanIndexer, summarizeHandlers } from "./scanners/indexerScanner.js";
 export { scanValidatorConfig } from "./scanners/validatorScanner.js";
 export {
+  clientMatrixSourceRefs,
   checkClientMatrix,
   defaultClientMatrixPath,
   findClientMatrixEntry,
@@ -46,10 +47,27 @@ export type {
   ClientEntry,
   ClientMatrix,
   ClientMatrixCheckResult,
+  ClientMatrixSourceRef,
   ClientMatrixSource,
   ClientRole,
   ClientVersion
 } from "./registry/clientMatrix.js";
+export {
+  SOURCE_FRESHNESS_POLICY,
+  auditSourceFreshness,
+  daysBetweenIsoDates,
+  sourceFreshness,
+  sourceFreshnessBand,
+  sourceFreshnessReview
+} from "./registry/sourceFreshness.js";
+export type {
+  SourceFreshness,
+  SourceFreshnessAuditResult,
+  SourceFreshnessBand,
+  SourceFreshnessPolicy,
+  SourceFreshnessPolicyBand,
+  SourceFreshnessRef
+} from "./registry/sourceFreshness.js";
 export { loadDetectorThresholds, defaultThresholdsPath, detectorThresholdsSchema } from "./detectors/thresholds.js";
 export type { DetectorThresholds } from "./detectors/thresholds.js";
 

@@ -76,7 +76,7 @@ JS
 Current output:
 
 ```text
-{ reportRows: 40, findingRows: 138, summaryRows: 41 }
+{ reportRows: 50, findingRows: 182, summaryRows: 47 }
 ```
 
 ## Reports by Risk and Fixture Kind
@@ -113,9 +113,9 @@ JS
 Current output:
 
 ```text
-reportsByRisk [ [ 'low', 7 ], [ 'medium', 33 ] ]
-reportsByFixtureKind [ [ 'bytecode', 12 ], [ 'indexer', 3 ], [ 'trace', 22 ], [ 'validator', 3 ] ]
-reportsByThresholdProfile [ [ 'default', 23 ], [ 'research', 17 ] ]
+reportsByRisk [ [ 'low', 9 ], [ 'medium', 40 ], [ 'unknown', 1 ] ]
+reportsByFixtureKind [ [ 'bytecode', 16 ], [ 'indexer', 4 ], [ 'trace', 26 ], [ 'validator', 4 ] ]
+reportsByThresholdProfile [ [ 'default', 29 ], [ 'research', 21 ] ]
 ```
 
 ## Most Common Finding IDs
@@ -147,14 +147,14 @@ JS
 Current output:
 
 ```text
-22 trace.logs-calls-visible
-14 trace.calldata-heavy-execution
-12 bytecode.log-opcodes-present
-12 bytecode.manual-review-required
-12 trace.partial-evidence
-10 bytecode.state-account-opcode-exposure
-10 trace.contract-creation-executed
-9 bytecode.storage-heavy-pattern
+26 trace.logs-calls-visible
+18 trace.calldata-heavy-execution
+16 bytecode.log-opcodes-present
+16 bytecode.manual-review-required
+16 trace.partial-evidence
+14 bytecode.state-account-opcode-exposure
+12 bytecode.calldata-copy-exposure
+12 bytecode.storage-heavy-pattern
 ```
 
 ## Public-chain vs Synthetic Coverage
@@ -183,7 +183,9 @@ JS
 Current output:
 
 ```text
-public-chain: 8
+public-chain: 12
+public-doc: 1
+public-repo: 1
 synthetic: 15
 ```
 

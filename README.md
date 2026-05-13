@@ -74,6 +74,8 @@ Each scanner accepts `--registry <path>` and `--thresholds <path>` so EIP metada
 
 Fixture provenance lives in [fixtures/provenance.json](fixtures/provenance.json). The first deterministic dataset seed lives in [datasets/public-seed](datasets/public-seed) and includes generated JSON reports, default-vs-research threshold comparisons for bytecode and trace fixtures, a `summary.json` file with aggregate counts, and CSV exports (`reports.csv`, `findings.csv`, `summary.csv`) for spreadsheet and warehouse import.
 
+The static dataset browser lives at [site/public-seed/index.html](site/public-seed/index.html). It is generated entirely from committed dataset files and can be opened directly in a browser for summary charts, report filters, text search, and fixture/provenance links.
+
 See [docs/dataset.md](docs/dataset.md) for the dataset file contract and [examples/public-seed-analysis.md](examples/public-seed-analysis.md) for lightweight analysis snippets.
 
 Regenerate and verify it with:
@@ -81,6 +83,8 @@ Regenerate and verify it with:
 ```sh
 pnpm dataset:generate
 pnpm dataset:check
+pnpm site:generate
+pnpm site:check
 ```
 
 ## What the scanners can detect

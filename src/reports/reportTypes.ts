@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const TOOL_VERSION = "0.3.4";
+export const TOOL_VERSION = "0.3.6";
 
 export const severitySchema = z.enum(["low", "medium", "high", "unknown"]);
 export const confidenceSchema = z.enum(["low", "medium", "high"]);

@@ -1,5 +1,5 @@
 {
-  "toolVersion": "0.3.4",
+  "toolVersion": "0.3.6",
   "fork": "glamsterdam",
   "target": {
     "kind": "validator",
@@ -37,7 +37,7 @@
             "source": {
               "type": "public-devnet-spec",
               "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
-              "retrievedAt": "2026-05-12",
+              "retrievedAt": "2026-05-13",
               "claim": "The glamsterdam-devnet-2 Kurtosis example lists geth with image ethpandaops/geth:bal-devnet-6 as the execution-layer participant."
             },
             "notes": "Devnet image only. This is not a production Geth release compatibility claim."

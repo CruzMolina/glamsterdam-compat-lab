@@ -66,7 +66,7 @@ Goal: publish reproducible compatibility research.
 
 ## Phase 3: Devnet Integration
 
-Status: started in `v0.3.4` with sourced readiness exports and static readiness pages; `v0.3.5` adds deterministic source freshness policy, live audit guardrails, and refreshed source-review notes.
+Status: started in `v0.3.4` with sourced readiness exports and static readiness pages; `v0.3.5` adds deterministic source freshness policy, live audit guardrails, and refreshed source-review notes; `v0.3.6` adds public client release-note intake, source-type readiness counts, and stricter conservative matrix rules.
 
 Goal: track moving client and spec readiness without hardcoding guesses.
 
@@ -75,6 +75,7 @@ Goal: track moving client and spec readiness without hardcoding guesses.
 - Expand validator/operator compatibility matrix workflows
 - Export source freshness, EIP status groupings, devnet participants, and matrix rows through the public dataset and static site
 - Guard source drift with stable generated freshness bands, current-date freshness audits, and explicit stale-source warnings that do not imply incompatibility
+- Distinguish devnet image provenance, client release-note provenance, and operator-maintained compatibility claims in public readiness exports
 
 ## Phase 4: Dashboard
 

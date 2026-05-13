@@ -1,6 +1,6 @@
 {
   "name": "glamsterdam-compat-lab",
-  "version": "0.3.4",
+  "version": "0.3.6",
   "description": "Deterministic Glamsterdam compatibility scanners for Ethereum contracts, traces, indexers, and validator operators.",
   "type": "module",
   "license": "MIT",

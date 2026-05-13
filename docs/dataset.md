@@ -44,7 +44,9 @@ The generated `reports/` pages render finding summaries, stable finding anchors,
 
 The generated `findings/` pages group every report occurrence for a finding ID. They link back to the anchored report detail row, raw report JSON, source fixture, and comparison detail page when a comparison exists.
 
-The generated `readiness.html` page shows EIP status groupings, client matrix rows, devnet participant images, spec versions, source links, retrieval/source dates, freshness bands, policy thresholds, source-review notes, and matrix warnings. It is a source visibility page, not a production compatibility assertion.
+The generated `readiness.html` page shows EIP status groupings, client matrix rows, devnet participant images, spec versions, source links, retrieval/source dates, freshness bands, source-type counts, policy thresholds, source-review notes, and matrix warnings. It is a source visibility page, not a production compatibility assertion.
+
+`readiness.json` also includes `countsBySourceType` for the EIP registry and client matrix. Use these counts to distinguish devnet image provenance (`public-devnet-spec`), release-note provenance (`public-client-release`), spec provenance (`public-spec-release`), synthetic examples, and operator-maintained compatibility claims before making downstream readiness summaries.
 
 ## Source Freshness
 

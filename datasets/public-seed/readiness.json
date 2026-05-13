@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "name": "public-seed-readiness",
   "lastUpdated": "2026-05-13",
-  "toolVersion": "0.3.3",
+  "toolVersion": "0.3.4",
   "fork": "glamsterdam",
   "eipRegistry": {
     "lastUpdated": "2026-05-13",

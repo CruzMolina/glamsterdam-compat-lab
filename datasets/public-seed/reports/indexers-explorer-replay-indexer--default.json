@@ -35,7 +35,7 @@
   ],
   "assumptions": [
     "JSON and YAML configs were parsed statically; subgraph-style handler fields were summarized when present.",
-    "The loaded registry is dated 2026-05-08. Glamsterdam scope and gas parameters may change."
+    "The loaded registry is dated 2026-05-13. Glamsterdam scope and gas parameters may change."
   ],
   "limitations": [
     "Static indexer configuration cannot prove runtime indexing behavior.",

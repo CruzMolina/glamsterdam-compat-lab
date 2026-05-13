@@ -209,7 +209,12 @@ function renderEipRegistry(registry: EipRegistry): string {
   lines.push("## Sources");
   lines.push("");
   for (const source of registry.sources) {
-    lines.push(`- ${source}`);
+    const dateText = source.sourceDate ? `, source ${source.sourceDate}` : "";
+    lines.push(`- ${source.url} (${source.type}, retrieved ${source.retrievedAt}${dateText})`);
+    lines.push(`  ${source.claim}`);
+    if (source.notes) {
+      lines.push(`  Notes: ${source.notes}`);
+    }
   }
   lines.push("");
   lines.push("## Entries");

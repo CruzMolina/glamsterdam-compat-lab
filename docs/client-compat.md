@@ -92,6 +92,8 @@ pnpm client-matrix:check
 
 The checker validates schema shape, duplicate client keys, source dates against `lastUpdated`, devnet participant/client-entry consistency, documented participant exclusions, and conservative status rules. Public devnet, interop, and spec-release sources cannot be used as `compatible` client claims; keep those entries `partial` or `unknown` unless an explicit client release or operator-maintained source supports compatibility.
 
+The public seed dataset also exports matrix visibility into `datasets/public-seed/readiness.json`, `readiness-clients.csv`, `readiness-devnets.csv`, and `readiness-sources.csv`. The static browser renders the same source records at `site/public-seed/readiness.html`. These exports are audit aids: they show what the matrix says, how old the sources are, and which devnet participants are mirrored by client-version rows. They do not promote devnet participation to production compatibility.
+
 ## Updating The Matrix
 
 1. Add or update a client version entry in `data/client-compat/clients.example.json`.
@@ -99,11 +101,16 @@ The checker validates schema shape, duplicate client keys, source dates against 
 3. Prefer `partial` for devnet images and prerelease testing.
 4. Prefer `unknown` when the source does not explicitly state readiness.
 5. Use `matrixEntryExclusion.reason` on a devnet participant only when a concrete image intentionally should not have a matching client version entry.
-6. Add scanner tests when a new matrix shape or status path is introduced.
-7. Run:
+6. Regenerate dataset and site artifacts when source records, source dates, client statuses, or devnet participants change.
+7. Add scanner tests when a new matrix shape or status path is introduced.
+8. Run:
 
 ```sh
 pnpm client-matrix:check
+pnpm dataset:generate
+pnpm site:generate
+pnpm dataset:check
+pnpm site:check
 pnpm test
 pnpm build
 ```

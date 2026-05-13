@@ -6,10 +6,15 @@
   "toolVersion": "0.3.3",
   "sourceManifest": "fixtures/provenance.json",
   "summary": "summary.json",
+  "readiness": "readiness.json",
   "csvExports": {
     "reports": "reports.csv",
     "findings": "findings.csv",
-    "summary": "summary.csv"
+    "summary": "summary.csv",
+    "readinessClients": "readiness-clients.csv",
+    "readinessDevnets": "readiness-devnets.csv",
+    "readinessEips": "readiness-eips.csv",
+    "readinessSources": "readiness-sources.csv"
   },
   "thresholdProfiles": [
     {
@@ -940,6 +945,7 @@
   "limitations": [
     "This seed dataset is fixture-based and intentionally small; it is not an aggregate measurement of public-chain Glamsterdam readiness.",
     "Synthetic fixtures provide parser and detector coverage but do not prove real client behavior.",
-    "Threshold-profile comparisons are structural report differences, not final fork gas deltas."
+    "Threshold-profile comparisons are structural report differences, not final fork gas deltas.",
+    "Client and devnet readiness entries are source records only; devnet participation is not production compatibility."
   ]
 }

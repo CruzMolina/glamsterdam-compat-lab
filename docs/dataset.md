@@ -19,9 +19,14 @@ Treat the dataset as reproducibility scaffolding. It is not an aggregate measure
 
 - `manifest.json`: dataset index, source manifest pointer, threshold profiles, report entries, comparison entries, limitations, and CSV export paths.
 - `summary.json`: aggregate counts by fixture kind, source type, report risk, threshold profile, and finding ID.
+- `readiness.json`: sourced EIP status, client matrix, devnet participant, spec-version, and source-freshness visibility derived from `data/eips/glamsterdam.json` and `data/client-compat/clients.example.json`.
 - `reports.csv`: one row per generated compatibility report.
 - `findings.csv`: one row per finding in each generated compatibility report.
 - `summary.csv`: flattened count rows from `summary.json`.
+- `readiness-clients.csv`: one row per client/version matrix entry.
+- `readiness-devnets.csv`: one row per devnet participant, or one devnet-only row when no participants are recorded.
+- `readiness-eips.csv`: one row per tracked registry entry, including scheduled, considered, declined, and proposed status groupings.
+- `readiness-sources.csv`: one row per EIP registry or client matrix source reference with retrieval/source dates and claim text.
 - `reports/`: generated JSON compatibility reports.
 - `comparisons/`: generated JSON default-vs-research comparison reports for bytecode and trace fixtures.
 
@@ -37,6 +42,8 @@ The index page includes summary counts, generated bar charts, report risk and fi
 The generated `reports/` pages render finding summaries, stable finding anchors, evidence, recommendations, assumptions, limitations, raw JSON report links, source fixture links, and fixture provenance links. The generated `comparisons/` pages render default-vs-research risk and finding deltas, changed finding groups, raw comparison JSON links, and links to the matching report detail pages.
 
 The generated `findings/` pages group every report occurrence for a finding ID. They link back to the anchored report detail row, raw report JSON, source fixture, and comparison detail page when a comparison exists.
+
+The generated `readiness.html` page shows EIP status groupings, client matrix rows, devnet participant images, spec versions, source links, retrieval/source dates, and matrix warnings. It is a source visibility page, not a production compatibility assertion.
 
 ## CSV Headers
 
@@ -76,6 +83,60 @@ The generated `findings/` pages group every report occurrence for a finding ID. 
 | `key` | Count key within that group. |
 | `count` | Count value as an integer. |
 
+`readiness-clients.csv` has one row per client matrix version entry.
+
+| Column | Meaning |
+| --- | --- |
+| `role` | Client role: `execution`, `consensus`, or `validator`. |
+| `name` | Client name from the matrix. |
+| `version` | Exact version or image string. |
+| `status` | Sourced matrix status: `compatible`, `partial`, `incompatible`, or `unknown`. |
+| `sourceType` | Matrix source type. |
+| `sourceUrl` | Public or local source URL. |
+| `retrievedAt` | Date the source was retrieved. |
+| `retrievedDaysAgo` | Source retrieval age in days relative to the dataset date. |
+| `notes` | Matrix notes for the version, when present. |
+
+`readiness-devnets.csv` has one row per devnet participant.
+
+| Column | Meaning |
+| --- | --- |
+| `devnet` | Devnet or interop context name. |
+| `devnetStatus` | Sourced devnet status string. |
+| `role` | Participant role, when a participant is recorded. |
+| `name` | Participant client or tool name. |
+| `image` | Participant image/version when present. |
+| `status` | Participant status from the matrix. |
+| `sourceUrl` | Source URL for the devnet entry. |
+| `retrievedAt` | Date the devnet source was retrieved. |
+| `notes` | Participant or devnet notes. |
+
+`readiness-eips.csv` has one row per EIP registry entry.
+
+| Column | Meaning |
+| --- | --- |
+| `id` | EIP or local registry ID. |
+| `name` | Registry entry name. |
+| `status` | Registry status such as `scheduled`, `considered`, `declined`, or `proposed`. |
+| `domain` | Pipe-delimited domains. |
+| `detectors` | Pipe-delimited detector module names, when any detector uses the entry. |
+| `notes` | Registry notes. |
+
+`readiness-sources.csv` has one row per source reference.
+
+| Column | Meaning |
+| --- | --- |
+| `area` | `eip-registry` or `client-matrix`. |
+| `label` | Source location in the source JSON. |
+| `type` | Source type. |
+| `url` | Exact source URL. |
+| `sourceDate` | Publication or release date when known. |
+| `retrievedAt` | Retrieval date. |
+| `retrievedDaysAgo` | Retrieval age in days relative to the dataset date. |
+| `sourceAgeDays` | Publication/release age in days relative to the dataset date, when `sourceDate` is present. |
+| `claim` | Concise source claim summary. |
+| `notes` | Source notes. |
+
 ## Joins
 
 Use `report` as the primary join key between `reports.csv`, `findings.csv`, and generated JSON report files:
@@ -103,6 +164,14 @@ Use `summary.csv` as a denormalized view of `summary.json`. For example, `catego
 }
 ```
 
+Use `readiness.json` for nested source context, and use the `readiness-*.csv` files for flat imports. The readiness exports join back to the source files by URL, client name/version, devnet name, or EIP ID:
+
+```text
+readiness-eips.csv.id = data/eips/glamsterdam.json.eips[].id
+readiness-clients.csv.name + readiness-clients.csv.version = data/client-compat/clients.example.json clients[].versions[]
+readiness-sources.csv.url = source.url
+```
+
 ## Stability
 
 Run `pnpm dataset:check` before opening a PR that changes fixtures, scanners, thresholds, registry data, or the client compatibility matrix. The check regenerates the dataset into a temporary directory and compares it with `datasets/public-seed/`. If it reports stale, missing, or extra committed files, run `pnpm dataset:generate` and review the generated artifact changes.
@@ -121,8 +190,9 @@ These fields can change when scanner behavior, thresholds, fixtures, or registry
 - `risk`, `findingCount`, `findingIndex`, `title`, `severity`, and `confidence`.
 - Aggregate counts in `summary.json` and `summary.csv`.
 - Comparison report contents under `comparisons/`.
+- Readiness source age fields and EIP/client statuses when upstream sources or the local registry/matrix are refreshed.
 
-Use `manifest.json.toolVersion`, `summary.json.toolVersion`, and the release tag when comparing exports across releases.
+Use `manifest.json.toolVersion`, `summary.json.toolVersion`, `readiness.json.toolVersion`, and the release tag when comparing exports across releases.
 
 ## Import Notes
 

@@ -180,6 +180,7 @@ jobs:
             echo "No package tarball found."
             exit 1
           fi
+          tarball="$(realpath "$tarball")"
 
           npm publish "$tarball" --registry=https://registry.npmjs.org/ --access public --tag "$NPM_TAG" --provenance --dry-run
 
@@ -193,5 +194,6 @@ jobs:
             echo "No package tarball found."
             exit 1
           fi
+          tarball="$(realpath "$tarball")"
 
           npm publish "$tarball" --registry=https://registry.npmjs.org/ --access public --tag "$NPM_TAG" --provenance

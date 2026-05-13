@@ -70,6 +70,29 @@ describe("scanValidatorConfig", () => {
     }
   });
 
+  it("keeps public devnet participant images resolvable through client entries", () => {
+    const matrix = loadClientMatrix(defaultMatrixPath);
+    const clientVersions = new Set(
+      matrix.clients.flatMap((client) =>
+        client.versions.map((version) => `${client.role}:${client.name}:${version.version}`.toLowerCase())
+      )
+    );
+    const gaps = matrix.devnets.flatMap((devnet) =>
+      devnet.participants
+        .filter((participant) =>
+          participant.image &&
+          (participant.role === "execution" || participant.role === "consensus" || participant.role === "validator")
+        )
+        .map((participant) => ({
+          devnet: devnet.name,
+          participant: `${participant.role}:${participant.name}:${participant.image}`
+        }))
+        .filter((entry) => !clientVersions.has(entry.participant.toLowerCase()))
+    );
+
+    expect(gaps).toEqual([]);
+  });
+
   it("reports sourced partial, incompatible, and unknown matrix statuses without guessing", () => {
     const tempDir = mkdtempSync(resolve(tmpdir(), "glamsterdam-validator-"));
     const configPath = resolve(tempDir, "operator-config.json");
@@ -147,5 +170,8 @@ describe("scanValidatorConfig", () => {
         }
       }
     });
+    expect(report.findings[1]?.description).toContain(
+      "prysm ethpandaops/prysm-beacon-chain:glamsterdam-devnet-3-minimal"
+    );
   });
 });

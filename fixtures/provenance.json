@@ -1129,7 +1129,7 @@
         "url": "https://notes.ethereum.org/@ethpandaops/glamsterdam-devnet-2",
         "license": "Public documentation; repository license applies to reduced fixture packaging.",
         "notes": [
-          "The source spec lists geth image ethpandaops/geth:bal-devnet-6 and lighthouse image ethpandaops/lighthouse:glamsterdam-devnet-3 in its Kurtosis participants matrix.",
+          "The source spec lists geth image ethpandaops/geth:bal-devnet-6 and prysm image ethpandaops/prysm-beacon-chain:glamsterdam-devnet-3-minimal in its Kurtosis participants matrix.",
           "This fixture keeps public client-image metadata and replaces all operator-specific endpoints with example.invalid placeholders.",
           "The validator client remains a synthetic compatible placeholder because the public devnet spec lists consensus images, not validator-key inventory."
         ]
